@@ -1,101 +1,84 @@
-import Image from "next/image";
+import Home from "@/component/Home/Home";
+import { MongoClient } from "mongodb";
+import React from "react";
 
-export default function Home() {
+export default async function Page() {
+  const mongoUri =
+    "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
+  const dbName = "mydatabase";
+  const homeCollectionName = "animoon-home";
+  const animeCollectionName = "animeInfo";
+
+  const client = new MongoClient(mongoUri);
+  let data;
+  let existingAnime = [];
+
+  try {
+    // Connect to MongoDB
+    await client.connect();
+    console.log("Connected to MongoDB");
+
+    const db = client.db(dbName);
+
+    // Fetch homepage data
+    const homeCollection = db.collection(homeCollectionName.trim());
+    const document = await homeCollection.findOne({}); // Adjust query as needed
+
+    if (document) {
+      data = document;
+    } else {
+      console.log("No homepage data found in MongoDB");
+    }
+
+    // If homepage data is missing, fetch from API
+    if (!data) {
+      const res = await fetch("https://vimal.animoon.me/api/");
+      data = await res.json();
+    }
+
+    // Check if anime from spotlights exists in the animeInfo collection
+    if (data?.spotlights?.length > 0) {
+      const animeCollection = db.collection(animeCollectionName.trim());
+
+      // Use Promise.all to fetch data for all spotlight IDs concurrently
+      existingAnime = await Promise.all(
+        data.spotlights.map(async (spotlight) => {
+          const result = await animeCollection.findOne(
+            { _id: spotlight.id },
+            {
+              projection: {
+                "info.results.data.animeInfo.Genres": 1,
+                "info.results.data.poster": 1,
+              },
+            }
+          );
+
+          if (result) {
+            return {
+              Genres: result.info?.results?.data?.animeInfo?.Genres || [],
+              poster: result.info?.results?.data?.poster || "",
+            };
+          } else {
+            console.log(`Anime ${spotlight.title} not found in database.`);
+            return null;
+          }
+        })
+      );
+
+      // Filter out any null results
+      existingAnime = existingAnime.filter((item) => item !== null);
+    }
+  } catch (error) {
+    console.error("Error fetching data from MongoDB or API:", error.message);
+  } finally {
+    await client.close();
+    console.log("MongoDB connection closed");
+  }
+
+  // Safely pass the structured data to your components
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div>
+      <Home data={data} existingAnime={existingAnime}/>
     </div>
   );
 }

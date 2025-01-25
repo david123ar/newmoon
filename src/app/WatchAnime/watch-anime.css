@@ -1,0 +1,689 @@
+.watch-container {
+  position: relative;
+  padding: 20px;
+  z-index: 1;
+}
+.pecif {
+  margin-bottom: 10px;
+}
+.currento {
+  border: 1px solid var(--theme);
+  color: var(--theme);
+}
+.watch-container-background {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.watch-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(20px);
+  background: rgba(93, 93, 93, 0.701);
+  z-index: -1;
+}
+.media-center {
+  width: 75%;
+  background-color: var(--dark);
+  padding-bottom: 5px;
+}
+.episode-container {
+  width: 25%;
+  padding-top: 5px;
+}
+.episode-container-blocks {
+  width: 25%;
+  padding: 5px;
+}
+.episode-container p {
+  font-size: 15px;
+  font-weight: 600;
+  padding-left: 10px;
+}
+.episode-tiles-wrapper-blocks {
+  flex-wrap: wrap;
+  margin-top: 5px;
+  justify-content: flex-start;
+  text-align: center;
+  align-items: center;
+  gap: 5px;
+  max-height: 760px;
+  overflow-y: auto;
+}
+.episode-tiles-wrapper {
+  flex-wrap: wrap;
+  margin-top: 5px;
+  justify-content: flex-start;
+  text-align: center;
+  align-items: center;
+  gap: 0;
+  max-height: 760px;
+  overflow-y: auto;
+}
+.current-anime-details {
+  width: 25%;
+  padding: 20px;
+
+  padding-top: 0;
+}
+.current-anime-details img {
+  width: 150px;
+  margin: auto;
+  height: auto;
+}
+.anime-details-content .title-large {
+  margin-top: 10px;
+  font-size: 30px;
+}
+.anime-details-content .title-large-long {
+  margin-top: 10px;
+  font-size: 20px;
+}
+.anime-details-content .descp {
+  margin: auto;
+  margin-top: 0;
+  padding-top: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.episode-tile-blocks {
+  width: calc(100% / 4 - 5px);
+  display: inline-block;
+  padding: 5px;
+  font-size: 14px;
+  height: 35px;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fillero {
+  background: #531f1f;
+}
+
+.amo {
+  padding: 2px 4px;
+  width: fit-content;
+  font-weight: 400;
+  font-size: 15px;
+  align-items: center;
+  color: rgb(164, 180, 175);
+}
+
+.iframe {
+  width: 100%;
+}
+
+.omo {
+  padding: 2px 4px;
+  width: fit-content;
+  color: white;
+  font-weight: 400;
+  font-size: 15px;
+  align-items: center;
+}
+
+.oto {
+  color: #ccbfbf;
+  font-size: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.otoi {
+  color: #ccbfbf;
+  font-size: 10px;
+  margin-left: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.common {
+  color: #fff;
+}
+
+.idk {
+  color: #b19a9a;
+}
+
+.rat {
+  padding: 2px 8px;
+  border-radius: 2px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  width: fit-content;
+  background-color: aliceblue;
+  color: black;
+  font-size: 0.7rem;
+  font-weight: 600;
+  align-items: center;
+  margin-bottom: 0;
+}
+.qual {
+  background-color: var(--theme);
+  color: black;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  gap: 2px;
+}
+.subE {
+  color: black;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  background-color: rgb(245, 180, 245);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.dubE {
+  color: black;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  background-color: rgb(151, 235, 238);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.episode-tile {
+  width: calc(100% / 4 - 5px);
+  display: inline-block;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.typo {
+  padding: 2px 4px;
+  width: fit-content;
+  color: white;
+  font-weight: 500;
+  font-size: 13px;
+  align-items: center;
+}
+.duran {
+  padding: 2px 4px;
+  width: fit-content;
+  color: white;
+  font-weight: 500;
+  font-size: 13px;
+  align-items: center;
+}
+.doto {
+  color: #ccbfbf;
+  font-size: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.episode-tile:hover {
+  color: var(--theme);
+  background-color: rgb(90, 109, 108);
+}
+.episode-tile-blocks:hover {
+  color: var(--theme);
+  background-color: rgb(90, 109, 108);
+}
+.evenL {
+  background-color: var(--grey-dark);
+}
+.oddL {
+  background-color: var(--odd-grey);
+}
+.server-container {
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.server-tile-wrapper {
+  gap: 10px;
+}
+.server-tile {
+  display: inline-block;
+  padding: 5px 15px;
+  font-size: 13px;
+  background-color: var(--grey-dark);
+  cursor: pointer;
+  border-radius: 20px;
+  margin: 0px 10px 10px 0px;
+}
+select,
+option {
+  font-family: "Poppins", sans-serif !important;
+  padding: 5px;
+  border: none;
+  border-radius: 20px !important;
+  font-size: 13px;
+}
+select:active,
+select:enabled {
+  border: none;
+}
+.server-tile.selected {
+  color: black;
+  background-color: var(--theme);
+}
+.episode-tile.selected {
+  color: var(--theme);
+  background-color: rgb(90, 109, 108);
+  border-left-width: 5px;
+  border-left-color: var(--theme);
+}
+.episode-tile-blocks.selected {
+  color: black;
+  background-color: var(--theme);
+}
+.video-player {
+  width: 75%;
+}
+.hls-container {
+  min-width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.eptile {
+  display: flex;
+  align-items: start;
+  gap: 20px;
+  padding-left: 5px;
+}
+/* seasonal */
+.seasonal-advice {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  color: rgb(248, 253, 253) !important;
+}
+.seasonal {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.seasonal-background {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px !important;
+}
+.season {
+  position: relative;
+  padding: 15px 25px;
+  width: 150px;
+  font-size: 15px;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-shadow: 2px 2px #504a4a;
+  z-index: 1;
+  gap: 5px;
+  border-radius: 5px !important;
+  font-family: "Poppins", sans-serif;
+  text-decoration: none !important;
+}
+.season::after {
+  content: "";
+  position: absolute;
+  border-radius: 5px !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(93, 93, 93, 0.701);
+  z-index: -1;
+}
+
+.containIno {
+  background: var(--theme);
+  padding: 5px 10px;
+}
+.epIno {
+  width: 25%;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.ino1 {
+  color: #39383d;
+  font-size: 13px;
+  font-weight: 500;
+}
+.ino2 {
+  color: black;
+  font-size: 13px;
+  font-weight: 500;
+}
+.ino3 {
+  color: #39383d;
+  font-size: 13px;
+  max-width: 150px;
+  text-align: center;
+  font-weight: 500;
+}
+.serves {
+  background: #283335;
+  display: flex;
+  align-items: start;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin: 0;
+  margin-right: 10px;
+  width: 100%;
+}
+.serveSub {
+  height: 50%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.borderDot {
+  border-bottom-width: 1px;
+  border-bottom-color: #4e4e52;
+}
+.subDub {
+  padding: 5px 15px;
+  font-size: 13px;
+  background-color: var(--odd-grey);
+  cursor: pointer;
+  border-radius: 20px;
+}
+.subDub.selected {
+  color: black;
+  background-color: var(--theme);
+}
+.subb {
+  padding: 5px 15px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+/*rgba(93, 93, 93, 0.701)*/
+.video-player video {
+  display: block;
+  width: 100% !important;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  border: none;
+}
+.warn {
+  font-size: 12px;
+}
+.warn p {
+  font-size: 14px;
+}
+.autoo {
+  font-size: 14px;
+  font-weight: 500;
+}
+.allum {
+  display: flex;
+  padding: 0;
+  gap: 46%;
+  flex-wrap: wrap;
+}
+.ress {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.backw {
+  font-size: 16px;
+  font-weight: 500;
+}
+.fordw {
+  font-size: 16px;
+  font-weight: 500;
+}
+.plusa {
+  font-size: 16px;
+  font-weight: 500;
+}
+.signo {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--theme);
+}
+.ressOff {
+  color: rgb(255, 56, 56);
+}
+.ressOn {
+  color: var(--theme);
+}
+@media screen and (max-width: 1400px) {
+  .watch-container {
+    flex-direction: column;
+  }
+  .new-con {
+    flex-direction: column;
+  }
+  .media-center {
+    width: 100%;
+  }
+  .episode-container {
+    width: 20%;
+  }
+  .episode-container-blocks {
+    width: 20%;
+  }
+  .video-player {
+    width: 80%;
+  }
+  .current-anime-details {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .watch-container {
+    align-items: center;
+  }
+  .new-con {
+    align-items: center;
+  }
+  .media-center {
+    position: relative;
+    flex-direction: column-reverse;
+    align-items: center;
+    width: 90%;
+  }
+  .video-player {
+    width: 100%;
+  }
+  .episode-container {
+    width: 100%;
+  }
+  .episode-container-blocks {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1100px) {
+  .watch-container {
+    padding: 0;
+  }
+  .pecif {
+    margin-left: 20px;
+  }
+  .current-anime-details {
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+  }
+
+  .episode-tile {
+    width: calc(100% / 10 - 5px);
+  }
+  .episode-tile-blocks {
+    width: calc(100% / 10 - 5px);
+  }
+  .server-tile-wrapper {
+    padding: 10px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .watch-container {
+    align-items: start;
+  }
+  .media-center {
+    width: 100%;
+  }
+  .episode-container {
+    width: 100%;
+  }
+  .episode-container-blocks {
+    width: 100%;
+  }
+  .video-player {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 711px) {
+  .pecif {
+    display: none;
+  }
+  .compIno {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .containIno {
+    background: none;
+  }
+  .epIno {
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  .ino1 {
+    color: #e0dee9;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ino2 {
+    color: var(--theme);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ino3 {
+    color: #e0dee9;
+    font-size: 13px;
+    max-width: 100%;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .serves {
+    background: #283335;
+    display: flex;
+    align-items: start;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 100%;
+  }
+  .serveSub {
+    height: fit-content;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+  .borderDot {
+    border-bottom-width: 1px;
+    border-bottom-color: #4e4e52;
+  }
+  .subDub {
+    padding: 5px 15px;
+    font-size: 13px;
+    background-color: var(--odd-grey);
+    cursor: pointer;
+    border-radius: 20px;
+  }
+  .subDub.selected {
+    color: black;
+    background-color: var(--theme);
+  }
+  .subb {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 5px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 20px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .episode-tile {
+    width: calc(100% / 6 - 5px);
+  }
+  .episode-tile-blocks {
+    width: calc(100% / 6 - 5px);
+  }
+  .current-anime-details {
+    width: 100%;
+  }
+  .allum {
+    display: flex;
+    justify-content: center;
+  }
+  .autoo {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .ress {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .season {
+    position: relative;
+    padding: 5px 10px;
+    width: 100px;
+    font-size: 13px;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    text-shadow: 1px 1px #504a4a;
+    z-index: 1;
+    gap: 5px;
+    border-radius: 5px !important;
+    font-family: "Poppins", sans-serif;
+    text-decoration: none !important;
+  }
+  .watch-container {
+    margin-top: 50px;
+    padding-top: 0;
+  }
+  .video-player video {
+    aspect-ratio: 16/9;
+  }
+}
