@@ -22,7 +22,10 @@ export default async function Page() {
 
     // Fetch homepage data
     const homeCollection = db.collection(homeCollectionName.trim());
-    const document = await homeCollection.findOne({}); // Adjust query as needed
+    const document = await homeCollection.findOne(
+      {},
+      { maxTimeMS: 1000, noCursorTimeout: true }
+    ); // Adjust query as needed
 
     if (document) {
       data = document;
@@ -78,7 +81,7 @@ export default async function Page() {
   // Safely pass the structured data to your components
   return (
     <div>
-      <Home data={data} existingAnime={existingAnime}/>
+      <Home data={data} existingAnime={existingAnime} />
     </div>
   );
 }

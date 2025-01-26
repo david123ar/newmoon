@@ -162,7 +162,7 @@ export default async function page({ params, searchParams }) {
     datajSub = [];
   }
 
-  if (Array.isArray(datajSub) && datajSub.length === 0) {
+  if (!datajSub?.results?.streamingLink?.link?.file) {
     // datajSub is an array and is empty
 
     try {
@@ -184,6 +184,8 @@ export default async function page({ params, searchParams }) {
       console.error("Error fetching stream data: ", error);
     }
   }
+
+  console.log('datajSub' , datajSub)
 
   const dataStr = { sub: [], dub: [] }; // Separate arrays for sub and dub URLs
 
