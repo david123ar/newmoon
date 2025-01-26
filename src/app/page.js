@@ -31,10 +31,10 @@ export default async function Page() {
     }
 
     // If homepage data is missing, fetch from API
-    if (!data) {
-      const res = await fetch("https://vimal.animoon.me/api/");
-      data = await res.json();
-    }
+    // if (!data) {
+    //   const res = await fetch("https://vimal.animoon.me/api/",{cache: 'no-store'});
+    //   data = await res.json();
+    // }
 
     // Check if anime from spotlights exists in the animeInfo collection
     if (data?.spotlights?.length > 0) {
