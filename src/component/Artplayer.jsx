@@ -322,12 +322,35 @@ function ArtPlayer(props) {
           }
         }
       });
-      art.on("subtitleUpdate", (text) => {
-        art.template.$subtitle.innerHTML = text;
+      art.on("subtitleAfterUpdate", (cue) => {
+        // Log the subtitle content
+        const subtitleContainer = art.template.$subtitle;
+        console.info(subtitleContainer.innerHTML);
+
+        // Get the subtitle content from the subtitle line
+        let newcont = document.querySelector(
+          '.art-subtitle-line[data-group="0"]'
+        ).innerHTML;
+        console.info(newcont);
+
+        // Decode HTML entities in the newcont string
+        const txt = document.createElement("textarea");
+        txt.innerHTML = newcont; // Decode HTML entities
+        console.info(txt.value); // Log the decoded value
+
+        // Now, directly use the decoded HTML as subtitle content
+        if (subtitleContainer) {
+          subtitleContainer.innerHTML = txt.value; // Set the decoded HTML as innerHTML
+          console.log("Updated Subtitle with HTML:", txt.value); // Log the updated HTML subtitle
+        } else {
+          console.error("Subtitle container not found.");
+        }
       });
       art.on("resize", () => {
         art.subtitle.style({
           fontSize: art.height * 0.05 + "px",
+          color: "#ffffff",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         });
       });
       art.on("video:ended", () => {
