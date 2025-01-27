@@ -4,7 +4,7 @@ import { db } from "../../../../../firebase";
 import { query, collection, where, getDocs } from "firebase/firestore";
 
 const authOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'goodtogo++',
   providers: [
     CredentialsProvider({
       name: "Credentials",
