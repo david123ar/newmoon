@@ -1,6 +1,6 @@
 import FilterComp from '@/component/FilterComp/FilterComp'
 import React from 'react'
-import './filterPage.css'
+import './filterpage.css'
 
 const page = () => {
   return (
