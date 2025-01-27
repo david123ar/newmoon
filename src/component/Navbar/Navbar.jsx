@@ -53,7 +53,7 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
       />
       <div className={`nav-1 ${isScrolled ? "darkio" : ""}`}>
         <div className="nav-in">
-          <div onClick={() => setSidebarIsOpen(true)}>
+          <div onClick={() => setSidebarIsOpen(true)} className="barr">
             <FaBars size={25} />
           </div>
           <div>

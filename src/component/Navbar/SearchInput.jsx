@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./NavCss/searchInput.css";
 import { FaAngleRight, FaFilter, FaSearch } from "react-icons/fa";
+import Link from "next/link";
 
 const SearchInput = (props) => {
   const [value, setValue] = useState("");
@@ -57,10 +58,10 @@ const SearchInput = (props) => {
               </div>
             </div>
           </div>
-          {isFocused && data && (
+          {isFocused && data && value && (
             <div className="dropdown">
               {data.map((item) => (
-                <div key={item.id} className="dropdown-item">
+                <Link href={`/${item.id}`} key={item.id} className="dropdown-item">
                   <img
                     src={item.imgData}
                     alt={item.title}
@@ -85,7 +86,7 @@ const SearchInput = (props) => {
                       <div>{item.duration}</div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
               <div className="allR">
                 {" "}
@@ -117,10 +118,10 @@ const SearchInput = (props) => {
               {!props.float && <div className="filter-btn">Filter</div>}
             </div>
           </div>
-          {isFocused && data && (
+          {isFocused && data && value && (
             <div className="dropdown">
               {data.map((item) => (
-                <div key={item.id} className="dropdown-item">
+                <Link href={`/${item.id}`} key={item.id} className="dropdown-item">
                   <img
                     src={item.imgData}
                     alt={item.title}
@@ -145,7 +146,7 @@ const SearchInput = (props) => {
                       <div>{item.duration}</div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
               <div className="allR">
                 {" "}

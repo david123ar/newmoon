@@ -21,10 +21,16 @@ const Home = ({ data, existingAnime }) => {
   const lang = (lang) => {
     setSelectL(lang);
   };
+
   return (
     <div>
       <SessionProvider>
-        <Navbar lang={lang} sign={sign} setProfiIsOpen={setProfiIsOpen} profiIsOpen={profiIsOpen}/>
+        <Navbar
+          lang={lang}
+          sign={sign}
+          setProfiIsOpen={setProfiIsOpen}
+          profiIsOpen={profiIsOpen}
+        />
         {profiIsOpen ? (
           <Profilo setProfiIsOpen={setProfiIsOpen} profiIsOpen={profiIsOpen} />
         ) : (
