@@ -11,10 +11,10 @@ export async function GET(req) {
 
     // Check if 'id' query parameter is provided
     if (!id) {
-      return new Response(
-        JSON.stringify({ error: "ID is required" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "ID is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Connect to MongoDB
@@ -25,30 +25,33 @@ export async function GET(req) {
     const collection = db.collection(collectionName);
 
     // Fetch data using the 'id'
-    const data = await collection.findOne({ _id: id });
+    const data = await collection.findOne(
+      { _id: id },
+      { projection: { "info.results.data": 1, _id: 0 } }
+    );
 
     // Close the database connection
     await client.close();
 
     // Check if data exists
     if (!data) {
-      return new Response(
-        JSON.stringify({ error: "Data not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Data not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Return the fetched data
-    return new Response(
-      JSON.stringify(data),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error fetching data:", error);
 
-    return new Response(
-      JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

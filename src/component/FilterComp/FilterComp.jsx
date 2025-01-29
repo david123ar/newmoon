@@ -1,7 +1,25 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import "./filterComp.css";
 
 const FilterComp = () => {
+  const [filters, setFilters] = useState({
+    type: "All",
+    status: "All",
+    rating: "All",
+    score: "All",
+    season: "All",
+    language: "All",
+    genres: [],
+    startDateYear: "",
+    startDateMonth: "",
+    startDateDay: "",
+    endDateYear: "",
+    endDateMonth: "",
+    endDateDay: "",
+    sort: "Default",
+  });
+
   const genArr = [
     "Action",
     "Adventure",
@@ -46,26 +64,27 @@ const FilterComp = () => {
     "Vampire",
   ];
 
-  const filters = [
+  const filtersList = [
     {
       label: "Type",
-      default: "All",
-      values: ["Movie", "TV", "OVA", "ONA", "Special", "Music"],
+      name: "type",
+      values: ["All", "Movie", "TV", "OVA", "ONA", "Special", "Music"],
     },
     {
       label: "Status",
-      default: "All",
-      values: ["Finished Airing", "Currently Airing", "Not yet aired"],
+      name: "status",
+      values: ["All", "Finished Airing", "Currently Airing", "Not yet aired"],
     },
     {
-      label: "Related",
-      default: "All",
-      values: ["G", "PG", "PG-13", "R", "R+", "Rx"],
+      label: "Rating",
+      name: "rating",
+      values: ["All", "G", "PG", "PG-13", "R", "R+", "Rx"],
     },
     {
       label: "Score",
-      default: "All",
+      name: "score",
       values: [
+        "All",
         "(1) Appalling",
         "(2) Horrible",
         "(3) Very Bad",
@@ -80,27 +99,115 @@ const FilterComp = () => {
     },
     {
       label: "Season",
-      default: "All",
-      values: ["Spring", "Summer", "Fall", "Winter"],
+      name: "season",
+      values: ["All", "Spring", "Summer", "Fall", "Winter"],
     },
     {
       label: "Language",
-      default: "All",
-      values: ["SUB", "DUB", "SUB & DUB"],
+      name: "language",
+      values: ["All", "SUB", "DUB", "SUB & DUB"],
     },
   ];
+
+  const handleGenreClick = (genre) => {
+    setFilters((prevState) => {
+      const updatedGenres = prevState.genres.includes(genre)
+        ? prevState.genres.filter((g) => g !== genre)
+        : [...prevState.genres, genre];
+
+      return { ...prevState, genres: updatedGenres };
+    });
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  // Handle separate date inputs
+  const handleStartYearChange = (e) => {
+    setFilters((prevState) => ({ ...prevState, startDateYear: e.target.value }));
+  };
+
+  const handleStartMonthChange = (e) => {
+    setFilters((prevState) => ({ ...prevState, startDateMonth: e.target.value }));
+  };
+
+  const handleStartDayChange = (e) => {
+    setFilters((prevState) => ({ ...prevState, startDateDay: e.target.value }));
+  };
+
+  const handleEndYearChange = (e) => {
+    setFilters((prevState) => ({ ...prevState, endDateYear: e.target.value }));
+  };
+
+  const handleEndMonthChange = (e) => {
+    setFilters((prevState) => ({ ...prevState, endDateMonth: e.target.value }));
+  };
+
+  const handleEndDayChange = (e) => {
+    setFilters((prevState) => ({ ...prevState, endDateDay: e.target.value }));
+  };
+
+  const applyFilters = async () => {
+    const queryParams = new URLSearchParams();
+
+    // Type filter
+    if (filters.type !== "All") queryParams.append("type", filters.type);
+
+    // Status filter
+    if (filters.status !== "All") queryParams.append("status", filters.status);
+
+    // Rating filter
+    if (filters.rating !== "All") queryParams.append("rating", filters.rating);
+
+    // Score filter
+    if (filters.score !== "All") queryParams.append("score", filters.score);
+
+    // Season filter
+    if (filters.season !== "All") queryParams.append("season", filters.season);
+
+    // Language filter
+    if (filters.language !== "All") queryParams.append("language", filters.language);
+
+    // Genre filters
+    if (filters.genres.length > 0) {
+      filters.genres.forEach((genre) => queryParams.append("genre", genre));
+    }
+
+    // Start date filter
+    if (filters.startDateYear) queryParams.append("sY", filters.startDateYear);
+    if (filters.startDateMonth) queryParams.append("sM", filters.startDateMonth);
+    if (filters.startDateDay) queryParams.append("sD", filters.startDateDay);
+
+    // End date filter
+    if (filters.endDateYear) queryParams.append("eY", filters.endDateYear);
+    if (filters.endDateMonth) queryParams.append("eM", filters.endDateMonth);
+    if (filters.endDateDay) queryParams.append("eD", filters.endDateDay);
+
+    // Sort filter
+    if (filters.sort !== "Default") queryParams.append("sort", filters.sort);
+
+    const response = await fetch(`/api/filter?${queryParams.toString()}`);
+    const filteredAnimes = await response.json();
+
+    console.log(filteredAnimes);
+  };
 
   return (
     <div className="filter-container">
       <h2>Filter</h2>
 
-      {/* Dynamic Filters */}
       <div className="filter-row">
-        {filters.map((filter) => (
+        {filtersList.map((filter) => (
           <div key={filter.label} className="filter-group">
             <label>{filter.label}</label>
-            <select defaultValue={filter.default} className="filter-dropdown">
-              <option value="All">{filter.default}</option>
+            <select
+              name={filter.name}
+              value={filters[filter.name]}
+              onChange={handleFilterChange}
+              className="filter-dropdown"
+            >
               {filter.values.map((value) => (
                 <option key={value} value={value}>
                   {value}
@@ -113,77 +220,67 @@ const FilterComp = () => {
 
       {/* Date Filters */}
       <div className="filter-row">
-        <div className="filter-group">
-          <label>Start Date</label>
-          <div className="date-inputs">
-            <select className="date-dropdown">
-              <option>Year</option>
-              {/* Add year options dynamically */}
-              {[...Array(50)].map((_, i) => (
-                <option key={i} value={1970 + i}>
-                  {1970 + i}
-                </option>
-              ))}
-            </select>
-            <select className="date-dropdown">
-              <option>Month</option>
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-            <select className="date-dropdown">
-              <option>Day</option>
-              {Array.from({ length: 31 }, (_, i) => (
-                <option key={i} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
+        {["startDate", "endDate"].map((dateType) => (
+          <div key={dateType} className="filter-group">
+            <label>
+              {dateType === "startDate" ? "Start Date" : "End Date"}
+            </label>
+            <div className="date-inputs">
+              <select
+                className="date-dropdown"
+                onChange={dateType === "startDate" ? handleStartYearChange : handleEndYearChange}
+              >
+                <option value="">Year</option>
+                {[...Array(50)].map((_, i) => (
+                  <option key={i} value={1970 + i}>
+                    {1970 + i}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="date-dropdown"
+                onChange={dateType === "startDate" ? handleStartMonthChange : handleEndMonthChange}
+              >
+                <option value="">Month</option>
+                {Array.from({ length: 12 }, (_, i) => (
+                  <option key={i} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="date-dropdown"
+                onChange={dateType === "startDate" ? handleStartDayChange : handleEndDayChange}
+              >
+                <option value="">Day</option>
+                {Array.from({ length: 31 }, (_, i) => (
+                  <option key={i} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <div className="filter-group">
-          <label>End Date</label>
-          <div className="date-inputs">
-            <select className="date-dropdown">
-              <option>Year</option>
-              {[...Array(50)].map((_, i) => (
-                <option key={i} value={1970 + i}>
-                  {1970 + i}
-                </option>
-              ))}
-            </select>
-            <select className="date-dropdown">
-              <option>Month</option>
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-            <select className="date-dropdown">
-              <option>Day</option>
-              {Array.from({ length: 31 }, (_, i) => (
-                <option key={i} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
+      {/* Sort Option */}
+      <div className="filter-row">
         <div className="filter-group">
           <label>Sort</label>
-          <select className="filter-dropdown">
-            <option>Default</option>
-            <option>Recently Added</option>
-            <option>Recently Updated</option>
-            <option>Score</option>
-            <option>Name A-Z</option>
-            <option>Released Date</option>
-            <option>Most Watched</option>
+          <select
+            name="sort"
+            value={filters.sort}
+            onChange={handleFilterChange}
+            className="filter-dropdown"
+          >
+            <option value="Default">Default</option>
+            {/* <option value="Recently Added">Recently Added</option>
+            <option value="Recently Updated">Recently Updated</option> */}
+            <option value="Score">Score</option>
+            <option value="Name A-Z">Name A-Z</option>
+            {/* <option value="Released Date">Released Date</option>
+            <option value="Most Watched">Most Watched</option> */}
           </select>
         </div>
       </div>
@@ -193,14 +290,20 @@ const FilterComp = () => {
         <label>Genre</label>
         <div className="genres">
           {genArr.map((gen) => (
-            <span key={gen} className="genre-item">
+            <span
+              key={gen}
+              className={`genre-item ${filters.genres.includes(gen) ? "selected" : ""}`}
+              onClick={() => handleGenreClick(gen)}
+            >
               {gen}
             </span>
           ))}
         </div>
       </div>
 
-      <button className="filter-button">Apply Filters</button>
+      <button className="filter-button" onClick={applyFilters}>
+        Apply Filters
+      </button>
     </div>
   );
 };

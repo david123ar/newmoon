@@ -1,7 +1,7 @@
 import React from "react";
 import WatchAnime from "../../WatchAnime/WatchAnime";
-import axios from "axios";
-import * as cheerio from "cheerio";
+// import axios from "axios";
+// import * as cheerio from "cheerio";
 import { MongoClient } from "mongodb";
 // import { currentUser } from "@clerk/nextjs/server";
 
@@ -20,17 +20,24 @@ async function fetchDataFromAPI(url, revalidate) {
 
 // Generate metadata dynamically based on the anime info
 export async function generateMetadata({ params }) {
-  const param = await params
+  const param = await params;
   try {
-    // const datao = await fetchDataFromAPI(
-    //   `https://hianimes.animoon.me/anime/info?id=${param.id}`,
-    //   18000 // Revalidate after 5 hours
-    // );
-    // const daty = datao;
+    const mongoUri =
+      "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
+    const dbName = "mydatabase"; // Change the database name as needed
+    const client = new MongoClient(mongoUri);
+    await client.connect();
+    const db = client.db(dbName);
+    const animeCollection = db.collection("animeInfo");
+    const idToCheck = param.id;
+
+    const existingAnime = await animeCollection.findOne({ _id: idToCheck });
+
+    const title = existingAnime?.info?.results?.data?.title
 
     return {
-      title: `Watch ${"daty.anime.info.name"} English Sub/Dub online free on Animoon.me`,
-      description: `Animoon is the best site to watch ${"daty.anime.info.name"} SUB online, or you can even watch underrated anime on Animoon.`,
+      title: `Watch ${title} English Sub/Dub online free on Animoon.me`,
+      description: `Animoon is the best site to watch ${title} SUB online, or you can even watch underrated anime on Animoon.`,
     };
   } catch (error) {
     console.error("Error fetching metadata: ", error);
@@ -51,31 +58,31 @@ export default async function page({ params, searchParams }) {
   await client.connect();
   const db = client.db(dbName);
   const episodesCollection = db.collection("episodesStream");
-  const animeCollection = db.collection("animeInfo")
-  const searchParam = await searchParams
+  const animeCollection = db.collection("animeInfo");
+  const searchParam = await searchParams;
   const epis = searchParam.ep;
-  const param = await params
+  const param = await params;
   const episodeIdParam = epis ? `${param.id}?ep=${epis}` : null;
 
-  const idToCheck =  param.id;
+  const idToCheck = param.id;
 
   const existingAnime = await animeCollection.findOne({ _id: idToCheck });
-  console.log("anime data from db",existingAnime)
+  console.log("anime data from db", existingAnime);
 
   // Fetch anime info with force-cache and revalidation
-  let datao 
+  let datao;
   // = await fetchDataFromAPI(
   //   `https://hianimes.animoon.me/anime/info?id=${param.id}`,
   //   18000 // Revalidate after 5 hours
   // );
-  datao = existingAnime.info
+  datao = existingAnime.info;
   // Fetch episodes with force-cache and revalidation
-  let data 
+  let data;
   // = await fetchDataFromAPI(
   //   `https://hianimes.animoon.me/anime/episodes/${param.id}`,
   //   3600 // Revalidate after 1 hour
   // );
-  data = existingAnime.episodes
+  data = existingAnime.episodes;
 
   // Determine the episode ID
   const epId = episodeIdParam || data?.results.episodes[0]?.id;
@@ -83,7 +90,6 @@ export default async function page({ params, searchParams }) {
   const existingEpisode = await episodesCollection.findOne({ _id: epId });
 
   console.log("from db", existingEpisode);
-
 
   // Find the episode number
   let episodeNumber = 0;
@@ -100,11 +106,11 @@ export default async function page({ params, searchParams }) {
     }
   }
 
-  epiod = episodeNumber
+  epiod = episodeNumber;
 
   let dubTruth = "";
 
-  if (datao.results.data.animeInfo.tvInfo?.dub >= epiod) {
+  if (datao?.results?.data?.animeInfo?.tvInfo?.dub >= epiod) {
     dubTruth = "yes";
   }
 
@@ -185,7 +191,7 @@ export default async function page({ params, searchParams }) {
     }
   }
 
-  console.log('datajSub' , datajSub)
+  console.log("datajSub", datajSub);
 
   const dataStr = { sub: [], dub: [] }; // Separate arrays for sub and dub URLs
 
@@ -349,7 +355,7 @@ export default async function page({ params, searchParams }) {
   const subPrio = subPri && subPri.tracks ? subPri.tracks : "";
 
   // Fetch homepage data with force-cache and revalidation
-  let datapp 
+  let datapp;
   // = await fetchDataFromAPI(
   //   "https://hianimes.animoon.me/anime/home",
   //   3600 // Revalidate after 1 hour

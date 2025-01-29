@@ -123,6 +123,11 @@
   .filter-button:hover {
     background-color: #1c86ee;
   }
+
+  .selected {
+    border: 1px solid var(--theme);
+    color: var(--theme);
+  }
   
   /* Responsive styling */
   @media screen and (max-width: 1024px) {
