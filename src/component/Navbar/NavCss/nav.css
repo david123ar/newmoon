@@ -47,16 +47,7 @@
   text-align: center;
 }
 .float-ser {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: fixed !important;
-  height: 65px;
-  width: 100%;
-  z-index: 80;
-  top: 60px;
-  max-width: 1920px;
-  margin: auto;
+  display: none;
 }
 /* .searc {
   z-index: 100;
@@ -127,6 +118,18 @@
 @media screen and (max-width: 1300px) {
   .searc {
     display: none;
+  }
+  .float-ser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: fixed !important;
+    height: 65px;
+    width: 100%;
+    z-index: 90;
+    top: 60px;
+    max-width: 1920px;
+    margin: auto;
   }
   .nav-ser {
     display: block;
