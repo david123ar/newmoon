@@ -19,7 +19,8 @@ export default function AnimeCollection(props) {
   // Render cards based on data passed as props
   const cards = props?.data?.map((data) => (
     <Card
-      key={data.id}
+      key={props.datr === "yes" ? data.info.results.data.id : data.id}
+      datr={props?.datr ? "yes" : ""}
       data={data}
       collectionName={props.collectionName}
       IsLoading={props.IsLoading}

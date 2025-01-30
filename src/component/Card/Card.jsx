@@ -13,7 +13,8 @@ export default function Card({
   IsLoading,
   keepIt,
   itsMe,
-  selectL
+  selectL,
+  datr,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
@@ -46,7 +47,11 @@ export default function Card({
     IsLoading(true);
   };
 
-  const title = selectL === 'en' ? data.title : data.japanese_title
+  if (datr === "yes") {
+    data = data.info.results.data;
+  }
+
+  const title = selectL === "en" ? data.title : data.japanese_title;
 
   return (
     <div
@@ -56,7 +61,9 @@ export default function Card({
     >
       <Link
         href={`${
-          collectionName !== "Top Upcoming" ? `/watch/${data.id}` : `/${data.id}`
+          collectionName !== "Top Upcoming"
+            ? `/watch/${data.id}`
+            : `/${data.id}`
         }`}
         // prefetch
         onClick={handleNavigation}
@@ -69,27 +76,45 @@ export default function Card({
             </div>
           )}
           {data.adultContent && (
-            <span className="rating">{data.adultContent ? "18+" : ""}</span>
+            <span className="rating">
+              {datr === "yes"
+                ? data?.animeInfo?.tvInfo?.rating?.includes("R")
+                  ? "18+"
+                  : ""
+                : data?.adultContent
+                ? "18+"
+                : ""}
+            </span>
           )}
           <div className="tick-item">
             <span
-              className={`episode-count ${data.tvInfo?.dub ? "extra-epi-co" : ""}`}
+              className={`episode-count ${
+                datr === "yes"
+                  ? data?.animeInfo?.tvInfo?.dub
+                  : data.tvInfo?.dub
+                  ? "extra-epi-co"
+                  : ""
+              }`}
             >
-              <FaClosedCaptioning size={14} /> {data.tvInfo?.sub}
+              <FaClosedCaptioning size={14} />{" "}
+              {datr === "yes" ? data?.animeInfo?.tvInfo?.sub : data.tvInfo?.sub}
             </span>
-            {data.tvInfo?.dub > 0 && (
-              <span className="episode-count-dub d-flex a-center j-center">
-                <AiFillAudio size={14} /> {data.tvInfo?.dub || "?"}
-              </span>
-            )}
+            {datr === "yes"
+              ? data?.animeInfo?.tvInfo?.dub > 0
+              : data.tvInfo?.dub > 0 && (
+                  <span className="episode-count-dub d-flex a-center j-center">
+                    <AiFillAudio size={14} />{" "}
+                    {datr === "yes"
+                      ? data?.animeInfo?.tvInfo?.dub
+                      : data.tvInfo?.dub || "?"}
+                  </span>
+                )}
           </div>
           <img src={data.poster} alt="anime-card" className="anime-card-img" />
         </div>
         <div className="card-details">
           <span className="card-title">
-            {title?.length > 15
-              ? `${title.slice(0, 15)}...`
-              : title}
+            {title?.length > 15 ? `${title.slice(0, 15)}...` : title}
           </span>
           {keepIt ? (
             <div className="card-statK">
@@ -113,14 +138,24 @@ export default function Card({
             </div>
           ) : (
             <div className="card-statistics">
-              <span>{data.tvInfo.duration || "23m"}</span>
+              <span>
+                {datr === "yes"
+                  ? data?.animeInfo?.tvInfo?.duration
+                  : data.tvInfo?.duration || "23m"}
+              </span>
               <div className="dot"></div>
-              <span>{data.tvInfo.showtype || "TV"}</span>
+              <span>
+                {datr === "yes"
+                  ? data?.animeInfo?.tvInfo?.showtype
+                  : data.tvInfo?.showtype || "TV"}
+              </span>
             </div>
           )}
         </div>
       </Link>
-      {screenWidth > 1150 && isHovered && data && <MouseOverCard data={data} id={data.data_id}/>}
+      {screenWidth > 1150 && isHovered && data && (
+        <MouseOverCard data={data} id={data.data_id} />
+      )}
     </div>
   );
 }

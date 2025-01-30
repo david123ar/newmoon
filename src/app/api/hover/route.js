@@ -13,7 +13,7 @@ export async function GET(req) {
 
     // Fetch data from the external API
     const apiUrl = `https://vimal.animoon.me/api/qtip/${id}`;
-    const response = await fetch(apiUrl, { next: {revalidate: 3600} });
+    const response = await fetch(apiUrl, { next: { revalidate: 3600 } });
 
     if (!response.ok) {
       return new Response(

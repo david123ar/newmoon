@@ -44,7 +44,7 @@ export default function MouseOverCard(props) {
   ));
 
   const removeHtmlTags = (str) => {
-    return str.replace(/<[^>]*>/g, ""); // Remove HTML tags
+    return str?.replace(/<[^>]*>/g, ""); // Remove HTML tags
   };
 
   return (

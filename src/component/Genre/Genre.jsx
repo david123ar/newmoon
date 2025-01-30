@@ -7,18 +7,15 @@ export default function Genre(props) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const list = isCollapsed ? props.data?.slice(0, 18) : props.data;
-  const handleNavigation = () => {
-    props.IsLoading(true);
-  };
+  const handleNavigation = () => {};
 
   function replaceAndCapitalize(str) {
     return str
-      .replace(/-/g, ' ') // Replace hyphens with spaces
+      .replace(/-/g, " ") // Replace hyphens with spaces
       .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
   }
 
   const genreList = list?.map((el, idx) => {
-
     return (
       <Link
         key={idx}
