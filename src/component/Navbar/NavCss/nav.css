@@ -123,7 +123,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    position: fixed !important;
+    position: relative !important;
     height: 65px;
     width: 100%;
     z-index: 90;

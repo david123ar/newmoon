@@ -49,6 +49,7 @@
 
 .Input-text {
   padding: 5px;
+  width: 100%;
   outline: none;
   color: #000;
 }
