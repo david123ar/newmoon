@@ -120,7 +120,7 @@ export default function Card({
           )}
         </div>
       </Link>
-      {screenWidth > 1150 && isHovered && data && <MouseOverCard data={data} id={data.id}/>}
+      {screenWidth > 1150 && isHovered && data && <MouseOverCard data={data} id={data.data_id}/>}
     </div>
   );
 }

@@ -1,9 +1,3 @@
-import { MongoClient } from "mongodb";
-
-const uri = process.env.MONGODB_URI; // Ensure you have this set in your .env file
-const dbName = "mydatabase"; // Your database name
-const collectionName = "animeInfo"; // Your collection name
-
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -17,24 +11,24 @@ export async function GET(req) {
       });
     }
 
-    // Connect to MongoDB
-    const client = new MongoClient(uri);
-    await client.connect();
+    // Fetch data from the external API
+    const apiUrl = `https://vimal.animoon.me/api/qtip/${id}`;
+    const response = await fetch(apiUrl);
 
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
+    if (!response.ok) {
+      return new Response(
+        JSON.stringify({ error: `Failed to fetch data (${response.status})` }),
+        {
+          status: response.status,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
 
-    // Fetch data using the 'id'
-    const data = await collection.findOne(
-      { _id: id },
-      { projection: { "info.results.data": 1, _id: 0 } } 
-    );
-
-    // Close the database connection
-    await client.close();
+    const data = await response.json();
 
     // Check if data exists
-    if (!data) {
+    if (!data || Object.keys(data).length === 0) {
       return new Response(JSON.stringify({ error: "Data not found" }), {
         status: 404,
         headers: { "Content-Type": "application/json" },
@@ -42,7 +36,6 @@ export async function GET(req) {
     }
 
     // Return the fetched data
-    console.log(data)
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { "Content-Type": "application/json" },

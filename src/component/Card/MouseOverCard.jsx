@@ -35,9 +35,9 @@ export default function MouseOverCard(props) {
     }
   }, [props.id]);
 
-  const info = hoverAnime?.info?.results;
+  // const info = hoverAnime?.info?.results;
 
-  const genre = info?.data?.animeInfo?.Genres?.map((genre, idx) => (
+  const genre = hoverAnime?.results?.genres?.map((genre, idx) => (
     <Link className="genreo-button" key={idx} href={`/${genre}`}>
       {genre}
     </Link>
@@ -49,25 +49,25 @@ export default function MouseOverCard(props) {
 
   return (
     <div className="mouse-over-card-wrapper d-flex-fd-column">
-      {!info?.data ? (
+      {!hoverAnime?.results ? (
         <LoadingSpinner />
       ) : (
         <>
-          <h1 className="greatN">{info?.data?.title}</h1>
+          <h1 className="greatN">{hoverAnime?.results?.title}</h1>
           <div className="d-flex anime-st">
             <span className="d-flex a-center j-center">
               <FaStar color="yellow" />
-              {info?.data.animeInfo["MAL Score"]}
+              {hoverAnime?.results?.rating}
             </span>
             <div className="anime-statistics-tiles-wrapper d-flex a-center">
               {/* <span className="anime-statistics-tile d-flex a-center j-center">
                 {info.data.animeInfo.tvInfo.rating || "?"}
               </span> */}
-              <span className="anime-statistics-tile medal-tile d-flex a-center j-center">
-                {/* <FaMedal /> {" "} */}
+              {/* <span className="anime-statistics-tile medal-tile d-flex a-center j-center">
+                <FaMedal /> {" "}
                 {info.data.animeInfo.tvInfo.rating
                   || "NA"}
-              </span>
+              </span> */}
               {/* <span className="anime-statistics-tile dil-tile d-flex a-center j-center">
                 <FaHeart /> {info.data.animeInfo.tvInfo?.dub}
               </span> */}
@@ -75,20 +75,14 @@ export default function MouseOverCard(props) {
                 <FaEye /> {"NA"}
               </span> */}
               <span className="anime-statistics-tile qual-tile d-flex a-center j-center">
-                {"HD"}
+                {hoverAnime.results.quality}
               </span>
             </div>
-            <span className="typop">{info?.data?.showType || "?"}</span>
+            <span className="typop">{hoverAnime?.results?.type || "?"}</span>
           </div>
           <p style={{ marginBottom: 0 }} className="description">
             <span className="ligty">
-              {info?.data?.animeInfo?.Overview
-                ? info?.data?.animeInfo?.Overview.length > 90
-                  ? removeHtmlTags(
-                      info?.data?.animeInfo?.Overview.slice(0, 90)
-                    ) + "..."
-                  : removeHtmlTags(info?.data?.animeInfo?.Overview)
-                : "?"}
+              {removeHtmlTags(hoverAnime?.results.description)}
             </span>
           </p>
           <div
@@ -98,26 +92,23 @@ export default function MouseOverCard(props) {
             <p>
               <b>Japanese: </b>{" "}
               <span className="ligt">
-                {info?.data?.japanese_title
-                  ? info?.data?.japanese_title?.length > 20
-                    ? info?.data?.japanese_title?.slice(0, 20) + "..."
-                    : info?.data?.japanese_title
+                {hoverAnime.results.japaneseTitle
+                  ? hoverAnime.results.japaneseTitle?.length > 20
+                    ? hoverAnime.results.japaneseTitle?.slice(0, 20) + "..."
+                    : hoverAnime.results.japaneseTitle
                   : "?"}
               </span>
             </p>
             <p>
               <b>Aired: </b>
               <span className="ligt">
-                {info?.data?.animeInfo?.Aired.split("-to-")[0].replace(
-                  "-",
-                  " "
-                ) || "?"}
+                {hoverAnime.results.airedDate || "?"}
               </span>
             </p>
             <p>
               <b>Status:</b>{" "}
               <span className="ligt">
-                {info?.data?.animeInfo?.Status || "?"}
+                {hoverAnime.results.status || "?"}
               </span>
             </p>
           </div>
