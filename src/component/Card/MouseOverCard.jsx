@@ -75,14 +75,14 @@ export default function MouseOverCard(props) {
                 <FaEye /> {"NA"}
               </span> */}
               <span className="anime-statistics-tile qual-tile d-flex a-center j-center">
-                {hoverAnime.results.quality}
+                {hoverAnime?.results?.quality}
               </span>
             </div>
             <span className="typop">{hoverAnime?.results?.type || "?"}</span>
           </div>
           <p style={{ marginBottom: 0 }} className="description">
             <span className="ligty">
-              {removeHtmlTags(hoverAnime?.results.description)}
+              {removeHtmlTags(hoverAnime?.results?.description)}
             </span>
           </p>
           <div
@@ -92,23 +92,23 @@ export default function MouseOverCard(props) {
             <p>
               <b>Japanese: </b>{" "}
               <span className="ligt">
-                {hoverAnime.results.japaneseTitle
-                  ? hoverAnime.results.japaneseTitle?.length > 20
-                    ? hoverAnime.results.japaneseTitle?.slice(0, 20) + "..."
-                    : hoverAnime.results.japaneseTitle
+                {hoverAnime?.results?.japaneseTitle
+                  ? hoverAnime?.results?.japaneseTitle?.length > 20
+                    ? hoverAnime?.results?.japaneseTitle?.slice(0, 20) + "..."
+                    : hoverAnime?.results?.japaneseTitle
                   : "?"}
               </span>
             </p>
             <p>
               <b>Aired: </b>
               <span className="ligt">
-                {hoverAnime.results.airedDate || "?"}
+                {hoverAnime?.results?.airedDate || "?"}
               </span>
             </p>
             <p>
               <b>Status:</b>{" "}
               <span className="ligt">
-                {hoverAnime.results.status || "?"}
+                {hoverAnime?.results?.status || "?"}
               </span>
             </p>
           </div>
@@ -121,10 +121,10 @@ export default function MouseOverCard(props) {
           </div>
           <div className="anime-st-genreo"></div>
           <div className="tits-btn">
-            <Link href={`/watch/${props.data.id}`} className="tit-bt-w">
+            <Link href={`/watch/${props?.data?.id}`} className="tit-bt-w">
               <FaPlayCircle size={15} /> Watch Now
             </Link>
-            <Link href={`/${props.data.id}`} className="tit-bt-d">
+            <Link href={`/${props?.data?.id}`} className="tit-bt-d">
               Details <FaChevronRight size={12} />
             </Link>
           </div>
