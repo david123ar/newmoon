@@ -113,8 +113,9 @@ async function getFilteredAnime(filters) {
 
     const filteredAnimes = await animeCollection
       .find(query)
+      .project({ "info.results.data": 1, _id: 0 })
       .sort(sortOptions)
-      .limit(5)
+      .limit(36)
       .toArray();
 
     return filteredAnimes;

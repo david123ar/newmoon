@@ -27,7 +27,7 @@ export async function GET(req) {
     // Fetch data using the 'id'
     const data = await collection.findOne(
       { _id: id },
-      { projection: { "info.results.data": 1, _id: 0 } }
+      { projection: { "info.results.data": 1, _id: 0 } } 
     );
 
     // Close the database connection
@@ -42,6 +42,7 @@ export async function GET(req) {
     }
 
     // Return the fetched data
+    console.log(data)
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { "Content-Type": "application/json" },

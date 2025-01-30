@@ -9,6 +9,7 @@ import Navbar from "../Navbar/Navbar";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import { SessionProvider } from "next-auth/react";
 import Profilo from "../Profilo/Profilo";
+import Footer from "../Footer/Footer";
 
 const Home = ({ data, existingAnime }) => {
   const [selectL, setSelectL] = useState("en");
@@ -56,7 +57,7 @@ const Home = ({ data, existingAnime }) => {
           <Featured data={data || {}} selectL={selectL} />
           <MainContainer data={data || {}} selectL={selectL} />
         </div>
-        <div>Foot</div>
+        <div><Footer/></div>
       </SessionProvider>
     </div>
   );
