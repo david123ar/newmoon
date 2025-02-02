@@ -26,7 +26,7 @@ export default async function page({ params, searchParams }) {
     "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
   const dbName = "mydatabase";
   const azCollectionName = searchParam.sort
-    ? "az-list" + searchParam.sort
+    ? "az-list_" + searchParam.sort.toString().toLowerCase()
     : "az-list";
 
   const client = new MongoClient(mongoUri);

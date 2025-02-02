@@ -1,4 +1,5 @@
 import GenreSidebar from "@/component/Gridle/page";
+import { MongoClient } from "mongodb";
 import React from "react";
 
 export async function generateMetadata({ searchParams }) {
