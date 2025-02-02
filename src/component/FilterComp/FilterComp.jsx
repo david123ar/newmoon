@@ -206,6 +206,9 @@ const FilterComp = (props) => {
     // Sort filter
     if (filters.sort !== "Default") queryParams.append("sort", filters.sort);
 
+    // keyword
+    if (props.keyword) queryParams.append("keyword", props.keyword);
+
     const response = await fetch(`/api/filter?${queryParams.toString()}`);
     const filteredAnimes = await response.json();
     console.log(filteredAnimes);
