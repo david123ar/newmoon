@@ -18,52 +18,74 @@ export default async function page({ searchParams }) {
   const pageParam = searchParam.page ? searchParam.page : "1";
   const cacheMaxAge = 345600; // Cache for 4 days (in seconds)
 
-  try {
-    // Fetch data for category-specific anime list
-    const animeResp = await fetch(
-      `https://vimal.animoon.me/api/${cate}?page=${pageParam}`,
-      {
-        next: { revalidate: 3600 },
-      }
-    );
+  const mongoUri =
+    "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
+  const dbName = "mydatabase";
+  const homeCollectionName = "animoon-home";
+  const gridCollectionName = cate;
 
-    const res = await fetch(`https://homio.animoon.me/api/home`, {
-      cache: "no-store",
+  const client = new MongoClient(mongoUri);
+  let data;
+  let existingAnime = [];
+  let count;
+
+  try {
+    // Connect to MongoDB
+    await client.connect();
+    console.log("Connected to MongoDB");
+
+    const db = client.db(dbName);
+
+    // Fetch homepage data
+    const homeCollection = db.collection(homeCollectionName.trim());
+    const document = await homeCollection.findOne({}); // Adjust query as needed
+
+    if (document) {
+      data = document;
+    } else {
+      console.log("No homepage data found in MongoDB");
+    }
+
+    // If homepage data is missing, fetch from API
+    if (!data) {
+      const res = await fetch("https://vimal.animoon.me/api/");
+      data = await res.json();
+    }
+
+    // Check if anime from spotlights exists in the animeInfo collection
+    const animeCollection = db.collection(gridCollectionName.trim());
+    existingAnime = await animeCollection.findOne({
+      page: parseInt(pageParam),
     });
 
-    // Check if the request was successful
-    if (!res.ok) {
-      console.error("Failed to fetch data");
-      return;
+    if (existingAnime) {
+      existingAnime = JSON.parse(JSON.stringify(existingAnime)); // Convert BSON to plain object
     }
 
-    const { data, existingAnime } = await res.json();
-
-    if (!animeResp.ok) {
-      throw new Error("Failed to fetch data.");
-    }
-
-    const datai = await animeResp.json();
-
-    // Constructing the shareable URL
-    const ShareUrl = `https://animoon.me/grid?name=${cate}&heading=${fiki}`;
-    const arise = `${fiki} Anime`;
-
-    return (
-      <div>
-        <GenreSidebar
-          data={datai}
-          fiki={fiki}
-          cate={cate}
-          datal={data}
-          ShareUrl={ShareUrl}
-          page={pageParam}
-          arise={arise}
-        />
-      </div>
-    );
+    count = await db.collection(gridCollectionName.trim()).countDocuments();
   } catch (error) {
-    console.error("Error fetching data: ", error);
-    return <div>Error loading data. Please try again later.</div>;
+    console.error("Error fetching data from MongoDB or API:", error.message);
+  } finally {
+    await client.close();
+    console.log("MongoDB connection closed");
   }
+
+  // Constructing the shareable URL
+  const ShareUrl = `https://animoon.me/grid?name=${cate}&heading=${fiki}`;
+  const arise = `${fiki} Anime`;
+
+  return (
+    <div>
+      <GenreSidebar
+        data={existingAnime}
+        fiki={fiki}
+        cate={cate}
+        datal={data}
+        totalPages={count}
+        ShareUrl={ShareUrl}
+        page={pageParam}
+        arise={arise}
+      />
+    </div>
+  );
 }

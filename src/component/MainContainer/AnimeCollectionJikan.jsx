@@ -39,7 +39,7 @@ export default function AnimeCollection(props) {
 
   const links = getAlphabets();
 
-  const cards = props?.data.results.data?.map((data, idx) => {
+  const cards = props?.data.data?.map((data, idx) => {
     return (
       <Card
         key={data.data_id}
@@ -65,14 +65,14 @@ export default function AnimeCollection(props) {
     if (parseInt(props.page) < 3) {
       useArr = [1, 2, 3];
     }
-    if (parseInt(props.page) >= parseInt(props.data.results.totalPages) - 2) {
+    if (parseInt(props.page) >= parseInt(props.totalPages) - 2) {
       useArr = [
-        parseInt(props.data.results.totalPages) - 2,
-        parseInt(props.data.results.totalPages) - 1,
-        parseInt(props.data.results.totalPages),
+        parseInt(props.totalPages) - 2,
+        parseInt(props.totalPages) - 1,
+        parseInt(props.totalPages),
       ];
     }
-    if (parseInt(props.page) < parseInt(props.data.results.totalPages) - 2) {
+    if (parseInt(props.page) < parseInt(props.totalPages) - 2) {
       useArr = [
         parseInt(props.page) - 2,
         parseInt(props.page) - 1,
@@ -136,7 +136,7 @@ export default function AnimeCollection(props) {
       </div>
 
       <div className="card-wrapper d-flex a-center j-center"> {cards}</div>
-      {props.data.results.totalPages > 1 ? (
+      {props.totalPages > 1 ? (
         <div className="paginA">
           {props.page ? (
             <Link
@@ -203,7 +203,7 @@ export default function AnimeCollection(props) {
               {ii}
             </Link>
           ))}
-          {parseInt(props.page) !== props.data.results.totalPages ? (
+          {parseInt(props.page) !== props.totalPages ? (
             <Link
               href={
                 props.sort
@@ -222,12 +222,12 @@ export default function AnimeCollection(props) {
           ) : (
             ""
           )}
-          {parseInt(props.page) !== props.data.results.totalPages ? (
+          {parseInt(props.page) !== props.totalPages ? (
             <Link
               href={
                 props.sort
-                  ? `/a-z/${props.para}?sort=${props.sort}&page=${props.data.results.totalPages}`
-                  : `/a-z/${props.para}?page=${props.data.results.totalPages}`
+                  ? `/a-z/${props.para}?sort=${props.sort}&page=${props.totalPages}`
+                  : `/a-z/${props.para}?page=${props.totalPages}`
               }
               onClick={handleNavigation}
               className="pagin-tile"

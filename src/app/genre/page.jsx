@@ -1,4 +1,5 @@
 import GenreSidebar from "@/component/Gridle/page";
+import { MongoClient } from "mongodb";
 import React from "react";
 
 export async function generateMetadata({ searchParams }) {
@@ -20,56 +21,79 @@ export default async function page({ searchParams }) {
     .replace(/[^a-zA-Z0-9\-]/g, ""); // Clean up the category name for URL
 
   const pageParam = searchParam.page ? searchParam.page : "1";
-  const cacheMaxAge = 345600; // Cache for 4 days (in seconds)
+
+  const mongoUri =
+    "mongodb://root:Imperial_king2004@145.223.118.168:27017/?authSource=admin";
+  const dbName = "mydatabase";
+  const homeCollectionName = "animoon-home";
+  const genreCollectionName = "genre_" + cate;
+
+  const client = new MongoClient(mongoUri);
+  let data;
+  let existingAnime = [];
+  let count;
 
   try {
-    // Fetch genre-specific anime list and homepage data concurrently
-    const animeResp = await fetch(
-      `https://vimal.animoon.me/api/genre/${date}?page=${pageParam}`,
-      {
-        next: { revalidate: 3600 },
-      }
-    );
+    // Connect to MongoDB
+    await client.connect();
+    console.log("Connected to MongoDB");
 
-    // Fetch data from the API route
-    const res = await fetch(`https://homio.animoon.me/api/home`, {
-      cache: "no-store",
+    const db = client.db(dbName);
+
+    // Fetch homepage data
+    const homeCollection = db.collection(homeCollectionName.trim());
+    const document = await homeCollection.findOne({}); // Adjust query as needed
+
+    if (document) {
+      data = document;
+    } else {
+      console.log("No homepage data found in MongoDB");
+    }
+
+    // If homepage data is missing, fetch from API
+    if (!data) {
+      const res = await fetch("https://vimal.animoon.me/api/");
+      data = await res.json();
+    }
+
+    // Check if anime from spotlights exists in the animeInfo collection
+    const animeCollection = db.collection(genreCollectionName.trim());
+    existingAnime = await animeCollection.findOne({
+      page: parseInt(pageParam),
     });
 
-    // Check if the request was successful
-    if (!res.ok) {
-      console.error("Failed to fetch data");
-      return;
+    if (existingAnime) {
+      existingAnime = JSON.parse(JSON.stringify(existingAnime)); // Convert BSON to plain object
     }
 
-    const { data, existingAnime } = await res.json();
-
-    if (!animeResp.ok) {
-      throw new Error("Failed to fetch data.");
-    }
-
-    const datai = await animeResp.json();
-
-    // Constructing the shareable URL
-    const ShareUrl = `https://animoon.me/genre?id=${cate}&name=${cate}`;
-    const arise = `${cate} Anime`;
-
-    return (
-      <div>
-        <GenreSidebar
-          data={datai}
-          name={cate}
-          cate={cate}
-          datal={data}
-          genre={'yes'}
-          ShareUrl={ShareUrl}
-          page={pageParam}
-          arise={arise}
-        />
-      </div>
-    );
+    count = await db.collection(genreCollectionName.trim()).countDocuments();
   } catch (error) {
-    console.error("Error fetching data: ", error);
-    return <div>Error loading data. Please try again later.</div>;
+    console.error("Error fetching data from MongoDB or API:", error.message);
+  } finally {
+    await client.close();
+    console.log("MongoDB connection closed");
   }
+
+  const cacheMaxAge = 345600; // Cache for 4 days (in seconds)
+
+  // Fetch genre-specific anime list and homepage data concurrently
+  // Constructing the shareable URL
+  const ShareUrl = `https://animoon.me/genre?id=${cate}&name=${cate}`;
+  const arise = `${cate} Anime`;
+
+  return (
+    <div>
+      <GenreSidebar
+        data={existingAnime}
+        name={cate}
+        cate={cate}
+        datal={data}
+        totalPages={count}
+        genre={"yes"}
+        ShareUrl={ShareUrl}
+        page={pageParam}
+        arise={arise}
+      />
+    </div>
+  );
 }

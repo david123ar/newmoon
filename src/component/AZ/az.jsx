@@ -68,6 +68,7 @@ export default function SearchResults(props) {
                   IsLoading={IsLoading}
                   selectL={selectL}
                   data={props.el}
+                  totalPages={props.totalPages}
                   sort={props.sort}
                   page={props.page}
                   para={props.para}

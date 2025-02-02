@@ -89,9 +89,9 @@ export default function GenreSidebar(props) {
                     fiki={props.fiki}
                     selectL={selectL}
                     page={props.page}
-                    data={props.data.results.data}
+                    data={props.data.data}
                     IsLoading={IsLoading}
-                    totalPages={props.data.results.totalPages}
+                    totalPages={props.totalPages}
                     genre={props?.genre || ""}
                     isInGrid={"true"}
                   />
