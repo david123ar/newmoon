@@ -190,7 +190,7 @@ export default function Details(props) {
                     <div className="homo">Home</div>
                   </Link>
                   <div className="dotoi">&#x2022;</div>
-                  <div className="homo">{gnt.animeInfo.tvInfo?.showType}</div>
+                  <div className="homo">{gnt?.animeInfo?.tvInfo?.showType}</div>
                   <div className="doto">&#x2022;</div>
                   <div className="namo">{props.selectL === 'en' ? gnt?.title : gnt?.japanese_title}</div>
                 </div>
@@ -198,32 +198,32 @@ export default function Details(props) {
 
                 <div className="newSpice">
                   <div className="innerSpice">
-                    <div className="rat">{gnt.animeInfo.tvInfo.rating}</div>
-                    <div className="qual">{gnt.animeInfo.tvInfo.quality}</div>
+                    <div className="rat">{gnt?.animeInfo?.tvInfo?.rating}</div>
+                    <div className="qual">{gnt?.animeInfo?.tvInfo?.quality}</div>
                     <div className="subE">
                       <FaClosedCaptioning size={14} />{" "}
-                      {gnt.animeInfo.tvInfo.sub || "Unknown"}
+                      {gnt?.animeInfo?.tvInfo?.sub || "Unknown"}
                     </div>
-                    {gnt.animeInfo.tvInfo?.dub ? (
+                    {gnt?.animeInfo?.tvInfo?.dub ? (
                       <div className="dubE">
                         <AiFillAudio size={14} />{" "}
-                        {gnt.animeInfo.tvInfo?.dub || "Unknown"}
+                        {gnt?.animeInfo?.tvInfo?.dub || "Unknown"}
                       </div>
                     ) : (
                       ""
                     )}
                   </div>
                   <div className="doto">&#x2022;</div>
-                  <div className="typo">{gnt.animeInfo.tvInfo.showType}</div>
+                  <div className="typo">{gnt?.animeInfo?.tvInfo?.showType}</div>
                   <div className="doto">&#x2022;</div>
-                  <div className="duran">{gnt.animeInfo.tvInfo.duration}</div>
+                  <div className="duran">{gnt?.animeInfo?.tvInfo?.duration}</div>
                 </div>
                 <div className="button-wrapper">
                   <Link
                     href={`${
-                      ls.getItem(`Rewo-${gnt.id}`)
-                        ? `/watch/${ls.getItem(`Rewo-${gnt.id}`)}`
-                        : `/watch/${gnt.id}`
+                      ls.getItem(`Rewo-${gnt?.id}`)
+                        ? `/watch/${ls.getItem(`Rewo-${gnt?.id}`)}`
+                        : `/watch/${gnt?.id}`
                     }`}
                     className="btn-primary hero-button"
                     onClick={handleNavigation}
@@ -279,7 +279,7 @@ export default function Details(props) {
                 <p>
                   Animoon is the best site to watch {props.selectL === 'en' ? gnt?.title : gnt?.japanese_title} SUB online, or
                   you can even watch {props.selectL === 'en' ? gnt?.title : gnt?.japanese_title} DUB in HD quality. You can also
-                  find {gnt.animeInfo.Studios} anime on Animoon website.
+                  find {gnt?.animeInfo?.Studios} anime on Animoon website.
                 </p>
                 <Share
                   style={{ padding: 0, margin: 0 }}

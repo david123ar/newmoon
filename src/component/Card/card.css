@@ -213,6 +213,7 @@
   display: flex;
   align-items: center;
   gap: 2px;
+  font-size: 14px;
 }
 .card-statistics > span {
   margin-left: 0;

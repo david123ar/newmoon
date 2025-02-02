@@ -47,9 +47,9 @@ export default function Card(props) {
       return () => window.removeEventListener("resize", setWidth);
     }
   }, []);
-  const handleNavigation = () => {
-    props.IsLoading(true);
-  };
+  const handleNavigation = () => {};
+
+  const title = props.selectL === "en" ? anime.title : anime.japanese_title;
 
   return (
     <div
@@ -60,10 +60,10 @@ export default function Card(props) {
       <Link
         href={`${
           props.collectionName !== "Top Upcoming"
-            ? ls.getItem(`Rewo-${anime.data_id.replace("/", "")}`)
-              ? `/watch/${ls.getItem(`Rewo-${anime.data_id.replace("/", "")}`)}`
-              : `/watch${anime.data_id}`
-            : `/${anime.data_id}`
+            ? ls.getItem(`Rewo-${anime.id}`)
+              ? `/watch/${ls.getItem(`Rewo-${anime.id}`)}`
+              : `/watch${anime.id}`
+            : `/${anime.id}`
         }`}
         prefetch
         onClick={handleNavigation}
@@ -111,13 +111,11 @@ export default function Card(props) {
             )}
           </div>
 
-          <img src={anime.poster} alt="anime-card" className="anime-card-img"/>
+          <img src={anime.poster} alt="anime-card" className="anime-card-img" />
         </div>
         <div className="card-details">
           <span className="card-title">
-            {anime.title?.length > 15
-              ? anime.title?.slice(0, 15) + "..."
-              : anime.title}
+            {title?.length > 15 ? title?.slice(0, 15) + "..." : title}
           </span>
           {props.keepIt ? (
             <div>
@@ -163,14 +161,14 @@ export default function Card(props) {
                   ? anime.tvInfo.duration.slice(0, 7)
                   : anime.tvInfo.duration || "23m"}
               </span>
-              <div className="dot"></div>
+              <div className="dot">&#x2022;</div>
               <span>{anime.tvInfo.showtype || "TV"}</span>
             </div>
           )}
         </div>
       </Link>
       {screenWidth && screenWidth > 1150 && isHovered && anime && (
-        <MouseOverCard id={anime.data_id} />
+        <MouseOverCard data={anime} id={anime.data_id} />
       )}
     </div>
   );

@@ -44,7 +44,6 @@ export default function Card({
     : 0;
 
   const handleNavigation = () => {
-    IsLoading(true);
   };
 
   if (datr === "yes") {
@@ -143,7 +142,7 @@ export default function Card({
                   ? data?.animeInfo?.tvInfo?.duration
                   : data.tvInfo?.duration || "23m"}
               </span>
-              <div className="dot"></div>
+              <div className="dot">&#x2022;</div>
               <span>
                 {datr === "yes"
                   ? data?.animeInfo?.tvInfo?.showtype

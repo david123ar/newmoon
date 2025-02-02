@@ -102,7 +102,7 @@ export default function RecommendedTopTen(props) {
                   data={
                     props.doIt
                       ? props.datap?.results.data.recommended_data
-                      : props.uiui.info.results.data.recommended_data
+                      : props?.uiui?.info?.results?.data?.recommended_data
                   }
                   selectL={selectL}
                   IsLoading={props.IsLoading ? props.IsLoading : IsLoading}

@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 export default function Footer(props) {
   const handleNavigation = () => {
-    props.IsLoading(true);
   };
   function getAlphabets() {
     const alphabets = [];

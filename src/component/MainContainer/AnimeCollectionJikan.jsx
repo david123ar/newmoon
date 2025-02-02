@@ -8,10 +8,11 @@ import {
   FaAngleLeft,
   FaAngleRight,
 } from "react-icons/fa";
+
 export default function AnimeCollection(props) {
   const handleNavigation = (data) => {
-    props.IsLoading(true);
   };
+
   function getAlphabets() {
     const alphabets = [];
     const startChar = "A".charCodeAt(0);
@@ -43,6 +44,7 @@ export default function AnimeCollection(props) {
       <Card
         key={data.data_id}
         data={data}
+        selectL={props.selectL}
         collectionName={props.collectionName}
         IsLoading={props.IsLoading}
       />
