@@ -66,7 +66,13 @@ export default function AnimeCollection(props) {
             <>
               <Link
                 href={
-                  props.fiki
+                  props.totalDocs
+                    ? props.fullPath.replace(
+                        /([?&])page=\d+(&?)/,
+                        (_, first, second) =>
+                          first === "?" && second ? "?" : ""
+                      )
+                    : props.fiki
                     ? `/grid?name=${props.filterName}&heading=${props.collectionName}`
                     : `/genre?id=${props.filterName}&name=${props.filterName}`
                 }
@@ -78,7 +84,12 @@ export default function AnimeCollection(props) {
 
               <Link
                 href={
-                  props.fiki
+                  props.totalDocs
+                    ? props.fullPath.replace(
+                        /([?&])page=\d+/,
+                        `$1page=${currentPage - 1}`
+                      )
+                    : props.fiki
                     ? `/grid?name=${props.filterName}&heading=${
                         props.collectionName
                       }&page=${currentPage - 1}`
@@ -98,7 +109,9 @@ export default function AnimeCollection(props) {
             <Link
               key={ii}
               href={
-                props.fiki
+                props.totalDocs
+                  ? props.fullPath.replace(/([?&])page=\d+/, `$1page=${ii}`)
+                  : props.fiki
                   ? ii === 1
                     ? `/grid?name=${props.filterName}&heading=${props.collectionName}`
                     : `/grid?name=${props.filterName}&heading=${props.collectionName}&page=${ii}`
@@ -125,7 +138,12 @@ export default function AnimeCollection(props) {
             <>
               <Link
                 href={
-                  props.fiki
+                  props.totalDocs
+                    ? props.fullPath.replace(
+                        /([?&])page=\d+/,
+                        `$1page=${props.page ? currentPage + 1 : 2}`
+                      )
+                    : props.fiki
                     ? `/grid?name=${props.filterName}&heading=${
                         props.collectionName
                       }&page=${props.page ? currentPage + 1 : 2}`
@@ -141,7 +159,12 @@ export default function AnimeCollection(props) {
 
               <Link
                 href={
-                  props.fiki
+                  props.totalDocs
+                    ? props.fullPath.replace(
+                        /([?&])page=\d+/,
+                        `$1page=${totalPages}`
+                      )
+                    : props.fiki
                     ? `/grid?name=${props.filterName}&heading=${props.collectionName}&page=${totalPages}`
                     : `/genre?id=${props.filterName}&name=${props.filterName}&page=${totalPages}`
                 }

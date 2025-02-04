@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./filterComp.css";
 import AnimeCollection from "../MainContainer/AnimeCollection";
 import Genre from "../Genre/Genre";
@@ -9,6 +9,7 @@ import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import Profilo from "../Profilo/Profilo";
 import { SessionProvider } from "next-auth/react";
 import Footer from "../Footer/Footer";
+import { useRouter } from "next/navigation";
 
 const FilterComp = (props) => {
   const [filters, setFilters] = useState({
@@ -163,9 +164,12 @@ const FilterComp = (props) => {
     setFilters((prevState) => ({ ...prevState, endDateDay: e.target.value }));
   };
 
-  const [filteredData, setFilteredData] = useState("");
+  const router = useRouter();
+
+  const [filteredData, setFilteredData] = useState(props.filteredAnimes);
 
   const applyFilters = async () => {
+
     const queryParams = new URLSearchParams();
 
     // Type filter
@@ -209,10 +213,12 @@ const FilterComp = (props) => {
     // keyword
     if (props.keyword) queryParams.append("keyword", props.keyword);
 
-    const response = await fetch(`/api/filter?${queryParams.toString()}`);
-    const filteredAnimes = await response.json();
-    console.log(filteredAnimes);
-    setFilteredData(filteredAnimes);
+    // Navigate to /filter with query parameters
+    router.push(`/filter?${queryParams.toString()}`);
+    // const response = await fetch(`/api/filter?${queryParams.toString()}`);
+    // const filteredAnimes = await response.json();
+    // console.log(filteredAnimes);
+    // setFilteredData(filteredAnimes);
   };
 
   const [selectL, setSelectL] = useState("en");
@@ -225,6 +231,12 @@ const FilterComp = (props) => {
   const lang = (lang) => {
     setSelectL(lang);
   };
+
+  const [fullPath, setFullPath] = useState("");
+
+  useEffect(() => {
+    setFullPath(window.location.pathname + window.location.search);
+  }, []);
 
   return (
     <>
@@ -397,7 +409,12 @@ const FilterComp = (props) => {
                       data={filteredData} // Use recentEpisodesAnime from props
                       filterName="filter"
                       datr={"yes"}
+                      page={props.page}
+                      totalPages={props.totalPages.toString()}
+                      totalDocs={props.totalDocs.toString()}
+                      fullPath={fullPath}
                       selectL={selectL}
+                      isInGrid={"true"}
                     />{" "}
                   </div>
                 )}

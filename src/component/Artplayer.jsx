@@ -161,13 +161,18 @@ function ArtPlayer(props) {
     "mmd",
     "fds",
   ];
+
   const baseUrl = finalUrl.replace(
     /https:\/\/[^.]+\.biananset/,
-    `https://${prefixes[currentPrefixIndex]}.biananset`
+    `https://${prefixes[currentPrefixIndex]}.jonextugundu`
   );
 
+  finalUrl = finalUrl.replace(
+    /https:\/\/[^.]+\.biananset/,
+    `https://${prefixes[currentPrefixIndex]}.jonextugundu`
+  );
   const getUrl = () =>
-    `https://${prefixes[currentPrefixIndex]}.biananset.net${baseUrl}`;
+    `https://${prefixes[currentPrefixIndex]}.jonextugundu.net${baseUrl}`;
 
   useEffect(() => {
     const art = new Artplayer({
@@ -326,36 +331,41 @@ function ArtPlayer(props) {
         // Log the subtitle container content
         const subtitleContainer = art.template.$subtitle;
         console.info(subtitleContainer.innerHTML);
-    
+
         // Select all subtitle lines inside .art-subtitle-line[data-group="0"]
-        let subtitleLines = document.querySelectorAll('.art-subtitle-line[data-group="0"]');
-    
+        let subtitleLines = document.querySelectorAll(
+          '.art-subtitle-line[data-group="0"]'
+        );
+
         // Clear existing subtitles before updating
         subtitleContainer.innerHTML = "";
-    
+
         // Loop through each subtitle line and append it as a new div
-        subtitleLines.forEach(line => {
-            const newDiv = document.createElement("div");
-            const txt = document.createElement("textarea");
-    
-            txt.innerHTML = line.innerHTML.trim(); // Decode HTML entities
-            newDiv.innerHTML = txt.value; // Set decoded content
-            
-            newDiv.classList.add("art-subtitle-line"); // Retain class for styling
-            
-            // Apply inline styles to add background only behind the text
-            newDiv.style.display = "inline-block"; // Make it fit text width
-            newDiv.style.background = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black
-            newDiv.style.padding = "4px 0"; // Add padding for better visibility
-            // newDiv.style.borderRadius = "4px"; // Round edges
-            newDiv.style.margin = "2px 0"; // Spacing between lines
-    
-            subtitleContainer.appendChild(newDiv); // Append the div
+        subtitleLines.forEach((line) => {
+          const newDiv = document.createElement("div");
+          const txt = document.createElement("textarea");
+
+          txt.innerHTML = line.innerHTML.trim(); // Decode HTML entities
+          newDiv.innerHTML = txt.value; // Set decoded content
+
+          newDiv.classList.add("art-subtitle-line"); // Retain class for styling
+
+          // Apply inline styles to add background only behind the text
+          newDiv.style.display = "inline-block"; // Make it fit text width
+          newDiv.style.background = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black
+          newDiv.style.padding = "4px 0"; // Add padding for better visibility
+          // newDiv.style.borderRadius = "4px"; // Round edges
+          newDiv.style.margin = "2px 0"; // Spacing between lines
+
+          subtitleContainer.appendChild(newDiv); // Append the div
         });
-    
-        console.log("Updated Subtitle with Background:", subtitleContainer.innerHTML);
-    });
-    
+
+        console.log(
+          "Updated Subtitle with Background:",
+          subtitleContainer.innerHTML
+        );
+      });
+
       art.on("resize", () => {
         art.subtitle.style({
           fontSize: art.height * 0.05 + "px",
