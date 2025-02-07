@@ -257,7 +257,24 @@ const FilterComp = (props) => {
     }
 
     setFullPath(currentPath);
-  }, []);
+  }, [
+    props.sort,
+    props.type,
+    props.language,
+    props.status,
+    props.score,
+    props.season,
+    props.rating,
+    props.genres,
+    props.sy,
+    props.sm,
+    props.sd,
+    props.ey,
+    props.em,
+    props.ed,
+    props.page,
+    props?.keyword,
+  ]);
 
   return (
     <>
@@ -435,8 +452,8 @@ const FilterComp = (props) => {
                     totalDocs={props.totalDocs.toString()}
                     fullPath={fullPath}
                     selectL={selectL}
-                    keyword={props?.keyword || ''}
-                    onSear={props?.onSear || ''}
+                    keyword={props?.keyword || ""}
+                    onSear={props?.onSear || ""}
                     isInGrid={"true"}
                   />{" "}
                 </div>

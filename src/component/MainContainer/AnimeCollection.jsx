@@ -106,7 +106,7 @@ export default function AnimeCollection(props) {
                       ? props.fullPath.replace(
                           /([?&])page=\d+(&?)/,
                           (_, first, second) =>
-                            first === "?" && second ? "?" : ""
+                            first === "?" && second ? "?" : first
                         )
                       : props.fiki
                       ? `/grid?name=${props.filterName}&heading=${props.collectionName}`
