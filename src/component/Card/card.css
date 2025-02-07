@@ -2,10 +2,9 @@
   position: relative;
   /* border: 1px solid white; */
 
-  width: calc(100% / 6 - 1rem);
-
   font-size: 14px;
 }
+
 .anime-card {
   display: flex;
   flex-direction: column;
@@ -28,7 +27,7 @@
   font-size: 13px;
   font-weight: 500;
   color: #b9b6b2;
-  gap: 3px
+  gap: 3px;
 }
 .durnt {
   display: flex;
@@ -76,7 +75,6 @@
 .anime-card-img-wrapper {
   position: relative;
   height: 250px;
-  position: relative;
   width: 100%;
 }
 .episode-count {

@@ -12,22 +12,10 @@ import Footer from "../Footer/Footer";
 import { useRouter } from "next/navigation";
 
 const FilterComp = (props) => {
-  const [filters, setFilters] = useState({
-    type: "All",
-    status: "All",
-    rating: "All",
-    score: "All",
-    season: "All",
-    language: "All",
-    genres: [],
-    startDateYear: "",
-    startDateMonth: "",
-    startDateDay: "",
-    endDateYear: "",
-    endDateMonth: "",
-    endDateDay: "",
-    sort: "Default",
-  });
+  const genresString = props.genres;
+
+  const decodedString = decodeURIComponent(genresString);
+  const indexes = decodedString.split(",").map(Number);
 
   const genArr = [
     "Action",
@@ -72,6 +60,23 @@ const FilterComp = (props) => {
     "Thriller",
     "Vampire",
   ];
+
+  const [filters, setFilters] = useState({
+    type: props.type ? props.type : "All",
+    status: props.status ? props.status : "All",
+    rating: props.rating ? props.rating : "All",
+    score: props.score ? props.score : "All",
+    season: props.season ? props.season : "All",
+    language: props.language ? props.language : "All",
+    genres: props.genres ? indexes.map((index) => genArr[index - 1]) : [],
+    startDateYear: props.sy ? props.sy : "",
+    startDateMonth: props.sm ? props.sm : "",
+    startDateDay: props.sd ? props.sd : "",
+    endDateYear: props.ey ? props.ey : "",
+    endDateMonth: props.em ? props.em : "",
+    endDateDay: props.ed ? props.ed : "",
+    sort: props.sort ? props.sort : "default",
+  });
 
   const filtersList = [
     {
@@ -166,10 +171,9 @@ const FilterComp = (props) => {
 
   const router = useRouter();
 
-  const [filteredData, setFilteredData] = useState(props.filteredAnimes);
+  const filteredData = props.filteredAnimes;
 
   const applyFilters = async () => {
-
     const queryParams = new URLSearchParams();
 
     // Type filter
@@ -193,19 +197,22 @@ const FilterComp = (props) => {
 
     // Genre filters
     if (filters.genres.length > 0) {
-      filters.genres.forEach((genre) => queryParams.append("genre", genre));
+      const genresWithIndex = filters.genres.map(
+        (genre) => genArr.indexOf(genre) + 1
+      );
+      queryParams.append("genres", genresWithIndex.join(","));
     }
 
     // Start date filter
-    if (filters.startDateYear) queryParams.append("sY", filters.startDateYear);
+    if (filters.startDateYear) queryParams.append("sy", filters.startDateYear);
     if (filters.startDateMonth)
-      queryParams.append("sM", filters.startDateMonth);
-    if (filters.startDateDay) queryParams.append("sD", filters.startDateDay);
+      queryParams.append("sm", filters.startDateMonth);
+    if (filters.startDateDay) queryParams.append("sd", filters.startDateDay);
 
     // End date filter
-    if (filters.endDateYear) queryParams.append("eY", filters.endDateYear);
-    if (filters.endDateMonth) queryParams.append("eM", filters.endDateMonth);
-    if (filters.endDateDay) queryParams.append("eD", filters.endDateDay);
+    if (filters.endDateYear) queryParams.append("ey", filters.endDateYear);
+    if (filters.endDateMonth) queryParams.append("em", filters.endDateMonth);
+    if (filters.endDateDay) queryParams.append("ed", filters.endDateDay);
 
     // Sort filter
     if (filters.sort !== "Default") queryParams.append("sort", filters.sort);
@@ -214,7 +221,11 @@ const FilterComp = (props) => {
     if (props.keyword) queryParams.append("keyword", props.keyword);
 
     // Navigate to /filter with query parameters
-    router.push(`/filter?${queryParams.toString()}`);
+    router.push(
+      props.onSear === "yes"
+        ? `/search?${queryParams.toString()}`
+        : `/filter?${queryParams.toString()}`
+    );
     // const response = await fetch(`/api/filter?${queryParams.toString()}`);
     // const filteredAnimes = await response.json();
     // console.log(filteredAnimes);
@@ -281,12 +292,12 @@ const FilterComp = (props) => {
                     <label>{filter.label}</label>
                     <select
                       name={filter.name}
-                      value={filters[filter.name]}
+                      value={filters[filter.name]} // Default to index 3 if no value is set
                       onChange={handleFilterChange}
                       className="filter-dropdown"
                     >
-                      {filter.values.map((value) => (
-                        <option key={value} value={value}>
+                      {filter.values.map((value, idx) => (
+                        <option key={value} value={idx}>
                           {value}
                         </option>
                       ))}
@@ -363,13 +374,13 @@ const FilterComp = (props) => {
                     onChange={handleFilterChange}
                     className="filter-dropdown"
                   >
-                    <option value="Default">Default</option>
-                    {/* <option value="Recently Added">Recently Added</option>
-            <option value="Recently Updated">Recently Updated</option> */}
-                    <option value="Score">Score</option>
-                    <option value="Name A-Z">Name A-Z</option>
-                    {/* <option value="Released Date">Released Date</option>
-            <option value="Most Watched">Most Watched</option> */}
+                    <option value="default">Default</option>
+                    <option value="recently_added">Recently Added</option>
+                    <option value="recently_updated">Recently Updated</option>
+                    <option value="score">Score</option>
+                    <option value="name_az">Name A-Z</option>
+                    <option value="released_date">Released Date</option>
+                    <option value="most_watched">Most Watched</option>
                   </select>
                 </div>
               </div>
@@ -402,22 +413,21 @@ const FilterComp = (props) => {
                   <Genre data={props.data.genres} />
                   <TopTenAnime data={props.data.topTen} selectL={selectL} />
                 </div>
-                {filteredData && (
-                  <div className="collections-wrapper d-flex-fd-column a-center ">
-                    <AnimeCollection
-                      collectionName="Results..."
-                      data={filteredData} // Use recentEpisodesAnime from props
-                      filterName="filter"
-                      datr={"yes"}
-                      page={props.page}
-                      totalPages={props.totalPages.toString()}
-                      totalDocs={props.totalDocs.toString()}
-                      fullPath={fullPath}
-                      selectL={selectL}
-                      isInGrid={"true"}
-                    />{" "}
-                  </div>
-                )}
+
+                <div className="collections-wrapper d-flex-fd-column a-center ">
+                  <AnimeCollection
+                    collectionName="Results..."
+                    data={filteredData.results.data} // Use recentEpisodesAnime from props
+                    filterName="filter"
+                    datr={"yes"}
+                    page={props.page}
+                    totalPages={props.totalPages.toString()}
+                    totalDocs={props.totalDocs.toString()}
+                    fullPath={fullPath}
+                    selectL={selectL}
+                    isInGrid={"true"}
+                  />{" "}
+                </div>
               </div>
             </div>
           </div>

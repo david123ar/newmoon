@@ -3,42 +3,48 @@
   column-gap: 2rem;
   flex-wrap: wrap;
 }
+.main-lontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
 .collections-wrapper {
   gap: 40px;
 }
 .heddR {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
+
 .heddH2 {
   padding-block: 30px;
   color: var(--theme);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 20px;
   font-weight: 700;
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: start;
 }
 .heddH9 {
   padding-block: 20px;
   color: var(--theme);
   font-size: 20px;
   font-weight: 700;
-  width: 50%;
+}
+.heddN {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
+  width: calc(100% - 1rem);
+
 }
 .view-more-linkop {
   display: flex;
   align-items: center;
   color: #fff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  justify-content: end;
   gap: 5px;
-  width: 50%;
 }
 .view-more-linkop:hover {
   color: var(--theme);
@@ -48,6 +54,7 @@
 }
 
 .card-wrapper {
+  display: flex;
   width: 100%;
   flex-wrap: wrap;
   column-gap: 1rem;

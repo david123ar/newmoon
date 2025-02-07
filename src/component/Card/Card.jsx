@@ -14,6 +14,7 @@ export default function Card({
   keepIt,
   itsMe,
   selectL,
+  length,
   datr,
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -43,20 +44,24 @@ export default function Card({
     ? (totalSecondsTimo / totalSeconds) * 100
     : 0;
 
-  const handleNavigation = () => {
-  };
+  const handleNavigation = () => {};
 
   if (datr === "yes") {
-    data = data.info.results.data;
+    data = data;
   }
 
   const title = selectL === "en" ? data.title : data.japanese_title;
+  let columns = 6;
+  if (length < 6) {
+    columns = length;
+  }
 
   return (
     <div
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}
       className="anime-card-wrapper"
+      style={{ width: `calc(100% / ${columns} - 1rem)` }}
     >
       <Link
         href={`${
@@ -74,40 +79,31 @@ export default function Card({
               <FaPlayCircle color="white" size={70} />
             </div>
           )}
-          {data.adultContent && (
-            <span className="rating">
-              {datr === "yes"
-                ? data?.animeInfo?.tvInfo?.rating?.includes("R")
+          {data.adultContent ||
+            (data?.tvInfo?.rating && (
+              <span className="rating">
+                {datr === "yes"
+                  ? data?.tvInfo?.rating
+                    ? "18+"
+                    : ""
+                  : data?.adultContent
                   ? "18+"
-                  : ""
-                : data?.adultContent
-                ? "18+"
-                : ""}
-            </span>
-          )}
+                  : ""}
+              </span>
+            ))}
           <div className="tick-item">
             <span
               className={`episode-count ${
-                datr === "yes"
-                  ? data?.animeInfo?.tvInfo?.dub
-                  : data.tvInfo?.dub
-                  ? "extra-epi-co"
-                  : ""
+                data.tvInfo?.dub ? "extra-epi-co" : ""
               }`}
             >
-              <FaClosedCaptioning size={14} />{" "}
-              {datr === "yes" ? data?.animeInfo?.tvInfo?.sub : data.tvInfo?.sub}
+              <FaClosedCaptioning size={14} /> {data.tvInfo?.sub}
             </span>
-            {datr === "yes"
-              ? data?.animeInfo?.tvInfo?.dub > 0
-              : data.tvInfo?.dub > 0 && (
-                  <span className="episode-count-dub d-flex a-center j-center">
-                    <AiFillAudio size={14} />{" "}
-                    {datr === "yes"
-                      ? data?.animeInfo?.tvInfo?.dub
-                      : data.tvInfo?.dub || "?"}
-                  </span>
-                )}
+            {data.tvInfo?.dub > 0 && (
+              <span className="episode-count-dub d-flex a-center j-center">
+                <AiFillAudio size={14} /> {data.tvInfo?.dub || "?"}
+              </span>
+            )}
           </div>
           <img src={data.poster} alt="anime-card" className="anime-card-img" />
         </div>
@@ -139,21 +135,20 @@ export default function Card({
             <div className="card-statistics">
               <span>
                 {datr === "yes"
-                  ? data?.animeInfo?.tvInfo?.duration
+                  ? data?.duration
                   : data.tvInfo?.duration || "23m"}
               </span>
               <div className="dot">&#x2022;</div>
-              <span>
-                {datr === "yes"
-                  ? data?.animeInfo?.tvInfo?.showtype
-                  : data.tvInfo?.showtype || "TV"}
-              </span>
+              <span>{data.tvInfo?.showType || "TV"}</span>
             </div>
           )}
         </div>
       </Link>
       {screenWidth > 1150 && isHovered && data && (
-        <MouseOverCard data={data} id={data.data_id} />
+        <MouseOverCard
+          data={data}
+          id={datr === "yes" ? data.id.split("-").pop() : data.data_id}
+        />
       )}
     </div>
   );

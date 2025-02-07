@@ -46,7 +46,8 @@ export default async function page({ searchParams }) {
   }
 
   const res = await fetch(
-    `https://vimal.animoon.me/api/filter?page=${searchParam.page || "1"}${
+    `https://vimal.animoon.me/api/search?keyword=${searchParam.keyword}
+   ${`&page=${searchParam.page || "1"}`}${
       searchParam.type ? `&type=${searchParam.type}` : ""
     }${searchParam.status ? `&status=${searchParam.status}` : ""}${
       searchParam.rated ? `&rated=${searchParam.rated}` : ""
@@ -63,7 +64,7 @@ export default async function page({ searchParams }) {
     }${searchParam.genres ? `&genres=${searchParam.genres}` : ""}`
   );
   const filteredAnimes = await res.json();
-  console.log(filteredAnimes.results.data)
+  console.log(filteredAnimes.results.data);
 
   return (
     <div className="flirt">
@@ -85,6 +86,7 @@ export default async function page({ searchParams }) {
         sort={searchParam.sort || ""}
         genres={searchParam.genres || ""}
         page={searchParam.page}
+        onSear={"yes"}
         totalPages={filteredAnimes.results.totalPage}
         totalDocs={filteredAnimes.results.totalResults}
       />
