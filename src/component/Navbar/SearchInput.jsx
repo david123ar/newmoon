@@ -65,7 +65,7 @@ const SearchInput = (props) => {
                   onChange={(e) => setValue(e.target.value)}
                   onKeyDown={handleEnterPress}
                   onFocus={() => setIsFocused(true)}
-                  onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Slight delay for clicking dropdown
+                  onBlur={() => setTimeout(() => setIsFocused(false), 300)} // Slight delay for clicking dropdown
                   placeholder="Search anime..."
                 />
               </div>
