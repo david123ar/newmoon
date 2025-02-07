@@ -5,6 +5,26 @@
   font-size: 14px;
 }
 
+.anime-card-wrapper5 {
+  width: calc(100% / 5 - 1rem);
+}
+
+.anime-card-wrapper4 {
+  width: calc(100% / 4 - 1rem);
+}
+
+.anime-card-wrapper3 {
+  width: calc(100% / 3 - 1rem);
+}
+
+.anime-card-wrapper2 {
+  width: calc(100% / 2 - 1rem);
+}
+
+.anime-card-wrapper1 {
+  width: calc(100% / 1 - 1rem);
+}
+
 .anime-card {
   display: flex;
   flex-direction: column;
@@ -247,6 +267,25 @@
   .anime-card-wrapper {
     width: calc(100% / 4 - 1rem);
   }
+  .anime-card-wrapper5 {
+    width: calc(100% / 4 - 1rem);
+  }
+  
+  .anime-card-wrapper4 {
+    width: calc(100% / 4 - 1rem);
+  }
+  
+  .anime-card-wrapper3 {
+    width: calc(100% / 3 - 1rem);
+  }
+  
+  .anime-card-wrapper2 {
+    width: calc(100% / 2 - 1rem);
+  }
+  
+  .anime-card-wrapper1 {
+    width: calc(100% / 1 - 1rem);
+  }
   .anime-card-img-wrapper {
     height: 240px;
   }
@@ -258,10 +297,48 @@
   .anime-card-wrapper {
     width: calc(100% / 3 - 1rem);
   }
+  .anime-card-wrapper5 {
+    width: calc(100% / 3 - 1rem);
+  }
+  
+  .anime-card-wrapper4 {
+    width: calc(100% / 3 - 1rem);
+  }
+  
+  .anime-card-wrapper3 {
+    width: calc(100% / 3 - 1rem);
+  }
+  
+  .anime-card-wrapper2 {
+    width: calc(100% / 2 - 1rem);
+  }
+  
+  .anime-card-wrapper1 {
+    width: calc(100% / 1 - 1rem);
+  }
 }
 @media screen and (max-width: 600px) {
   .anime-card-wrapper {
     width: calc(100% / 2 - 1rem);
+  }
+  .anime-card-wrapper5 {
+    width: calc(100% / 2 - 1rem);
+  }
+  
+  .anime-card-wrapper4 {
+    width: calc(100% / 2 - 1rem);
+  }
+  
+  .anime-card-wrapper3 {
+    width: calc(100% / 2 - 1rem);
+  }
+  
+  .anime-card-wrapper2 {
+    width: calc(100% / 2 - 1rem);
+  }
+  
+  .anime-card-wrapper1 {
+    width: calc(100% / 1 - 1rem);
   }
   .anime-card-img-wrapper {
     height: 230px;

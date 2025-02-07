@@ -60,8 +60,9 @@ export default function Card({
     <div
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}
-      className="anime-card-wrapper"
-      style={length < 6 ? { width: `calc(100% / ${columns} - 1rem)` } : {}}
+      className={`anime-card-wrapper ${
+        length < 6 ? `anime-card-wrapper${columns}` : ""
+      }`}
     >
       <Link
         href={`${
