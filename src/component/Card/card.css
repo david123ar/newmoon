@@ -1,7 +1,7 @@
 .anime-card-wrapper {
   position: relative;
   /* border: 1px solid white; */
-
+  width: calc(100% / 6 - 1rem);
   font-size: 14px;
 }
 
