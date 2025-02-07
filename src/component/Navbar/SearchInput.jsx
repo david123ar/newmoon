@@ -43,7 +43,10 @@ const SearchInput = (props) => {
   };
 
   const handleEnterPress = (e) => {
-    if (e.key === "Enter" && value) handleSearch();
+    if ((e.key === "Enter" || e.key === "Next") && value) {
+      e.preventDefault(); // Prevent default behavior
+      handleSearch();
+    }
   };
 
   return (
@@ -114,7 +117,7 @@ const SearchInput = (props) => {
               ))}
               <div className="allR">
                 {" "}
-                <div>View all results</div>
+                <Link href={`/search?keyword=${value}`}>View all results</Link>
                 <div>
                   <FaAngleRight />
                 </div>
