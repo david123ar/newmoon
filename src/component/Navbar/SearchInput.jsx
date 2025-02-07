@@ -54,9 +54,9 @@ const SearchInput = (props) => {
       {props.float ? (
         <div className="search-container">
           <div className="common-wealth">
-            <div className="filter-ico">
+            <Link href={"/filter"} className="filter-ico">
               <FaFilter />
-            </div>
+            </Link>
             <div className="float-bloc">
               <div className="Input-text">
                 <input
@@ -70,9 +70,9 @@ const SearchInput = (props) => {
                 />
               </div>
               <div className="flit">
-                <div>
+                <Link href={`/search?keyword=${value}`}>
                   <FaSearch />
-                </div>
+                </Link>
                 {!props.float && (
                   <Link href={`/filter`} className="filter-btn">
                     Filter
@@ -140,9 +140,9 @@ const SearchInput = (props) => {
               />
             </div>
             <div className="flit">
-              <div>
+              <Link href={`/search?keyword=${value}`}>
                 <FaSearch />
-              </div>
+              </Link>
               {!props.float && (
                 <Link href={`/filter`} className="filter-btn">
                   Filter
