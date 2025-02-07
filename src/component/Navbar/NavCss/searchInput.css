@@ -35,6 +35,10 @@
   text-align: center;
   background: #504f4f;
   color: #fff;
+  transition: color 0.2s ease-in-out;
+}
+.filter-ico:hover {
+  color: var(--theme);
 }
 .Input-bloc {
   display: flex;
