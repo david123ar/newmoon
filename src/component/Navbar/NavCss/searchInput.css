@@ -38,7 +38,8 @@
   transition: color 0.2s ease-in-out;
 }
 .filter-ico:hover {
-  color: var(--theme);
+  color: #000;
+  background: var(--theme);
 }
 .Input-bloc {
   display: flex;
