@@ -89,6 +89,8 @@ export default async function page({ searchParams }) {
         onSear={"yes"}
         totalPages={filteredAnimes.results.totalPage}
         totalDocs={filteredAnimes.results.totalResults}
+        keyword={searchParam.keyword || ''}
+        collectionName={`Search results for`}
       />
     </div>
   );

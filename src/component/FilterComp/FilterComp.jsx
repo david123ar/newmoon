@@ -246,7 +246,17 @@ const FilterComp = (props) => {
   const [fullPath, setFullPath] = useState("");
 
   useEffect(() => {
-    setFullPath(window.location.pathname + window.location.search);
+    let currentPath = window.location.pathname + window.location.search;
+
+    if (!currentPath.includes("page=")) {
+      if (currentPath.includes("?")) {
+        currentPath += "&page=1";
+      } else {
+        currentPath += "?page=1";
+      }
+    }
+
+    setFullPath(currentPath);
   }, []);
 
   return (
@@ -416,7 +426,7 @@ const FilterComp = (props) => {
 
                 <div className="collections-wrapper d-flex-fd-column a-center ">
                   <AnimeCollection
-                    collectionName="Results..."
+                    collectionName={props.collectionName}
                     data={filteredData.results.data} // Use recentEpisodesAnime from props
                     filterName="filter"
                     datr={"yes"}
@@ -425,6 +435,8 @@ const FilterComp = (props) => {
                     totalDocs={props.totalDocs.toString()}
                     fullPath={fullPath}
                     selectL={selectL}
+                    keyword={props?.keyword || ''}
+                    onSear={props?.onSear || ''}
                     isInGrid={"true"}
                   />{" "}
                 </div>

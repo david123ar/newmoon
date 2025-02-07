@@ -63,7 +63,7 @@ export default async function page({ searchParams }) {
     }${searchParam.genres ? `&genres=${searchParam.genres}` : ""}`
   );
   const filteredAnimes = await res.json();
-  console.log(filteredAnimes.results.data)
+  console.log(filteredAnimes.results.data);
 
   return (
     <div className="flirt">
@@ -87,6 +87,7 @@ export default async function page({ searchParams }) {
         page={searchParam.page}
         totalPages={filteredAnimes.results.totalPage}
         totalDocs={filteredAnimes.results.totalResults}
+        collectionName={'Filter Results'}
       />
     </div>
   );

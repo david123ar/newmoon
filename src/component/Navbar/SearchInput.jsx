@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import "./NavCss/searchInput.css";
 import { FaAngleRight, FaFilter, FaSearch } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SearchInput = (props) => {
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [data, setData] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -33,18 +35,32 @@ const SearchInput = (props) => {
     }
   }, [value]);
 
+  const handleSearch = () => {
+    if (value) {
+      router.push(`/search?keyword=${value}`);
+      // setSearchForm({ name: "" });
+    }
+  };
+
+  const handleEnterPress = (e) => {
+    if (e.key === "Enter" && value) handleSearch();
+  };
+
   return (
     <>
       {props.float ? (
         <div className="search-container">
           <div className="common-wealth">
-            <div className="filter-ico"><FaFilter /></div>
+            <div className="filter-ico">
+              <FaFilter />
+            </div>
             <div className="float-bloc">
               <div className="Input-text">
                 <input
                   type="text"
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
+                  onKeyDown={handleEnterPress}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Slight delay for clicking dropdown
                   placeholder="Search anime..."
@@ -54,14 +70,22 @@ const SearchInput = (props) => {
                 <div>
                   <FaSearch />
                 </div>
-                {!props.float && <div className="filter-btn">Filter</div>}
+                {!props.float && (
+                  <Link href={`/filter`} className="filter-btn">
+                    Filter
+                  </Link>
+                )}
               </div>
             </div>
           </div>
           {isFocused && data && value && (
             <div className="dropdown">
               {data.map((item) => (
-                <Link href={`/${item.id}`} key={item.id} className="dropdown-item">
+                <Link
+                  href={`/${item.id}`}
+                  key={item.id}
+                  className="dropdown-item"
+                >
                   <img
                     src={item.imgData}
                     alt={item.title}
@@ -106,6 +130,7 @@ const SearchInput = (props) => {
                 type="text"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
+                onKeyDown={handleEnterPress}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setTimeout(() => setIsFocused(false), 200)} // Slight delay for clicking dropdown
                 placeholder="Search anime..."
@@ -115,13 +140,21 @@ const SearchInput = (props) => {
               <div>
                 <FaSearch />
               </div>
-              {!props.float && <div className="filter-btn">Filter</div>}
+              {!props.float && (
+                <Link href={`/filter`} className="filter-btn">
+                  Filter
+                </Link>
+              )}
             </div>
           </div>
           {isFocused && data && value && (
             <div className="dropdown">
               {data.map((item) => (
-                <Link href={`/${item.id}`} key={item.id} className="dropdown-item">
+                <Link
+                  href={`/${item.id}`}
+                  key={item.id}
+                  className="dropdown-item"
+                >
                   <img
                     src={item.imgData}
                     alt={item.title}
@@ -150,7 +183,7 @@ const SearchInput = (props) => {
               ))}
               <div className="allR">
                 {" "}
-                <div>View all results</div>
+                <Link href={`/search?keyword=${value}`}>View all results</Link>
                 <div>
                   <FaAngleRight />
                 </div>

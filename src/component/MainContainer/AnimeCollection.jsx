@@ -47,7 +47,16 @@ export default function AnimeCollection(props) {
     <>
       {props.data?.length < 6 && (
         <div className="header heddR heddN">
-          <h2 className="header-title heddH2">{props.collectionName}</h2>
+          <h2 className="header-title heddH2">
+            {props.onSear ? (
+              <>
+                {props.collectionName} <i>{props.keyword}</i>
+              </>
+            ) : (
+              props.collectionName
+            )}
+          </h2>
+
           {props.isInGrid ? null : (
             <Link
               href={`/grid?name=${props.filterName}&heading=${props.collectionName}`}
@@ -59,7 +68,9 @@ export default function AnimeCollection(props) {
             </Link>
           )}
           {props.datr === "yes" ? (
-            <div className="view-more-linkop">{props.totalDocs?.length > 0 ? props.totalDocs : '0 results'}</div>
+            <div className="view-more-linkop">
+              {props.totalDocs?.length > 0 ? props.totalDocs : null}
+            </div>
           ) : null}
         </div>
       )}
