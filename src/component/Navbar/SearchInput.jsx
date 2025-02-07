@@ -115,13 +115,13 @@ const SearchInput = (props) => {
                   </div>
                 </Link>
               ))}
-              <div className="allR">
+              <Link href={`/search?keyword=${value}`} className="allR">
                 {" "}
-                <Link href={`/search?keyword=${value}`}>View all results</Link>
+                <div>View all results</div>
                 <div>
                   <FaAngleRight />
                 </div>
-              </div>
+              </Link>
             </div>
           )}
         </div>
@@ -184,13 +184,13 @@ const SearchInput = (props) => {
                   </div>
                 </Link>
               ))}
-              <div className="allR">
+              <Link href={`/search?keyword=${value}`} className="allR">
                 {" "}
-                <Link href={`/search?keyword=${value}`}>View all results</Link>
+                <div>View all results</div>
                 <div>
                   <FaAngleRight />
                 </div>
-              </div>
+              </Link>
             </div>
           )}
         </div>
