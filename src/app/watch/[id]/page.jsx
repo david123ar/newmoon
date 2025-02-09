@@ -85,7 +85,7 @@ export default async function page({ params, searchParams }) {
   data = existingAnime.episodes;
 
   // Determine the episode ID
-  const epId = episodeIdParam || data?.results.episodes[0]?.id;
+  const epId = episodeIdParam || data?.results?.episodes[0]?.id;
 
   const existingEpisode = await episodesCollection.findOne({ _id: epId });
 
@@ -93,16 +93,18 @@ export default async function page({ params, searchParams }) {
 
   // Find the episode number
   let episodeNumber = 0;
-  if (data?.results.episodes.length) {
-    const currentEpisode = data.results.episodes.find((ep) => ep.id === epId);
-    episodeNumber = currentEpisode ? currentEpisode.episode_no : 0;
+  if (data?.results?.episodes?.length > 0) {
+    const currentEpisode = data?.results?.episodes?.find(
+      (ep) => ep?.id === epId
+    );
+    episodeNumber = currentEpisode ? currentEpisode?.episode_no : 0;
   }
 
   let epiod = 0;
   let i = 0;
-  for (i > 0; i < data?.results.episodes.length; i++) {
-    if (data?.results.episodes[i].id.includes(epId)) {
-      epiod = data.results.episodes[i].episode_no;
+  for (i > 0; i < data?.results?.episodes?.length; i++) {
+    if (data?.results?.episodes[i]?.id?.includes(epId)) {
+      epiod = data?.results?.episodes[i]?.episode_no;
     }
   }
 
@@ -281,7 +283,14 @@ export default async function page({ params, searchParams }) {
     });
     const dat = await res.json();
     if (dat.results.some((item) => item.server_id === "1")) {
-      if (dat.results.some((item) => item.type === "dub")) {
+      if (
+        dat.results.some(
+          (item) =>
+            item.type === "dub" &&
+            datajDub?.results?.streamingLink?.intro?.end === 0 &&
+            datajDub?.results?.streamingLink?.outro?.start === 0
+        )
+      ) {
         const res = await fetch(
           `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=dub`
         );
@@ -304,7 +313,14 @@ export default async function page({ params, searchParams }) {
           console.log("Invalid ObjectId");
         }
       }
-      if (dat.results.some((item) => item.type === "sub")) {
+      if (
+        dat.results.some(
+          (item) =>
+            item.type === "sub" &&
+            datajSub?.results?.streamingLink?.intro?.end === 0 &&
+            datajSub?.results?.streamingLink?.outro?.start === 0
+        )
+      ) {
         const res = await fetch(
           `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=sub`
         );
@@ -328,7 +344,14 @@ export default async function page({ params, searchParams }) {
         }
       }
 
-      if (dat.results.some((item) => item.type === "raw")) {
+      if (
+        dat.results.some(
+          (item) =>
+            item.type === "raw" &&
+            datajSub?.results?.streamingLink?.intro?.end === 0 &&
+            datajSub?.results?.streamingLink?.outro?.start === 0
+        )
+      ) {
         const res = await fetch(
           `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=raw`
         );
@@ -373,6 +396,59 @@ export default async function page({ params, searchParams }) {
         console.log("Invalid ObjectId");
       }
     }
+  }
+
+  if (!datao?.results?.data?.title) {
+    const resp = await fetch(
+      `https://vimal.animoon.me/api/info?id=${param.id}`
+    );
+    const datar = await resp.json();
+    datao = datar;
+
+    if (param.id) {
+      const result = await animeCollection.updateOne(
+        { _id: param.id }, // Convert epId to ObjectId
+        { $set: { info: datar } }
+      );
+
+      if (result.modifiedCount > 0) {
+        console.log("Document updated successfully!");
+      } else {
+        console.log("No document was updated.");
+      }
+    } else {
+      console.log("Invalid ObjectId");
+    }
+  }
+
+  if (Array.isArray(data?.results)) {
+    const resp = await fetch(
+      `https://vimal.animoon.me/api/episodes/${param.id}`
+    );
+    const datar = await resp.json();
+    data = datar;
+
+    if (param.id) {
+      const result = await animeCollection.updateOne(
+        { _id: param.id }, // Convert epId to ObjectId
+        { $set: { "episodes": datar } }
+      );
+
+      if (result.modifiedCount > 0) {
+        console.log("Document updated successfully!");
+      } else {
+        console.log("No document was updated.");
+      }
+    } else {
+      console.log("Invalid ObjectId");
+    }
+  }
+
+  if (data?.results?.episodes?.length > 0) {
+    const currentEpisode = data?.results?.episodes?.find(
+      (ep) => ep?.id === epId
+    );
+    episodeNumber = currentEpisode ? currentEpisode?.episode_no : 0;
   }
 
   const dataStr = { sub: [], dub: [] }; // Separate arrays for sub and dub URLs

@@ -88,8 +88,7 @@ export default function WatchAnime(props) {
     const hasDubEpisodes = props.datao?.results.data.animeInfo.tvInfo.dub > 0;
 
     // Check if dub data exists in `props.dataStr`
-    const hasDubData =
-     props.datajDub.results;
+    const hasDubData = props.datajDub.results;
 
     // Handle Dub selection
     if (isDubSelected) {
@@ -201,11 +200,11 @@ export default function WatchAnime(props) {
     }
   };
   const sub = subIsSelected === true ? "sub" : "dub";
-  let uu = [];
-  let o = 0;
-  for (o > 0; o < props.datao?.results.data.animeInfo.tvInfo?.dub; o++) {
-    uu.push(props.data?.results.episodes[o]);
-  }
+  // let uu = [];
+  // let o = 0;
+  // for (o > 0; o < props.datao?.results.data.animeInfo.tvInfo?.dub; o++) {
+  //   uu.push(props.data?.results.episodes[o]);
+  // }
 
   /**
    * Based on the inforamtion from useAnimeInfo hook, the episodes array is stored in a variable
@@ -256,19 +255,10 @@ export default function WatchAnime(props) {
     });
   }, [props.datao]);
 
-  let episodeList = props.dataj.results?.streamingInfo.some(
-    (info) => info.value.decryptionResult?.type === "raw"
-  )
-    ? props?.data?.results.episodes?.length > 0
+  let episodeList =
+    props?.data?.results.episodes?.length > 0
       ? props?.data?.results.episodes
-      : null
-    : subIsSelected
-    ? props?.data?.results.episodes?.length > 0
-      ? props?.data?.results.episodes
-      : null
-    : props.datao.results.data.animeInfo.tvInfo?.dub > 0
-    ? uu
-    : null;
+      : null;
 
   const [epNumb, setEpNumb] = useState(epiod);
   const backward = () => {

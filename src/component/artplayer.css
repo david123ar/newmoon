@@ -3,6 +3,11 @@
   height: 570px;
 }
 
+.vds-icon {
+  width: 30px;
+  height: 30px;
+}
+
 .subtitle-text {
   position: relative; /* Allows absolute positioning of the background */
   color: #fff; /* Text color */
