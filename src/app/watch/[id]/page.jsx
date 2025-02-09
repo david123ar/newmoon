@@ -199,16 +199,16 @@ export default async function page({ params, searchParams }) {
       const dat = await res.json();
       if (dat.results.some((item) => item.type === "dub")) {
         const res = await fetch(
-          `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=dub`
+          `https://vimal.animoon.me/api/stream?id=${epId}&server=hd-1&type=dub`
         );
         const strdat = await res.json();
 
-        datajDub = { results: { streamingLink: strdat } };
+        datajDub = strdat;
 
         if (epId) {
           const result = await episodesCollection.updateOne(
             { _id: epId }, // Convert epId to ObjectId
-            { $set: { "streams.dub.results.streamingLink": strdat } }
+            { $set: { "streams.dub": strdat } }
           );
 
           if (result.modifiedCount > 0) {
@@ -229,16 +229,16 @@ export default async function page({ params, searchParams }) {
       const dat = await res.json();
       if (dat.results.some((item) => item.type === "sub")) {
         const res = await fetch(
-          `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=sub`
+          `https://vimal.animoon.me/api/stream?id=${epId}&server=hd-1&type=sub`
         );
         const strdat = await res.json();
 
-        datajSub = { results: { streamingLink: strdat } };
+        datajSub = strdat;
 
         if (epId) {
           const result = await episodesCollection.updateOne(
             { _id: epId }, // Convert epId to ObjectId
-            { $set: { "streams.sub.results.streamingLink": strdat } }
+            { $set: { "streams.sub": strdat } }
           );
 
           if (result.modifiedCount > 0) {
@@ -253,16 +253,16 @@ export default async function page({ params, searchParams }) {
 
       if (dat.results.some((item) => item.type === "raw")) {
         const res = await fetch(
-          `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=raw`
+          `https://vimal.animoon.me/api/stream?id=${epId}&server=hd-1&type=raw`
         );
         const strdat = await res.json();
 
-        datajSub = { results: { streamingLink: strdat } };
+        datajSub = strdat;
 
         if (epId) {
           const result = await episodesCollection.updateOne(
             { _id: epId }, // Convert epId to ObjectId
-            { $set: { "streams.raw.results.streamingLink": strdat } }
+            { $set: { "streams.raw": strdat } }
           );
 
           if (result.modifiedCount > 0) {
@@ -292,16 +292,16 @@ export default async function page({ params, searchParams }) {
         )
       ) {
         const res = await fetch(
-          `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=dub`
+          `https://vimal.animoon.me/api/stream?id=${epId}&server=hd-1&type=dub`
         );
         const strdat = await res.json();
 
-        datajDub = { results: { streamingLink: strdat } };
+        datajDub = strdat;
 
         if (epId) {
           const result = await episodesCollection.updateOne(
             { _id: epId }, // Convert epId to ObjectId
-            { $set: { "streams.dub.results.streamingLink": strdat } }
+            { $set: { "streams.dub": strdat } }
           );
 
           if (result.modifiedCount > 0) {
@@ -322,16 +322,16 @@ export default async function page({ params, searchParams }) {
         )
       ) {
         const res = await fetch(
-          `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=sub`
+          `https://vimal.animoon.me/api/stream?id=${epId}&server=hd-1&type=sub`
         );
         const strdat = await res.json();
 
-        datajSub = { results: { streamingLink: strdat } };
+        datajSub = strdat;
 
         if (epId) {
           const result = await episodesCollection.updateOne(
             { _id: epId }, // Convert epId to ObjectId
-            { $set: { "streams.sub.results.streamingLink": strdat } }
+            { $set: { "streams.sub": strdat } }
           );
 
           if (result.modifiedCount > 0) {
@@ -353,16 +353,16 @@ export default async function page({ params, searchParams }) {
         )
       ) {
         const res = await fetch(
-          `https://newgogo.animoon.me/api/data?episodeId=${epId}&category=raw`
+          `https://vimal.animoon.me/api/stream?id=${epId}&server=hd-1&type=raw`
         );
         const strdat = await res.json();
 
-        datajSub = { results: { streamingLink: strdat } };
+        datajSub = strdat;
 
         if (epId) {
           const result = await episodesCollection.updateOne(
             { _id: epId }, // Convert epId to ObjectId
-            { $set: { "streams.raw.results.streamingLink": strdat } }
+            { $set: { "streams.raw": strdat } }
           );
 
           if (result.modifiedCount > 0) {
@@ -384,7 +384,7 @@ export default async function page({ params, searchParams }) {
       if (param.id) {
         const result = await animeCollection.updateOne(
           { _id: param.id }, // Convert epId to ObjectId
-          { $set: { episodes: datar } }
+          { $set: { "episodes": datar } }
         );
 
         if (result.modifiedCount > 0) {
@@ -408,7 +408,7 @@ export default async function page({ params, searchParams }) {
     if (param.id) {
       const result = await animeCollection.updateOne(
         { _id: param.id }, // Convert epId to ObjectId
-        { $set: { info: datar } }
+        { $set: { "info": datar } }
       );
 
       if (result.modifiedCount > 0) {
