@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import "./watch-anime.css";
 import RecommendedTopTen from "@/layouts/RecommendedTopTen";
@@ -12,6 +12,7 @@ import {
   FaClosedCaptioning,
   FaForward,
   FaPlus,
+  FaSearch,
 } from "react-icons/fa";
 import Comments from "@/component/Comments/Comments";
 import { HiOutlineSignal } from "react-icons/hi2";
@@ -20,8 +21,10 @@ import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/component/loadingSpinner";
 import Image from "next/image";
 import { SessionProvider } from "next-auth/react";
+import { FaCirclePlay } from "react-icons/fa6";
 export default function WatchAnime(props) {
   const router = useRouter();
+  const dropdownRef = useRef(null); // Reference for the dropdown
   const [isLoading, setIsLoading] = useState(false);
   const IsLoading = (data) => {
     if (data) {
@@ -232,6 +235,41 @@ export default function WatchAnime(props) {
     ls.setItem(`Watched-${props.anId.toString()}`, props.epId.toString());
   }
 
+  let episodeList =
+    props?.data?.results.episodes?.length > 0
+      ? props?.data?.results.episodes
+      : null;
+
+  const [value, setValue] = useState("");
+
+  const [epLisTitle, setEpLisTitle] = useState("EPS: 001-100");
+
+  const chunks = [];
+  for (let i = 0; i < episodeList.length; i += 100) {
+    chunks.push(episodeList.slice(i, i + 100));
+  }
+
+  const epNi = Math.ceil(props.epiod / 100);
+
+  const [epList, setEpList] = useState(epNi - 1);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (value) {
+      setEpList(Math.ceil(value / 100) - 1);
+    } else setEpList(Math.ceil(props.epiod / 100) - 1);
+  }, [value]);
+
   useEffect(() => {
     setSubIsSelected(() => {
       const isDubSelected = ls.getItem("subordub") === "false";
@@ -255,11 +293,6 @@ export default function WatchAnime(props) {
     });
   }, [props.datao]);
 
-  let episodeList =
-    props?.data?.results.episodes?.length > 0
-      ? props?.data?.results.episodes
-      : null;
-
   const [epNumb, setEpNumb] = useState(epiod);
   const backward = () => {
     router.push(`/watch/${props.data.results.episodes[epiod - 2]?.id}`);
@@ -272,13 +305,16 @@ export default function WatchAnime(props) {
 
   ls.setItem("subordub", subIsSelected ? "true" : "false");
 
-  const episodeButtons = episodeList?.map((el, idx) => {
+  let speciEp = episodeList.length > 100 ? chunks[epList] : episodeList;
+
+  const episodeButtons = speciEp?.map((el, idx) => {
     return (
       <Link
         href={`/watch/${el.id}`}
+        title={el.title}
         className={`${
           episodeList.length <= 24 ? "episode-tile" : `episode-tile-blocks`
-        } ${idx === epiod - 1 ? "selected" : ""} ${
+        } ${el.episode_no === epiod ? "selected" : ""} ${
           episodeList.length <= 24
             ? episodeList.length % 2 === 0
               ? idx % 2 === 0
@@ -290,14 +326,14 @@ export default function WatchAnime(props) {
             : `${el.filler ? "fillero" : "evenL"}`
         } ${
           ls.getItem(`Watched-${props.anId.toString()}`)
-            ? localStorage
+            ? ls
                 .getItem(`Watched-${props.anId.toString()}`)
                 .split(",")
                 .includes(el.id)
               ? "idk"
               : "common"
             : "common"
-        }`}
+        } ${parseInt(value) === el.episode_no ? "glow-container" : ""}`}
         key={el.id}
         style={
           episodeList.length <= 24
@@ -310,12 +346,21 @@ export default function WatchAnime(props) {
           {episodeList.length <= 24 ? (
             <div className="eptile">
               {" "}
-              <div className="epnumb">{el.episode_no}</div>{" "}
-              <div className="eptit">
-                {el.title.length < 20
-                  ? el.title
-                  : el.title.slice(0, 20) + "..."}
+              <div className="inner-ep">
+                <div className="epnumb">{el.episode_no}</div>{" "}
+                <div className="eptit">
+                  {el.title.length < 30
+                    ? el.title
+                    : el.title.slice(0, 30) + "..."}
+                </div>
               </div>
+              {el.episode_no === epiod ? (
+                <div className="cir-p">
+                  <FaCirclePlay />
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           ) : (
             el.episode_no
@@ -415,8 +460,10 @@ export default function WatchAnime(props) {
   }, [trutie]);
 
   // Retrieve the value from local storage
-  const valu = ls.getItem("vc_129285_time");
-  console.log("Value:", valu);
+  // const valu = ls.getItem("vc_129285_time");
+  // console.log("Value:", valu);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -453,7 +500,69 @@ export default function WatchAnime(props) {
                         : "episode-container-blocks"
                     }`}
                   >
-                    <p>List of Episodes:</p>
+                    <div className="epTop">
+                      <div className="lisT">
+                        <div>List of Episodes:</div>
+                        <div className="dropdownEp" ref={dropdownRef}>
+                          <div
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="dropdown-btn-ep"
+                          >
+                            {epLisTitle}
+                          </div>
+                          {isOpen && (
+                            <div className="dropdown-content-ep">
+                              {Array.from(
+                                { length: Math.ceil(episodeList.length / 100) },
+                                (_, index) => {
+                                  const start = index * 100 + 1;
+                                  const end = Math.min(
+                                    (index + 1) * 100,
+                                    episodeList.length
+                                  );
+                                  return (
+                                    <div
+                                      key={index}
+                                      className="episode-group-ep"
+                                      onClick={() =>
+                                        setEpList(index) &
+                                        setEpLisTitle(`EPS: ${start
+                                          .toString()
+                                          .padStart(3, "0")}-
+                                      ${end.toString().padStart(3, "0")}`) & setIsOpen(false)
+                                      }
+                                    >
+                                      EPS: {start.toString().padStart(3, "0")}-
+                                      {end.toString().padStart(3, "0")}
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="searEp">
+                        <div>
+                          <FaSearch />
+                        </div>
+                        <div className="inpEp">
+                          <input
+                            type="text"
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                            // onKeyDown={handleEnterPress}
+                            // onFocus={() => setIsFocused(true)}
+                            // onBlur={() =>
+                            //   setTimeout(() => setIsFocused(false), 300)
+                            // } // Slight delay for clicking dropdown
+                            placeholder="Number of Ep"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <div
                       className={`${
                         episodeList?.length <= 24

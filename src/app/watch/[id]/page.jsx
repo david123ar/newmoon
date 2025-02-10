@@ -375,25 +375,30 @@ export default async function page({ params, searchParams }) {
         }
       }
 
-      const resp = await fetch(
-        `https://vimal.animoon.me/api/episodes/${param.id}`
-      );
-      const datar = await resp.json();
-      data = datar;
-
-      if (param.id) {
-        const result = await animeCollection.updateOne(
-          { _id: param.id }, // Convert epId to ObjectId
-          { $set: { "episodes": datar } }
+      if (
+        datajSub?.results?.streamingLink?.intro?.end === 0 &&
+        datajSub?.results?.streamingLink?.outro?.start === 0
+      ) {
+        const resp = await fetch(
+          `https://vimal.animoon.me/api/episodes/${param.id}`
         );
+        const datar = await resp.json();
+        data = datar;
 
-        if (result.modifiedCount > 0) {
-          console.log("Document updated successfully!");
+        if (param.id) {
+          const result = await animeCollection.updateOne(
+            { _id: param.id }, // Convert epId to ObjectId
+            { $set: { episodes: datar } }
+          );
+
+          if (result.modifiedCount > 0) {
+            console.log("Document updated successfully!");
+          } else {
+            console.log("No document was updated.");
+          }
         } else {
-          console.log("No document was updated.");
+          console.log("Invalid ObjectId");
         }
-      } else {
-        console.log("Invalid ObjectId");
       }
     }
   }
@@ -408,7 +413,7 @@ export default async function page({ params, searchParams }) {
     if (param.id) {
       const result = await animeCollection.updateOne(
         { _id: param.id }, // Convert epId to ObjectId
-        { $set: { "info": datar } }
+        { $set: { info: datar } }
       );
 
       if (result.modifiedCount > 0) {
@@ -431,7 +436,7 @@ export default async function page({ params, searchParams }) {
     if (param.id) {
       const result = await animeCollection.updateOne(
         { _id: param.id }, // Convert epId to ObjectId
-        { $set: { "episodes": datar } }
+        { $set: { episodes: datar } }
       );
 
       if (result.modifiedCount > 0) {
