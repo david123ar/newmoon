@@ -269,14 +269,19 @@ export default function WatchAnime(props) {
   }, [value]);
 
   // Change this to the desired index
-  const initialStart = epList * 100 + 1;
-  const initialEnd = Math.min((epList + 1) * 100, episodeList.length);
+  const [epLisTitle, setEpLisTitle] = useState("");
 
-  const [epLisTitle, setEpLisTitle] = useState(
-    `EPS: ${initialStart.toString().padStart(3, "0")}-${initialEnd
-      .toString()
-      .padStart(3, "0")}`
-  );
+  useEffect(() => {
+    if (episodeList.length > 0) {
+      const initialStart = epList * 100 + 1;
+      const initialEnd = Math.min((epList + 1) * 100, episodeList.length);
+      setEpLisTitle(
+        `EPS: ${initialStart.toString().padStart(3, "0")}-${initialEnd
+          .toString()
+          .padStart(3, "0")}`
+      );
+    }
+  }, [epList, episodeList]);
 
   useEffect(() => {
     setSubIsSelected(() => {
