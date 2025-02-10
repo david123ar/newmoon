@@ -464,7 +464,7 @@ function ArtPlayer(props) {
         console.log("duration", art.duration);
 
         setTimeout(() => {
-          if (art.duration === 0) {
+          if (art.duration === 0 || art.currentTime === 0) {
             // Video is still not ready to play
             console.log("Switching URL due to excessive loading time");
             const newUrl = getUpdatedUrl();

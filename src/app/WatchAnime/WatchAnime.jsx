@@ -240,9 +240,7 @@ export default function WatchAnime(props) {
       ? props?.data?.results.episodes
       : null;
 
-  const [value, setValue] = useState("");
-
-  const [epLisTitle, setEpLisTitle] = useState("EPS: 001-100");
+  const [value, setValue] = useState("");  
 
   const chunks = [];
   for (let i = 0; i < episodeList.length; i += 100) {
@@ -269,6 +267,14 @@ export default function WatchAnime(props) {
       setEpList(Math.ceil(value / 100) - 1);
     } else setEpList(Math.ceil(props.epiod / 100) - 1);
   }, [value]);
+
+  const initialIndex = epList; // Change this to the desired index
+  const initialStart = initialIndex * 100 + 1;
+  const initialEnd = Math.min((initialIndex + 1) * 100, episodeList.length);
+  
+  const [epLisTitle, setEpLisTitle] = useState(
+    `EPS: ${initialStart.toString().padStart(3, "0")}-${initialEnd.toString().padStart(3, "0")}`
+  );
 
   useEffect(() => {
     setSubIsSelected(() => {
