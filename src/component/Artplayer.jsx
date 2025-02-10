@@ -467,8 +467,7 @@ function ArtPlayer(props) {
           if (art.duration === 0) {
             // Video is still not ready to play
             console.log("Switching URL due to excessive loading time");
-            const newUrl =
-              "https://gg3.jonextugundu.net/_v7/375c4f5997dcd1ea452287d316d38b42799c4a62f5122cf09371d8fd23a02d28b647ec9862ab5176544ed944982f2801a4405307859203272e178e48dacd60cd4eb9ac901ccd581c7c9f76f47c51cd705cad951664470be2567514cbdba3cd00da0d6aec9f18de6c394bf16131be2509fe3751e3470db6c5846490fbd9833042/master.m3u8";
+            const newUrl = getUpdatedUrl();
             console.log("Switching to new URL:", newUrl);
 
             finalUrl = newUrl; // Update final URL
