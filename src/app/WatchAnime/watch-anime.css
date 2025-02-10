@@ -104,6 +104,7 @@
   height: 30px;
   font-weight: 400;
   cursor: pointer;
+  color: #e7e5e5 !important;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -233,6 +234,8 @@
   gap: 3px;
 }
 
+
+
 .episode-tile {
   width: calc(100% / 4 - 5px);
   display: flex;
@@ -251,6 +254,11 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.sing-ep {
+  font-weight: 600;
+  font-size: 13px;
 }
 .typo {
   padding: 2px 4px;
@@ -331,7 +339,7 @@ select:enabled {
   border-left-color: var(--theme);
 }
 .episode-tile-blocks.selected {
-  color: black;
+  color: black !important;
   background-color: var(--theme);
 }
 .video-player {

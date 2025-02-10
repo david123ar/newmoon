@@ -240,7 +240,7 @@ export default function WatchAnime(props) {
       ? props?.data?.results.episodes
       : null;
 
-  const [value, setValue] = useState("");  
+  const [value, setValue] = useState("");
 
   const chunks = [];
   for (let i = 0; i < episodeList.length; i += 100) {
@@ -271,9 +271,11 @@ export default function WatchAnime(props) {
   const initialIndex = epList; // Change this to the desired index
   const initialStart = initialIndex * 100 + 1;
   const initialEnd = Math.min((initialIndex + 1) * 100, episodeList.length);
-  
+
   const [epLisTitle, setEpLisTitle] = useState(
-    `EPS: ${initialStart.toString().padStart(3, "0")}-${initialEnd.toString().padStart(3, "0")}`
+    `EPS: ${initialStart.toString().padStart(3, "0")}-${initialEnd
+      .toString()
+      .padStart(3, "0")}`
   );
 
   useEffect(() => {
@@ -369,7 +371,7 @@ export default function WatchAnime(props) {
               )}
             </div>
           ) : (
-            el.episode_no
+            <div className="sing-ep">{el.episode_no}</div>
           )}
         </div>
       </Link>
@@ -509,44 +511,51 @@ export default function WatchAnime(props) {
                     <div className="epTop">
                       <div className="lisT">
                         <div>List of Episodes:</div>
-                        <div className="dropdownEp" ref={dropdownRef}>
-                          <div
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="dropdown-btn-ep"
-                          >
-                            {epLisTitle}
-                          </div>
-                          {isOpen && (
-                            <div className="dropdown-content-ep">
-                              {Array.from(
-                                { length: Math.ceil(episodeList.length / 100) },
-                                (_, index) => {
-                                  const start = index * 100 + 1;
-                                  const end = Math.min(
-                                    (index + 1) * 100,
-                                    episodeList.length
-                                  );
-                                  return (
-                                    <div
-                                      key={index}
-                                      className="episode-group-ep"
-                                      onClick={() =>
-                                        setEpList(index) &
-                                        setEpLisTitle(`EPS: ${start
-                                          .toString()
-                                          .padStart(3, "0")}-
-                                      ${end.toString().padStart(3, "0")}`) & setIsOpen(false)
-                                      }
-                                    >
-                                      EPS: {start.toString().padStart(3, "0")}-
-                                      {end.toString().padStart(3, "0")}
-                                    </div>
-                                  );
-                                }
-                              )}
+                        {episodeList.length > 100 ? (
+                          <div className="dropdownEp" ref={dropdownRef}>
+                            <div
+                              onClick={() => setIsOpen(!isOpen)}
+                              className="dropdown-btn-ep"
+                            >
+                              {epLisTitle}
                             </div>
-                          )}
-                        </div>
+                            {isOpen && (
+                              <div className="dropdown-content-ep">
+                                {Array.from(
+                                  {
+                                    length: Math.ceil(episodeList.length / 100),
+                                  },
+                                  (_, index) => {
+                                    const start = index * 100 + 1;
+                                    const end = Math.min(
+                                      (index + 1) * 100,
+                                      episodeList.length
+                                    );
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="episode-group-ep"
+                                        onClick={() =>
+                                          setEpList(index) &
+                                          setEpLisTitle(`EPS: ${start
+                                            .toString()
+                                            .padStart(3, "0")}-
+                                      ${end.toString().padStart(3, "0")}`) &
+                                          setIsOpen(false)
+                                        }
+                                      >
+                                        EPS: {start.toString().padStart(3, "0")}
+                                        -{end.toString().padStart(3, "0")}
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
 
                       <div className="searEp">
