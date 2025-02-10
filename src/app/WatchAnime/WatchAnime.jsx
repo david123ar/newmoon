@@ -262,13 +262,16 @@ export default function WatchAnime(props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  let initialIndex;
+
   useEffect(() => {
     if (value) {
       setEpList(Math.ceil(value / 100) - 1);
     } else setEpList(Math.ceil(props.epiod / 100) - 1);
+    initialIndex = epList;
   }, [value]);
 
-  const initialIndex = epList; // Change this to the desired index
+  // Change this to the desired index
   const initialStart = initialIndex * 100 + 1;
   const initialEnd = Math.min((initialIndex + 1) * 100, episodeList.length);
 
