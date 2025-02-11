@@ -10,6 +10,7 @@ import { SessionProvider } from "next-auth/react";
 import Profilo from "@/component/Profilo/Profilo";
 import Navbar from "@/component/Navbar/Navbar";
 import SignInSignUpModal from "@/component/SignSignup/SignInSignUpModal";
+import Footer from "@/component/Footer/Footer";
 
 export default function RecommendedTopTen(props) {
   // const [dlta, setDlta] = useState([]);
@@ -30,6 +31,7 @@ export default function RecommendedTopTen(props) {
 
   const lang = (lang) => {
     setSelectL(lang);
+    props.omin(lang);
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -112,6 +114,9 @@ export default function RecommendedTopTen(props) {
             </div>
           </>
         )}
+        <div>
+          <Footer />
+        </div>
       </SessionProvider>
     </>
   );

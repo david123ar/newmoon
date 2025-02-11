@@ -69,7 +69,7 @@ export async function GET(req) {
     }
 
     // Return the fetched data
-    return new Response(JSON.stringify(apiData.results), { status: 200 });
+    return new Response(JSON.stringify(apiData), { status: 200 });
 
   } catch (error) {
     console.error("Error fetching data from API:", error);

@@ -7,10 +7,13 @@ import Share from "@/component/Share/Share";
 import Link from "next/link";
 import { AiFillAudio } from "react-icons/ai";
 import loading from "../../../public/placeholder.gif";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import {
+  FaAngleDown,
   FaBackward,
   FaClosedCaptioning,
   FaForward,
+  FaList,
   FaPlus,
   FaSearch,
 } from "react-icons/fa";
@@ -268,6 +271,12 @@ export default function WatchAnime(props) {
     } else setEpList(Math.ceil(props.epiod / 100) - 1);
   }, [value]);
 
+  const [lang, setLang] = useState("en");
+
+  const omin = (daat) => {
+    setLang(daat);
+  };
+
   // Change this to the desired index
   const [epLisTitle, setEpLisTitle] = useState("");
 
@@ -321,6 +330,7 @@ export default function WatchAnime(props) {
   let speciEp = episodeList.length > 100 ? chunks[epList] : episodeList;
 
   const episodeButtons = speciEp?.map((el, idx) => {
+    const title = lang === "en" ? el.title : el.japanese_title;
     return (
       <Link
         href={`/watch/${el.id}`}
@@ -362,9 +372,7 @@ export default function WatchAnime(props) {
               <div className="inner-ep">
                 <div className="epnumb">{el.episode_no}</div>{" "}
                 <div className="eptit">
-                  {el.title.length < 30
-                    ? el.title
-                    : el.title.slice(0, 30) + "..."}
+                  {title.length < 30 ? title : title.slice(0, 30) + "..."}
                 </div>
               </div>
               {el.episode_no === epiod ? (
@@ -486,9 +494,11 @@ export default function WatchAnime(props) {
     setTrigger((prev) => !prev); // Toggle state to trigger API call
   };
 
+  const [resul, setResul] = useState("");
+
   useEffect(() => {
     if (!trigger) return;
-  
+
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -496,39 +506,39 @@ export default function WatchAnime(props) {
             props.raw === "yes" ? "raw" : subIsSelected ? "sub" : "dub"
           }`
         );
-  
+
         if (!response.ok) throw new Error("Failed to fetch data");
-  
+
         const result = await response.json();
         console.log(result);
-  
+        setResul(result);
         // Store sub/dub preference
-        const isDubSelected = ls.getItem("subordub") === "false";
-        const hasDubEpisodes = props.datao?.results.data.animeInfo.tvInfo?.dub > 0;
-        const hasDubData = result?.results;
-        const streamingLink = hasDubData?.streamingLink?.link?.file;
-  
-        setBhaiLink(() => {
-          if (isDubSelected) {
-            if (hasDubEpisodes && hasDubData && streamingLink) {
-              return streamingLink; // Use available dub link
-            }
-          }
-          // Sub or fallback
-          return streamingLink || "";
-        });
-  
-        setSubtitles(result?.results?.streamingLink?.tracks || []);
-        setIntrod(result?.results?.streamingLink?.intro || null);
-        setOutrod(result?.results?.streamingLink?.outro || null);
+        // const isDubSelected = ls.getItem("subordub") === "false";
+        // const hasDubEpisodes = props.datao?.results.data.animeInfo.tvInfo?.dub > 0;
       } catch (err) {
         setError(err.message);
       }
     };
-  
+
     fetchData();
   }, [trigger]);
-  
+
+  useEffect(() => {
+    if (!resul) return;
+    const hasDubData = resul?.results;
+    const streamingLink = hasDubData?.streamingLink?.link?.file;
+
+    setBhaiLink(streamingLink || "");
+
+    setSubtitles(resul?.results?.streamingLink?.tracks || []);
+    setIntrod(resul?.results?.streamingLink?.intro || null);
+    setOutrod(resul?.results?.streamingLink?.outro || null);
+  }, [resul]);
+
+  const title =
+    lang === "en"
+      ? props.datao?.results.data.title
+      : props.datao?.results.data.japanese_title;
 
   return (
     <>
@@ -547,9 +557,7 @@ export default function WatchAnime(props) {
                   {props.datao?.results.data.animeInfo.tvInfo.showType}
                 </div>
                 <div className="oto">&#x2022;</div>
-                <div className="amo">
-                  Watching {props.datao?.results.data.title}
-                </div>
+                <div className="amo">Watching {title}</div>
               </div>
               <div className="d-flex new-con">
                 <img
@@ -574,39 +582,66 @@ export default function WatchAnime(props) {
                               onClick={() => setIsOpen(!isOpen)}
                               className="dropdown-btn-ep"
                             >
-                              {epLisTitle}
+                              <div>
+                                <FaList />
+                              </div>
+                              <div>{epLisTitle}</div>
+                              <div>
+                                <FaAngleDown />
+                              </div>
                             </div>
                             {isOpen && (
                               <div className="dropdown-content-ep">
-                                {Array.from(
-                                  {
-                                    length: Math.ceil(episodeList.length / 100),
-                                  },
-                                  (_, index) => {
-                                    const start = index * 100 + 1;
-                                    const end = Math.min(
-                                      (index + 1) * 100,
-                                      episodeList.length
-                                    );
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="episode-group-ep"
-                                        onClick={() =>
-                                          setEpList(index) &
-                                          setEpLisTitle(`EPS: ${start
-                                            .toString()
-                                            .padStart(3, "0")}-
-                                      ${end.toString().padStart(3, "0")}`) &
-                                          setIsOpen(false)
-                                        }
-                                      >
-                                        EPS: {start.toString().padStart(3, "0")}
-                                        -{end.toString().padStart(3, "0")}
-                                      </div>
-                                    );
-                                  }
-                                )}
+                                <div className="scrollable-container">
+                                  {Array.from(
+                                    {
+                                      length: Math.ceil(
+                                        episodeList.length / 100
+                                      ),
+                                    },
+                                    (_, index) => {
+                                      const start = index * 100 + 1;
+                                      const end = Math.min(
+                                        (index + 1) * 100,
+                                        episodeList.length
+                                      );
+                                      return (
+                                        <div
+                                          key={index}
+                                          className={`episode-group-ep ${
+                                            epList === index
+                                              ? "selected-grep"
+                                              : ""
+                                          }`}
+                                          onClick={() => {
+                                            setEpList(index);
+                                            setEpLisTitle(
+                                              `EPS: ${start
+                                                .toString()
+                                                .padStart(3, "0")}-${end
+                                                .toString()
+                                                .padStart(3, "0")}`
+                                            );
+                                            setIsOpen(false);
+                                          }}
+                                        >
+                                          <div>
+                                            EPS:{" "}
+                                            {start.toString().padStart(3, "0")}-
+                                            {end.toString().padStart(3, "0")}
+                                          </div>
+                                          {epList === index ? (
+                                            <div>
+                                              <IoMdCheckmarkCircleOutline />
+                                            </div>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                                </div>
                               </div>
                             )}
                           </div>
@@ -677,7 +712,7 @@ export default function WatchAnime(props) {
                             props.datao?.results.data.animeInfo.tvInfo?.rating
                           }
                           imgUra={props.datao?.results.data.poster}
-                          nameUra={props.datao?.results.data.title}
+                          nameUra={title}
                           quality={quality}
                           sub={sub}
                           IsLoading={IsLoading}
@@ -1046,14 +1081,10 @@ export default function WatchAnime(props) {
                       <h1
                         style={{ textAlign: "center" }}
                         className={
-                          props.datao.results.data.title.length < 30
-                            ? `title-large`
-                            : `title-large-long`
+                          title.length < 30 ? `title-large` : `title-large-long`
                         }
                       >
-                        {props.datao.results.data.title.length < 50
-                          ? props.datao.results.data.title
-                          : props.datao.results.data.title.slice(0, 50) + "..."}
+                        {title.length < 50 ? title : title.slice(0, 50) + "..."}
                       </h1>
 
                       <div className="flex m-auto gap-2 items-center">
@@ -1106,12 +1137,10 @@ export default function WatchAnime(props) {
                         </span>
                       </p>
                       <p>
-                        Animoon is the best site to watch{" "}
-                        {props.datao.results.data.title} SUB online, or you can
-                        even watch {props.datao.results.data.title} DUB in HD
-                        quality. You can also find{" "}
-                        {props.datao.results.data.animeInfo.Studios} anime on
-                        Animoon website.
+                        Animoon is the best site to watch {title} SUB online, or
+                        you can even watch {title} DUB in HD quality. You can
+                        also find {props.datao.results.data.animeInfo.Studios}{" "}
+                        anime on Animoon website.
                       </p>
                     </div>
                   </div>
@@ -1140,6 +1169,7 @@ export default function WatchAnime(props) {
               data={props.datapp}
               isInGrid={"true"}
               IsLoading={IsLoading}
+              omin={omin}
             />
           </div>
         )}

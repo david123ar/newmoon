@@ -62,5 +62,5 @@ const Home = ({ data, existingAnime }) => {
     </div>
   );
 };
-
+ 
 export default Home;
