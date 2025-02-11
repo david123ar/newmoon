@@ -478,6 +478,58 @@ export default function WatchAnime(props) {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [currIdx, setCurrIdx] = useState("");
+
+  const [trigger, setTrigger] = useState(false); // Used to trigger useEffect
+
+  const report = () => {
+    setTrigger((prev) => !prev); // Toggle state to trigger API call
+  };
+
+  useEffect(() => {
+    if (!trigger) return;
+  
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `/api/reported?id=${props.epId}&cate=${
+            props.raw === "yes" ? "raw" : subIsSelected ? "sub" : "dub"
+          }`
+        );
+  
+        if (!response.ok) throw new Error("Failed to fetch data");
+  
+        const result = await response.json();
+        console.log(result);
+  
+        // Store sub/dub preference
+        const isDubSelected = ls.getItem("subordub") === "false";
+        const hasDubEpisodes = props.datao?.results.data.animeInfo.tvInfo?.dub > 0;
+        const hasDubData = result?.results;
+        const streamingLink = hasDubData?.streamingLink?.link?.file;
+  
+        setBhaiLink(() => {
+          if (isDubSelected) {
+            if (hasDubEpisodes && hasDubData && streamingLink) {
+              return streamingLink; // Use available dub link
+            }
+          }
+          // Sub or fallback
+          return streamingLink || "";
+        });
+  
+        setSubtitles(result?.results?.streamingLink?.tracks || []);
+        setIntrod(result?.results?.streamingLink?.intro || null);
+        setOutrod(result?.results?.streamingLink?.outro || null);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+  
+    fetchData();
+  }, [trigger]);
+  
+
   return (
     <>
       <SessionProvider>
@@ -609,6 +661,7 @@ export default function WatchAnime(props) {
                           onn2={onn2}
                           onn3={onn3}
                           getData={getData}
+                          currIdx={currIdx}
                           err={err}
                           subtitles={subtitles}
                           introd={introd}
@@ -736,6 +789,14 @@ export default function WatchAnime(props) {
                             </div>
                           </div>
                         </div>
+                        <div className="allum rep-all">
+                          <div className="rep-tex">
+                            If wrong episode is playing then click report button
+                          </div>
+                          <div className="rep-butt" onClick={() => report()}>
+                            REPORT
+                          </div>
+                        </div>
                         <div className="flex compIno">
                           <div className="flex flex-col items-center epIno containIno flex-wrap">
                             <div className="ino1">You are watching</div>
@@ -798,38 +859,40 @@ export default function WatchAnime(props) {
                                       >
                                         Vidstreaming
                                       </div>
-                                      {/* <div
-                                      className={`subDub ${
-                                        subIsSelected
-                                          ? selectedServer === 1
-                                            ? "selected"
+                                      <div
+                                        className={`subDub ${
+                                          subIsSelected
+                                            ? selectedServer === 1
+                                              ? "selected"
+                                              : ""
                                             : ""
-                                          : ""
-                                      }`}
-                                      onClick={
-                                        () =>
+                                        }`}
+                                        onClick={() =>
                                           setSelectedServer(1) &
                                           setSubIsSelected(true) &
                                           setServerName("Vidcloud") &
-                                          setBhaiLink(props.dataStr.sub[1].url)
-                                        // setQuality("") &
-                                        // setSubtitles(
-                                        //   props.subPrio ||
-                                        //     no.value.decryptionResult.source
-                                        //       .tracks
-                                        // ) &
-                                        // // setIntrod(
-                                        //   no.value.decryptionResult.source
-                                        //     .intro
-                                        // ) &
-                                        // setOutrod(
-                                        //   no.value.decryptionResult.source
-                                        //     .outro
-                                        // )
-                                      }
-                                    >
-                                      Vidcloud
-                                    </div> */}
+                                          setBhaiLink(
+                                            props.datajSub.results
+                                              ?.streamingLink.link.file
+                                          ) &
+                                          // setQuality("")
+                                          setSubtitles(
+                                            props.datajSub.results
+                                              ?.streamingLink.tracks
+                                          ) &
+                                          setCurrIdx(1) &
+                                          setIntrod(
+                                            props.datajSub.results
+                                              ?.streamingLink.intro
+                                          ) &
+                                          setOutrod(
+                                            props.datajSub.results
+                                              ?.streamingLink.outro
+                                          )
+                                        }
+                                      >
+                                        Vidcloud
+                                      </div>
                                     </div>
                                   </div>
                                 ) : (
@@ -880,38 +943,40 @@ export default function WatchAnime(props) {
                                         >
                                           Vidstreaming
                                         </div>
-                                        {/* <div
-                                      className={`subDub ${
-                                        !subIsSelected
-                                          ? selectedServer === 1
-                                            ? "selected"
-                                            : ""
-                                          : ""
-                                      }`}
-                                      onClick={
-                                        () =>
-                                          setSelectedServer(1) &
-                                          setSubIsSelected(false) &
-                                          setServerName("Vidcloud") &
-                                          setBhaiLink(props.dataStr.dub[1].url)
-                                        // setQuality("") &
-                                        // setSubtitles(
-                                        //   props.subPrio ||
-                                        //     no.value.decryptionResult.source
-                                        //       .tracks
-                                        // ) &
-                                        // // setIntrod(
-                                        //   no.value.decryptionResult.source
-                                        //     .intro
-                                        // ) &
-                                        // setOutrod(
-                                        //   no.value.decryptionResult.source
-                                        //     .outro
-                                        // )
-                                      }
-                                    >
-                                      Vidcloud
-                                    </div> */}
+                                        <div
+                                          className={`subDub ${
+                                            !subIsSelected
+                                              ? selectedServer === 1
+                                                ? "selected"
+                                                : ""
+                                              : ""
+                                          }`}
+                                          onClick={() =>
+                                            setSelectedServer(1) &
+                                            setSubIsSelected(false) &
+                                            setServerName("Vidcloud") &
+                                            setBhaiLink(
+                                              props.datajDub.results
+                                                ?.streamingLink.link.file
+                                            ) &
+                                            // setQuality("")
+                                            setCurrIdx(1) &
+                                            setSubtitles(
+                                              props.datajSub.results
+                                                ?.streamingLink.tracks
+                                            ) &
+                                            setIntrod(
+                                              props.datajDub.results
+                                                ?.streamingLink.intro
+                                            ) &
+                                            setOutrod(
+                                              props.datajDub.results
+                                                ?.streamingLink.outro
+                                            )
+                                          }
+                                        >
+                                          Vidcloud
+                                        </div>
                                       </div>
                                     </div>
                                   ) : (

@@ -460,11 +460,21 @@ function ArtPlayer(props) {
         clearTimeout(loadingTimeout); // Clear the timeout if the video starts playing
       });
 
+      if (props.currIdx) {
+        // Video is still not ready to play
+        console.log("Switching URL due to excessive loading time");
+        const newUrl = getUpdatedUrl();
+        console.log("Switching to new URL:", newUrl);
+
+        finalUrl = newUrl; // Update final URL
+        art.switchUrl(newUrl); // Switch Artplayer URL
+      }
+
       art.on("loading", (state) => {
         console.log("duration", art.duration);
 
         setTimeout(() => {
-          if (art.duration === 0 || art.currentTime === 0) {
+          if (art.duration === 0) {
             // Video is still not ready to play
             console.log("Switching URL due to excessive loading time");
             const newUrl = getUpdatedUrl();
@@ -512,7 +522,7 @@ function ArtPlayer(props) {
         art.destroy(false);
       }
     };
-  }, [props.bhaiLink, props.sub, props.epId, props.trutie]);
+  }, [props.bhaiLink, props.sub, props.epId, props.trutie, props.currIdx ,props.selectedServer]);
 
   return (
     <>

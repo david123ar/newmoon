@@ -170,6 +170,8 @@ export default async function page({ params, searchParams }) {
     datajSub = [];
   }
 
+  let raw = ''
+
   if (!datajSub?.results?.streamingLink?.link?.file) {
     // datajSub is an array and is empty
 
@@ -187,6 +189,7 @@ export default async function page({ params, searchParams }) {
 
       // Create a `results` object inside `datajSub` and add data
       datajSub = existingEpisode.streams.raw; // Add existing raw data
+      raw = 'yes'
       // If you need to log or use it:
     } catch (error) {
       console.error("Error fetching stream data: ", error);
@@ -714,6 +717,7 @@ export default async function page({ params, searchParams }) {
         gogoSub={gogoSub}
         ShareUrl={ShareUrl}
         arise={arise}
+        raw={raw}
       />
     </div>
   );

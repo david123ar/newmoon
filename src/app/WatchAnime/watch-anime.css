@@ -234,7 +234,30 @@
   gap: 3px;
 }
 
+.rep-all {
+  background: #362c2c;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
 
+.rep-tex {
+  font-size: 13px;
+  color: #aaa;
+  font-weight: 300;
+}
+
+.rep-butt {
+  font-size: 13px;
+  border: 2px solid rgb(177, 39, 39);
+  padding: 4px 8px;
+  font-weight: 600;
+  color: rgb(177, 39, 39);
+}
+
+.rep-butt:hover {
+  color: red;
+  border: 1px solid red;
+}
 
 .episode-tile {
   width: calc(100% / 4 - 5px);
