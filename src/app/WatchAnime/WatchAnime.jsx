@@ -331,6 +331,7 @@ export default function WatchAnime(props) {
 
   const episodeButtons = speciEp?.map((el, idx) => {
     const title = lang === "en" ? el.title : el.japanese_title;
+    const len = el.episode_no === epiod ? 20 : 30
     return (
       <Link
         href={`/watch/${el.id}`}
@@ -372,7 +373,7 @@ export default function WatchAnime(props) {
               <div className="inner-ep">
                 <div className="epnumb">{el.episode_no}</div>{" "}
                 <div className="eptit">
-                  {title.length < 30 ? title : title.slice(0, 30) + "..."}
+                  {title.length < len ? title : title.slice(0, len) + "..."}
                 </div>
               </div>
               {el.episode_no === epiod ? (
