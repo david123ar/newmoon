@@ -23,11 +23,13 @@ import ArtPlayer from "@/component/Artplayer";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/component/loadingSpinner";
 import Image from "next/image";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { FaCirclePlay } from "react-icons/fa6";
+import SignInSignUpModal from "@/component/SignSignup/SignInSignUpModal";
 export default function WatchAnime(props) {
   const router = useRouter();
   const dropdownRef = useRef(null); // Reference for the dropdown
+  const dropdownSecRef = useRef(null); // Reference for the dropdown
   const [isLoading, setIsLoading] = useState(false);
   const IsLoading = (data) => {
     if (data) {
@@ -255,17 +257,6 @@ export default function WatchAnime(props) {
   const [epList, setEpList] = useState(epNi - 1);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
     if (value) {
       setEpList(Math.ceil(value / 100) - 1);
     } else setEpList(Math.ceil(props.epiod / 100) - 1);
@@ -331,7 +322,7 @@ export default function WatchAnime(props) {
 
   const episodeButtons = speciEp?.map((el, idx) => {
     const title = lang === "en" ? el.title : el.japanese_title;
-    const len = el.episode_no === epiod ? 20 : 30
+    const len = el.episode_no === epiod ? 20 : 30;
     return (
       <Link
         href={`/watch/${el.id}`}
@@ -540,10 +531,110 @@ export default function WatchAnime(props) {
     lang === "en"
       ? props.datao?.results.data.title
       : props.datao?.results.data.japanese_title;
+  const [logIsOpen, setLogIsOpen] = useState(false);
+
+  const { data: session } = useSession();
+
+  const [isOpeni, setIsOpeni] = useState(false);
+
+  const handleOptionClick = (option) => {
+    if (!session) {
+      // console.log(setLogIsOpen);
+      setLogIsOpen(true);
+      // window.location.href = "/user/watch-list";
+    }
+    console.log(`Selected option: ${option}`);
+    setIsOpeni(false); // Close the dropdown after selection
+
+    // Create a new object with the selected data and timestamp
+    const newObj = {
+      id: props.uiui.info.results.data.id,
+      poster: props.uiui.info.results.data.poster,
+      duration: props.uiui.info.results.data.animeInfo.tvInfo.duration,
+      rating: props.uiui.info.results.data.animeInfo.tvInfo.rating,
+      episodes: {
+        sub: props.uiui.info.results.data.animeInfo.tvInfo.sub,
+        dub: props.uiui.info.results.data.animeInfo.tvInfo?.dub
+          ? props.uiui.info.results.data.animeInfo.tvInfo?.dub
+          : "",
+      },
+      name: props.uiui.info.results.data.title,
+      timestamp: new Date().toISOString(), // Add current time in ISO format
+    };
+
+    // Define option keys
+    const options = [
+      "Watching",
+      "On-Hold",
+      "Plan to Watch",
+      "Dropped",
+      "Completed",
+    ];
+
+    // Remove the entry from all options' local storage if it exists
+    options.forEach((opt) => {
+      const key = `animeData_${opt}`;
+      let data = JSON.parse(localStorage.getItem(key)) || [];
+      data = data.filter((item) => item.id !== newObj.id);
+      localStorage.setItem(key, JSON.stringify(data));
+    });
+
+    // Create dynamic key for the current option
+    const currentKey = `animeData_${option}`;
+
+    // Retrieve existing data from local storage for the current option
+    let currentData = JSON.parse(localStorage.getItem(currentKey)) || [];
+
+    // Check if the id already exists in the current option's data
+    const index = currentData.findIndex((item) => item.id === newObj.id);
+
+    if (index !== -1) {
+      // Update existing entry if it exists
+      currentData[index] = newObj;
+    } else {
+      // Add new entry if it does not already exist
+      currentData.push(newObj);
+    }
+
+    // Store the updated current data back to local storage
+    localStorage.setItem(currentKey, JSON.stringify(currentData));
+  };
+
+  const toggleDropdown = () => {
+    setIsOpeni(!isOpeni);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleClickSecOutside = (event) => {
+    if (
+      dropdownSecRef.current &&
+      !dropdownSecRef.current.contains(event.target)
+    ) {
+      setIsOpeni(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickSecOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickSecOutside);
+    };
+  }, []);
 
   return (
     <>
       <SessionProvider>
+        <SignInSignUpModal setLogIsOpen={setLogIsOpen} logIsOpen={logIsOpen} />
         {isLoading ? (
           <LoadingSpinner />
         ) : (
@@ -739,8 +830,8 @@ export default function WatchAnime(props) {
                     <div className="server-container d-flex-fd-column">
                       <div className="server-tile-wrapper d-flex-fd-column">
                         <div className="flex items-center allum">
-                          <div className="flex gap-x-3 flex-wrap">
-                            <div className="flex gap-2">
+                          <div className="flex gap-x-3 flex-wrap allum-1">
+                            <div className="flex gap-2 allum-2">
                               <div className="autoo flex gap-1">
                                 <span>Auto</span>
                                 <span>Play</span>
@@ -754,7 +845,7 @@ export default function WatchAnime(props) {
                                 {onn1}
                               </div>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 allum-2">
                               <div className="autoo flex gap-1">
                                 <span>Auto</span>
                                 <span>Next</span>
@@ -768,7 +859,7 @@ export default function WatchAnime(props) {
                                 {onn2}
                               </div>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 allum-2">
                               <div className="autoo flex gap-1">
                                 <span>Auto</span>
                                 <span>Skip</span>
@@ -784,7 +875,7 @@ export default function WatchAnime(props) {
                               </div>
                             </div>
                           </div>
-                          <div className="flex gap-3 items-center">
+                          <div className="flex gap-3 items-center allum-3">
                             <Link
                               href={`/watch/${
                                 props.data.results.episodes[epiod - 2]?.id
@@ -817,8 +908,37 @@ export default function WatchAnime(props) {
                                 <FaForward />
                               </div>
                             </Link>
-                            <div className="plusa">
-                              <FaPlus />
+                            <div
+                              className="dropdown-container"
+                              ref={dropdownSecRef}
+                            >
+                              <div
+                                className="plusa"
+                                onClick={() => {
+                                  toggleDropdown();
+                                }}
+                              >
+                                <FaPlus />
+                              </div>
+
+                              {isOpeni && (
+                                <ul className="dropdown-menu">
+                                  {[
+                                    "Watching",
+                                    "On-Hold",
+                                    "Plan to Watch",
+                                    "Dropped",
+                                    "Completed",
+                                  ].map((option) => (
+                                    <li
+                                      key={option}
+                                      onClick={() => handleOptionClick(option)}
+                                    >
+                                      {option}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
                             <div className="signo">
                               <HiOutlineSignal />
@@ -861,7 +981,7 @@ export default function WatchAnime(props) {
                                       <div>SUB</div>
                                       <div>:</div>
                                     </div>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2 subb-1">
                                       <div
                                         className={`subDub ${
                                           subIsSelected
@@ -944,7 +1064,7 @@ export default function WatchAnime(props) {
                                         <div>DUB</div>
                                         <div>:</div>
                                       </div>
-                                      <div className="flex flex-wrap gap-2">
+                                      <div className="flex flex-wrap gap-2 subb-1">
                                         <div
                                           className={`subDub ${
                                             !subIsSelected
@@ -1088,8 +1208,8 @@ export default function WatchAnime(props) {
                         {title.length < 50 ? title : title.slice(0, 50) + "..."}
                       </h1>
 
-                      <div className="flex m-auto gap-2 items-center">
-                        <div className="flex gap-1">
+                      <div className="flex m-auto gap-2 items-center cpice-1">
+                        <div className="flex gap-1 cpice-2">
                           {" "}
                           <div className="rat">
                             {props.datao.results.data.animeInfo.tvInfo.rating}

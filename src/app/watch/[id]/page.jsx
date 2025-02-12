@@ -1,8 +1,9 @@
 import React from "react";
-import WatchAnime from "../../WatchAnime/WatchAnime";
+// import WatchAnime from "../../../component/WatchAnime/WatchAnime";
 // import axios from "axios";
 // import * as cheerio from "cheerio";
 import { MongoClient, ObjectId } from "mongodb";
+import Watchi from "@/component/Watchi/page";
 // import { currentUser } from "@clerk/nextjs/server";
 
 async function fetchDataFromAPI(url, revalidate) {
@@ -170,7 +171,7 @@ export default async function page({ params, searchParams }) {
     datajSub = [];
   }
 
-  let raw = ''
+  let raw = "";
 
   if (!datajSub?.results?.streamingLink?.link?.file) {
     // datajSub is an array and is empty
@@ -189,7 +190,7 @@ export default async function page({ params, searchParams }) {
 
       // Create a `results` object inside `datajSub` and add data
       datajSub = existingEpisode.streams.raw; // Add existing raw data
-      raw = 'yes'
+      raw = "yes";
       // If you need to log or use it:
     } catch (error) {
       console.error("Error fetching stream data: ", error);
@@ -700,7 +701,7 @@ export default async function page({ params, searchParams }) {
   // Render WatchAnime component
   return (
     <div>
-      <WatchAnime
+      <Watchi
         data={data}
         anId={param.id}
         subPrio={subPrio}

@@ -4,6 +4,9 @@
   z-index: 1;
 }
 .pecif {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   margin-bottom: 10px;
 }
 .currento {
@@ -182,6 +185,51 @@
 
 .episode-group-ep:hover {
   background: #eee;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block; /* Keeps it in place without affecting layout */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 5px 0;
+  min-width: 150px; /* Ensures dropdown doesn't shrink */
+  width: auto; /* Adjust width based on content */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+  color: black;
+  font-size: 13px;
+  transition: background 0.2s ease-in-out;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
+.dropdown-menu li:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu li:active {
+  background-color: #ddd;
+}
+
+.plusa {
+  cursor: pointer;
+  /* padding: 5px; */
+  display: inline-block;
 }
 
 .fillero {
@@ -456,6 +504,10 @@ select:enabled {
 }
 
 .containIno {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
   background: var(--theme);
   padding: 5px 10px;
 }
@@ -484,6 +536,7 @@ select:enabled {
 .serves {
   background: #283335;
   display: flex;
+  flex-direction: column;
   align-items: start;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -499,6 +552,7 @@ select:enabled {
   display: flex;
   align-items: center;
   justify-content: start;
+  gap: 20px;
 }
 .borderDot {
   border-bottom-width: 1px;
@@ -517,10 +571,31 @@ select:enabled {
 }
 
 .subb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   padding: 5px 15px;
   font-size: 13px;
   cursor: pointer;
   border-radius: 20px;
+}
+
+.subb-1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cpice-1 {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  gap: 8px;
+}
+
+.cpice-2 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 /*rgba(93, 93, 93, 0.701)*/
 .video-player video {
@@ -537,11 +612,15 @@ select:enabled {
   font-size: 14px;
 }
 .autoo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 13px;
   font-weight: 500;
 }
 .allum {
   display: flex;
+  align-items: center;
   padding: 0;
   justify-content: space-between;
   gap: 20px;
@@ -571,6 +650,8 @@ select:enabled {
   font-weight: 500;
 }
 .plusa {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   font-weight: 500;
 }
@@ -610,6 +691,29 @@ select:enabled {
 .rep-butt:hover {
   color: red;
   border: 2px solid red;
+}
+
+.allum-1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.allum-2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.allum-3 {
+  display: flex;
+  align-items: center !important;
+  gap: 12px;
+}
+
+.compIno {
+  display: flex;
 }
 
 .glow-container {
@@ -800,6 +904,7 @@ select:enabled {
   .serves {
     background: #283335;
     display: flex;
+    flex-direction: column;
     align-items: start;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -815,6 +920,7 @@ select:enabled {
     display: flex;
     align-items: center;
     justify-content: start;
+    gap: 20px;
   }
   .borderDot {
     border-bottom-width: 1px;
@@ -833,7 +939,9 @@ select:enabled {
   }
   .subb {
     display: flex;
+    align-items: center;
     flex-wrap: nowrap;
+    gap: 4px;
     padding: 5px 15px;
     font-size: 13px;
     cursor: pointer;
@@ -852,7 +960,7 @@ select:enabled {
   }
   .allum {
     display: flex;
-    justify-content: center;
+    align-items: center;
   }
   .autoo {
     font-size: 12px;
