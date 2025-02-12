@@ -121,6 +121,7 @@ export default async function Page({ params }) {
         data={data}
         ShareUrl={ShareUrl}
         arise={arise}
+        id={idToCheck}
       />
     </div>
   );

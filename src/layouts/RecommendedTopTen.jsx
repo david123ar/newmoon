@@ -81,6 +81,7 @@ export default function RecommendedTopTen(props) {
                 ShareUrl={props.ShareUrl}
                 arise={props.arise}
                 selectL={selectL}
+                id={props.id || ''}
                 // firstName={props.firstName}
                 IsLoading={IsLoading}
               />

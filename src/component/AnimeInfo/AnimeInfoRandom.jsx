@@ -192,14 +192,20 @@ export default function Details(props) {
                   <div className="dotoi">&#x2022;</div>
                   <div className="homo">{gnt?.animeInfo?.tvInfo?.showType}</div>
                   <div className="doto">&#x2022;</div>
-                  <div className="namo">{props.selectL === 'en' ? gnt?.title : gnt?.japanese_title}</div>
+                  <div className="namo">
+                    {props.selectL === "en" ? gnt?.title : gnt?.japanese_title}
+                  </div>
                 </div>
-                <h1 className="title-large">{props.selectL === 'en' ? gnt?.title : gnt?.japanese_title}</h1>
+                <h1 className="title-large">
+                  {props.selectL === "en" ? gnt?.title : gnt?.japanese_title}
+                </h1>
 
                 <div className="newSpice">
                   <div className="innerSpice">
                     <div className="rat">{gnt?.animeInfo?.tvInfo?.rating}</div>
-                    <div className="qual">{gnt?.animeInfo?.tvInfo?.quality}</div>
+                    <div className="qual">
+                      {gnt?.animeInfo?.tvInfo?.quality}
+                    </div>
                     <div className="subE">
                       <FaClosedCaptioning size={14} />{" "}
                       {gnt?.animeInfo?.tvInfo?.sub || "Unknown"}
@@ -216,14 +222,16 @@ export default function Details(props) {
                   <div className="doto">&#x2022;</div>
                   <div className="typo">{gnt?.animeInfo?.tvInfo?.showType}</div>
                   <div className="doto">&#x2022;</div>
-                  <div className="duran">{gnt?.animeInfo?.tvInfo?.duration}</div>
+                  <div className="duran">
+                    {gnt?.animeInfo?.tvInfo?.duration}
+                  </div>
                 </div>
                 <div className="button-wrapper">
                   <Link
                     href={`${
-                      ls.getItem(`Rewo-${gnt?.id}`)
-                        ? `/watch/${ls.getItem(`Rewo-${gnt?.id}`)}`
-                        : `/watch/${gnt?.id}`
+                      ls.getItem(`Rewo-${props?.id}`)
+                        ? `/watch/${ls.getItem(`Rewo-${props?.id}`)}`
+                        : `/watch/${props?.id}`
                     }`}
                     className="btn-primary hero-button"
                     onClick={handleNavigation}
@@ -277,9 +285,12 @@ export default function Details(props) {
                   </span>
                 </p>
                 <p>
-                  Animoon is the best site to watch {props.selectL === 'en' ? gnt?.title : gnt?.japanese_title} SUB online, or
-                  you can even watch {props.selectL === 'en' ? gnt?.title : gnt?.japanese_title} DUB in HD quality. You can also
-                  find {gnt?.animeInfo?.Studios} anime on Animoon website.
+                  Animoon is the best site to watch{" "}
+                  {props.selectL === "en" ? gnt?.title : gnt?.japanese_title}{" "}
+                  SUB online, or you can even watch{" "}
+                  {props.selectL === "en" ? gnt?.title : gnt?.japanese_title}{" "}
+                  DUB in HD quality. You can also find {gnt?.animeInfo?.Studios}{" "}
+                  anime on Animoon website.
                 </p>
                 <Share
                   style={{ padding: 0, margin: 0 }}
