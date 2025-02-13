@@ -95,17 +95,17 @@ export default function Card({
           <div className="tick-item">
             <span
               className={`episode-count ${
-                data.tvInfo?.dub || data?.episodes?.dub ? "extra-epi-co" : ""
+                data?.tvInfo?.dub || data?.episodes?.dub ? "extra-epi-co" : ""
               }`}
             >
               <FaClosedCaptioning size={14} />{" "}
-              {data.tvInfo?.sub || data?.episodes?.sub}
+              {data?.tvInfo?.sub || data?.episodes?.sub}
             </span>
-            {data.tvInfo?.dub > 0 ||
+            {data?.tvInfo?.dub > 0 ||
               (data?.episodes?.dub > 0 && (
                 <span className="episode-count-dub d-flex a-center j-center">
                   <AiFillAudio size={14} />{" "}
-                  {data.tvInfo?.dub || data?.episodes?.dub}
+                  {data?.tvInfo?.dub || data?.episodes?.dub}
                 </span>
               ))}
           </div>

@@ -1,12 +1,11 @@
 "use client";
 import Artplayer, { html } from "artplayer";
-import artplayerPluginHlsQuality from "artplayer-plugin-hls-quality";
 import artplayerPluginChapter from "artplayer-plugin-chapter";
 import Hls from "hls.js";
 import React, { useRef, useEffect, useState } from "react";
-import { RiReplay10Fill } from "react-icons/ri";
-import { RiForward10Line } from "react-icons/ri";
+
 import "@/component/artplayer.css";
+import artplayerPluginHlsControl from "artplayer-plugin-hls-control";
 
 function ArtPlayer(props) {
   const artRef = useRef(null);
@@ -201,18 +200,49 @@ function ArtPlayer(props) {
       container: ".artplayer-app",
       url: finalUrl,
       type: "m3u8",
-      quality: qualities?.length > 0 ? qualities : [],
+      // quality: qualities?.length > 0 ? qualities : [],
       plugins: [
-        artplayerPluginHlsQuality({
-          control: false,
-          setting: true,
-          getResolution: (level) => level.height + "P",
-          title: "Quality",
-          auto: "Auto",
+        artplayerPluginHlsControl({
+          quality: {
+            // Show qualitys in control
+            control: false,
+            // Show qualitys in setting
+            setting: true,
+            // Get the quality name from level
+            getName: (level) => level.height + "P",
+            // I18n
+            title: "Quality",
+            auto: "Auto",
+          },
+          audio: {
+            // Show audios in control
+            control: true,
+            // Show audios in setting
+            setting: true,
+            // Get the audio name from track
+            getName: (track) => track.name,
+            // I18n
+            title: "Audio",
+            auto: "Auto",
+          },
         }),
+        artplayerPluginChapter({ chapters })
       ],
       customType: {
-        m3u8: playM3u8,
+        m3u8: function playM3u8(video, url, art) {
+          if (Hls.isSupported()) {
+            if (art.hls) art.hls.destroy();
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(video);
+            art.hls = hls;
+            art.on("destroy", () => hls.destroy());
+          } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = url;
+          } else {
+            art.notice.show = "Unsupported playback format: m3u8";
+          }
+        },
       },
       volume: 3,
       isLive: false,
@@ -306,8 +336,6 @@ function ArtPlayer(props) {
           },
         },
       ],
-
-      plugins: [artplayerPluginChapter({ chapters })],
 
       // highlight: [
       //   {
@@ -522,7 +550,14 @@ function ArtPlayer(props) {
         art.destroy(false);
       }
     };
-  }, [props.bhaiLink, props.sub, props.epId, props.trutie, props.currIdx ,props.selectedServer]);
+  }, [
+    props.bhaiLink,
+    props.sub,
+    props.epId,
+    props.trutie,
+    props.currIdx,
+    props.selectedServer,
+  ]);
 
   return (
     <>
