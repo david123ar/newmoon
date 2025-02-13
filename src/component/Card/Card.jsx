@@ -34,7 +34,7 @@ export default function Card({
 
   const formatTime = (total) => {
     const minutes = Math.floor(total / 60);
-    const seconds = total % 60;
+    const seconds = Math.floor(total % 60); // Ensure seconds is also an integer
     return `${minutes < 10 ? "0" : ""}${minutes}:${
       seconds < 10 ? "0" : ""
     }${seconds}`;
@@ -95,16 +95,19 @@ export default function Card({
           <div className="tick-item">
             <span
               className={`episode-count ${
-                data.tvInfo?.dub ? "extra-epi-co" : ""
+                data.tvInfo?.dub || data?.episodes?.dub ? "extra-epi-co" : ""
               }`}
             >
-              <FaClosedCaptioning size={14} /> {data.tvInfo?.sub}
+              <FaClosedCaptioning size={14} />{" "}
+              {data.tvInfo?.sub || data?.episodes?.sub}
             </span>
-            {data.tvInfo?.dub > 0 && (
-              <span className="episode-count-dub d-flex a-center j-center">
-                <AiFillAudio size={14} /> {data.tvInfo?.dub || "?"}
-              </span>
-            )}
+            {data.tvInfo?.dub > 0 ||
+              (data?.episodes?.dub > 0 && (
+                <span className="episode-count-dub d-flex a-center j-center">
+                  <AiFillAudio size={14} />{" "}
+                  {data.tvInfo?.dub || data?.episodes?.dub}
+                </span>
+              ))}
           </div>
           <img src={data.poster} alt="anime-card" className="anime-card-img" />
         </div>
@@ -148,7 +151,11 @@ export default function Card({
       {screenWidth > 1150 && isHovered && data && (
         <MouseOverCard
           data={data}
-          id={datr === "yes" ? data.id.split("-").pop() : data.data_id}
+          id={
+            datr === "yes" || itsMe === "true"
+              ? data.id.split("-").pop()
+              : data.data_id
+          }
         />
       )}
     </div>

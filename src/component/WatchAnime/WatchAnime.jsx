@@ -26,6 +26,7 @@ import Image from "next/image";
 import { SessionProvider, useSession } from "next-auth/react";
 import { FaCirclePlay } from "react-icons/fa6";
 import SignInSignUpModal from "@/component/SignSignup/SignInSignUpModal";
+import { Lily_Script_One } from "next/font/google";
 export default function WatchAnime(props) {
   const router = useRouter();
   const dropdownRef = useRef(null); // Reference for the dropdown
@@ -548,17 +549,18 @@ export default function WatchAnime(props) {
 
     // Create a new object with the selected data and timestamp
     const newObj = {
-      id: props.uiui.info.results.data.id,
-      poster: props.uiui.info.results.data.poster,
-      duration: props.uiui.info.results.data.animeInfo.tvInfo.duration,
-      rating: props.uiui.info.results.data.animeInfo.tvInfo.rating,
+      id: props.datao?.results?.data?.id,
+      poster: props.datao?.results?.data?.poster,
+      duration: props.datao?.results?.data?.animeInfo?.tvInfo?.duration,
+      rating: props.datao?.results?.data?.animeInfo?.tvInfo?.rating,
       episodes: {
-        sub: props.uiui.info.results.data.animeInfo.tvInfo.sub,
-        dub: props.uiui.info.results.data.animeInfo.tvInfo?.dub
-          ? props.uiui.info.results.data.animeInfo.tvInfo?.dub
+        sub: props.datao?.results?.data?.animeInfo?.tvInfo?.sub,
+        dub: props.datao?.results?.data?.animeInfo?.tvInfo?.dub
+          ? props.datao?.results?.data?.animeInfo?.tvInfo?.dub
           : "",
       },
-      name: props.uiui.info.results.data.title,
+      name: props.datao?.results?.data?.title,
+
       timestamp: new Date().toISOString(), // Add current time in ISO format
     };
 
@@ -574,16 +576,16 @@ export default function WatchAnime(props) {
     // Remove the entry from all options' local storage if it exists
     options.forEach((opt) => {
       const key = `animeData_${opt}`;
-      let data = JSON.parse(localStorage.getItem(key)) || [];
+      let data = JSON.parse(ls.getItem(key)) || [];
       data = data.filter((item) => item.id !== newObj.id);
-      localStorage.setItem(key, JSON.stringify(data));
+      ls.setItem(key, JSON.stringify(data));
     });
 
     // Create dynamic key for the current option
     const currentKey = `animeData_${option}`;
 
     // Retrieve existing data from local storage for the current option
-    let currentData = JSON.parse(localStorage.getItem(currentKey)) || [];
+    let currentData = JSON.parse(ls.getItem(currentKey)) || [];
 
     // Check if the id already exists in the current option's data
     const index = currentData.findIndex((item) => item.id === newObj.id);
@@ -597,7 +599,7 @@ export default function WatchAnime(props) {
     }
 
     // Store the updated current data back to local storage
-    localStorage.setItem(currentKey, JSON.stringify(currentData));
+    ls.setItem(currentKey, JSON.stringify(currentData));
   };
 
   const toggleDropdown = () => {

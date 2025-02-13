@@ -80,10 +80,10 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
           </div>
           {session ? (
             <img
-              src={session.user.randomImage || userData?.randomImage}
+              src={session.user.avatar || "userData?.randomImage"}
               className="profile-ico"
               onClick={toggleProfile}
-              alt={session.user.username || userData?.username || "user"}
+              alt={session.user.username || "userData?.username" || "user"}
             />
           ) : (
             <div className="nav-log" onClick={() => sign(true)}>

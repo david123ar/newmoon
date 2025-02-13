@@ -1,35 +1,54 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "../../../../../firebase";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { connectDB } from "@/lib/mongoClient";
+import { compare } from "bcrypt";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "@/lib/mongoClient";
+import { imageData } from "@/data/imageData"; // Import imageData
 
-const authOptions = {
-  secret: process.env.NEXTAUTH_SECRET || 'goodtogo++',
+// Function to get a random image from imageData
+const getRandomImage = () => {
+  const categories = Object.keys(imageData.hashtags);
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  const images = imageData.hashtags[randomCategory].images;
+  return images[Math.floor(Math.random() * images.length)];
+};
+
+export const authOptions = {
+  adapter: MongoDBAdapter(clientPromise),
+  session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
       name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials) {
-        // Query Firestore for a user with the provided email
-        const q = query(
-          collection(db, "users"),
-          where("email", "==", credentials.email)
-        );
-        const docs = await getDocs(q);
+        const db = await connectDB();
+        const users = db.collection("users");
 
-        if (docs.empty) {
-          throw new Error("No user found with this email");
+        const user = await users.findOne({ email: credentials.email });
+        if (!user) throw new Error("User not found");
+
+        const isValid = await compare(credentials.password, user.password);
+        if (!isValid) throw new Error("Invalid credentials");
+
+        // Assign a random avatar if the user doesn't have one
+        let avatar = user.avatar || getRandomImage();
+
+        // Update the user record if they didn't have an avatar before
+        if (!user.avatar) {
+          await users.updateOne({ email: credentials.email }, { $set: { avatar } });
         }
 
-        const userDoc = docs.docs[0].data(); // Get user data
-        const user = {
-          id: docs.docs[0].id,
-          email: userDoc.email,
-          username: userDoc.username,
-          randomImage: userDoc.randomImage,
-          timeOfJoining: userDoc.timeOfJoining,
+        return {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+          avatar,
+          timeOfJoining: user.timeOfJoining, // Include timeOfJoining
         };
-
-        return user; // Return the full user object with timestamp
       },
     }),
   ],
@@ -37,27 +56,23 @@ const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
         token.username = user.username;
-        token.randomImage = user.randomImage;
-        token.timeOfJoining = user.timeOfJoining;
+        token.avatar = user.avatar;
+        token.timeOfJoining = user.timeOfJoining; // Include timeOfJoining in token
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
-      session.user.email = token.email;
       session.user.username = token.username;
-      session.user.randomImage = token.randomImage;
-      session.user.timeOfJoining = token.timeOfJoining;
+      session.user.avatar = token.avatar;
+      session.user.timeOfJoining = token.timeOfJoining; // Include timeOfJoining in session
       return session;
     },
   },
-  pages: {
-    signIn: "/auth/signin",
-    signUp: "/auth/signup",
-  },
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: { signIn: "/login" },
 };
 
-export const GET = (req, res) => NextAuth(req, res, authOptions);
-export const POST = (req, res) => NextAuth(req, res, authOptions);
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

@@ -64,17 +64,18 @@ export default function Details(props) {
 
     // Create a new object with the selected data and timestamp
     const newObj = {
-      id: props.uiui.info.results.data.id,
-      poster: props.uiui.info.results.data.poster,
-      duration: props.uiui.info.results.data.animeInfo.tvInfo.duration,
-      rating: props.uiui.info.results.data.animeInfo.tvInfo.rating,
+      id: props?.id,
+      poster: props.uiui?.info?.results?.data?.poster,
+      duration: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.duration,
+      rating: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.rating,
       episodes: {
-        sub: props.uiui.info.results.data.animeInfo.tvInfo.sub,
-        dub: props.uiui.info.results.data.animeInfo.tvInfo?.dub
-          ? props.uiui.info.results.data.animeInfo.tvInfo?.dub
+        sub: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.sub,
+        dub: props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.dub
+          ? props.uiui?.info?.results?.data?.animeInfo?.tvInfo?.dub
           : "",
       },
-      name: props.uiui.info.results.data.title,
+      name: props.uiui?.info?.results?.data?.title,
+
       timestamp: new Date().toISOString(), // Add current time in ISO format
     };
 
