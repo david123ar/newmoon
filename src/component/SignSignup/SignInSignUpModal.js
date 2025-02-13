@@ -65,7 +65,7 @@ const SignInSignUpModal = (props) => {
 
   const handleSignOut = async () => {
     setLoading(true);
-    await signOut();
+    await signOut({ redirect: false });
     setLoading(false);
   };
 

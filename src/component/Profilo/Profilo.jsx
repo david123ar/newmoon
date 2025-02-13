@@ -19,7 +19,7 @@ export default function Profilo(props) {
   const handleSignOut = async () => {
     setLoading(true); // Start loading
     try {
-      await signOut(); // Sign out user using NextAuth
+      await signOut({ redirect: false }); // Sign out user using NextAuth
     } catch (err) {
       setError("Error signing out: " + err.message); // Handle sign out error
     } finally {
