@@ -208,19 +208,9 @@ function ArtPlayer(props) {
       setTimeDifference(diff);
       setGtr(""); // Reset gtr to avoid unnecessary re-renders
     } else {
-      const dateString = props?.date; // "Tue Feb 18 2025"
-      const timeString = props?.time; // "22:00"
-      
-      // Convert "Tue Feb 18 2025" to "2025-02-18"
-      const dateObj = new Date(dateString);
-      const formattedDate = dateObj.toISOString().split("T")[0]; // "YYYY-MM-DD"
-      
-      // Combine formatted date with time and convert to timestamp
-      const startTime = new Date(`${formattedDate}T${timeString}:00Z`).getTime();
-      console.log("start", startTime);
-      
+      const startTime = new Date(`${props.date} ${props.time}`).getTime();
       const now = Date.now();
-      const diff = Math.floor((now - startTime) / 1000);
+      const diff = Math.floor((now - startTime) / 1000); // Convert to seconds
       setTimeDifference(diff);
     }
   }, [gtr]); // ✅ `gtr` is the dependency
@@ -444,6 +434,12 @@ function ArtPlayer(props) {
     if (getInstance && typeof getInstance === "function") {
       getInstance(art);
     }
+
+    art.on("ready", () => {
+      art.currentTime = timeDifference;
+      ls.setItem(`duran-${props.anId}`, art.duration);
+      art.play();
+    });
 
     const dltr = ls.getItem("artplayer_settings");
     if (dltr) {
