@@ -460,7 +460,7 @@ export default function LivePage(props) {
                       dubEp={props.data?.episodes?.dub}
                       ratUra={props.data?.rating}
                       imgUra={props.data?.poster}
-                      nameUra={props.data?.title}
+                      nameUra={props.data?.name}
                       quality={quality}
                       secon={secon}
                       live={"yes"}
@@ -512,7 +512,7 @@ export default function LivePage(props) {
                 <img className="kenpa-img" src={props.data?.poster} alt="" />
               </div>
               <div className="kenpa-soul">
-                <div className="kenpa-name">{props.data?.title}</div>
+                <div className="kenpa-name">{props.data?.name}</div>
                 <div className="kenpa-sts">
                   <div className="kenpa-sts-1">{props.data?.rating}</div>
                   <div className="kenpa-sts-2">{props.data?.quality}</div>

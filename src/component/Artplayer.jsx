@@ -544,7 +544,7 @@ function ArtPlayer(props) {
         }
       });
     }
-
+ 
     return () => {
       if (art && art.destroy) {
         art.destroy(false);

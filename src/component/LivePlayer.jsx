@@ -87,7 +87,7 @@ function ArtPlayer(props) {
   ls.setItem(`dubEp-${props.anId}`, props.dubEp);
   ls.setItem(`epNumo-${props.anId}`, props.epNum);
   ls.setItem(`subLang-${props.anId}`, props.sub);
-  ls.setItem(`subEp-${props.epId}`, props.sub); 
+  ls.setItem(`subEp-${props.epId}`, props.sub);
   ls.setItem(`imgUra-${props.anId}`, props.imgUra);
   ls.setItem(`ratUra-${props.anId}`, props.ratUra);
   ls.setItem(`dura-${props.anId}`, props.durEp);
@@ -198,6 +198,10 @@ function ArtPlayer(props) {
   const [gtr, setGtr] = useState(""); // State to track 'yes' or 'no'
   const [timeDifference, setTimeDifference] = useState(null);
 
+  const startTime = new Date(`${props.date} ${props.time}`).getTime();
+  const now = Date.now();
+  const diff = Math.floor((now - startTime) / 1000);
+
   useEffect(() => {
     if (gtr === "yes") {
       const startTime = new Date(`${props.date} ${props.time}`).getTime();
@@ -215,6 +219,10 @@ function ArtPlayer(props) {
     if (gtr === "yes") {
       art.currentTime = timeDifference;
     }
+    art.on("ready", () => {
+      art.currentTime = diff;
+      art.play();
+    });
   };
 
   useEffect(() => {
@@ -425,13 +433,6 @@ function ArtPlayer(props) {
     if (getInstance && typeof getInstance === "function") {
       getInstance(art);
     }
-
-    art.on("ready", () => {
-      if (props.secon !== null) {
-        art.currentTime = props.secon;
-        art.play();
-      }
-    });
 
     const dltr = ls.getItem("artplayer_settings");
     if (dltr) {
