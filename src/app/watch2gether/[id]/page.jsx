@@ -52,14 +52,15 @@ export default async function page({ params, searchParams }) {
     const strN = JSON.parse(str);
     datal = strN;
 
-    const startTime = new Date(`${datal?.date} ${datal?.time}`).getTime();
+    const startTime = new Date(`${datal?.date}T${datal?.time}Z`).getTime();
     console.log("start", startTime);
-
+    
     const now = Date.now();
     console.log("now", now);
-
-    difference = Math.floor((now - startTime) / 1000); // Convert to seconds
+    
+    const difference = Math.floor((now - startTime) / 1000); // Convert to seconds
     console.log("difference", difference);
+    
     let dubTruth = "";
 
     if (streamAnime.episodes.dub >= 1) {

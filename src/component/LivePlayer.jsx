@@ -208,7 +208,9 @@ function ArtPlayer(props) {
       setTimeDifference(diff);
       setGtr(""); // Reset gtr to avoid unnecessary re-renders
     } else {
-      const startTime = new Date(`${props.date} ${props.time}`).getTime();
+      const startTime = new Date(`${props?.date}T${props?.time}Z`).getTime();
+      console.log("start", startTime);
+      
       const now = Date.now();
       const diff = Math.floor((now - startTime) / 1000);
       setTimeDifference(diff);
