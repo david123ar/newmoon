@@ -219,6 +219,7 @@ function ArtPlayer(props) {
     if (gtr === "yes") {
       art.currentTime = timeDifference;
     }
+    art.currentTime = timeDifference;
     art.on("ready", () => {
       art.currentTime = timeDifference;
       ls.setItem(`duran-${props.anId}`, art.duration);
