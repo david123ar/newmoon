@@ -207,12 +207,12 @@ function ArtPlayer(props) {
       console.log("gtrr", diff);
       setTimeDifference(diff);
       setGtr(""); // Reset gtr to avoid unnecessary re-renders
+    } else {
+      const startTime = new Date(`${props.date} ${props.time}`).getTime();
+      const now = Date.now();
+      const diff = Math.floor((now - startTime) / 1000);
+      setTimeDifference(diff);
     }
-    console.log("didnt worked");
-    const startTime = new Date(`${props.date} ${props.time}`).getTime();
-    const now = Date.now();
-    const diff = Math.floor((now - startTime) / 1000);
-    setTimeDifference(diff);
   }, [gtr]); // ✅ `gtr` is the dependency
 
   const getInstance = (art) => {
@@ -221,6 +221,7 @@ function ArtPlayer(props) {
     }
     art.on("ready", () => {
       art.currentTime = timeDifference;
+      ls.setItem(`duran-${props.anId}`, art.duration);
       art.play();
     });
   };
@@ -439,22 +440,6 @@ function ArtPlayer(props) {
       let currentT = JSON.parse(dltr).times[ls.getItem(`newW-${props.epId}`)]
         ? JSON.parse(dltr).times[ls.getItem(`newW-${props.epId}`)]
         : 0;
-      art.on("ready", () => {
-        if (props.secon !== null) {
-          art.currentTime = props.secon;
-          art.play();
-        } else {
-          art.currentTime = currentT;
-        }
-
-        ls.setItem(`duran-${props.anId}`, art.duration);
-
-        if (props.onn1 === "On") {
-          art.play();
-        } else {
-          art.pause();
-        }
-      });
 
       art.on("video:timeupdate", () => {
         if (props.onn3 === "On") {
