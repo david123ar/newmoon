@@ -35,7 +35,7 @@ export default async function page({ params, searchParams }) {
     data = existingAnime.info;
     let dat;
     dat = existingAnime.episodes;
-    episodes = dat
+    episodes = dat;
 
     // Determine the episode ID
     const epId = dat?.results?.episodes[0]?.id;
@@ -52,15 +52,23 @@ export default async function page({ params, searchParams }) {
     const strN = JSON.parse(str);
     datal = strN;
 
-    const startTime = new Date(`${datal?.date}T${datal?.time}Z`).getTime();
+    const dateString = datal?.date; // "Tue Feb 18 2025"
+    const timeString = datal?.time; // "22:00"
+
+    // Convert "Tue Feb 18 2025" to "2025-02-18"
+    const dateObj = new Date(dateString);
+    const formattedDate = dateObj.toISOString().split("T")[0]; // "YYYY-MM-DD"
+
+    // Combine formatted date with time and convert to timestamp
+    const startTime = new Date(`${formattedDate}T${timeString}:00Z`).getTime();
     console.log("start", startTime);
-    
+
     const now = Date.now();
     console.log("now", now);
-    
+
     const difference = Math.floor((now - startTime) / 1000); // Convert to seconds
     console.log("difference", difference);
-    
+
     let dubTruth = "";
 
     if (streamAnime.episodes.dub >= 1) {

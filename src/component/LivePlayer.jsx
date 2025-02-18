@@ -208,7 +208,15 @@ function ArtPlayer(props) {
       setTimeDifference(diff);
       setGtr(""); // Reset gtr to avoid unnecessary re-renders
     } else {
-      const startTime = new Date(`${props?.date}T${props?.time}Z`).getTime();
+      const dateString = props?.date; // "Tue Feb 18 2025"
+      const timeString = props?.time; // "22:00"
+      
+      // Convert "Tue Feb 18 2025" to "2025-02-18"
+      const dateObj = new Date(dateString);
+      const formattedDate = dateObj.toISOString().split("T")[0]; // "YYYY-MM-DD"
+      
+      // Combine formatted date with time and convert to timestamp
+      const startTime = new Date(`${formattedDate}T${timeString}:00Z`).getTime();
       console.log("start", startTime);
       
       const now = Date.now();
