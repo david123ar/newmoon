@@ -29,7 +29,7 @@ import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import Navbar from "../Navbar/Navbar";
 import Profilo from "../Profilo/Profilo";
 import Footer from "../Footer/Footer";
-import ArtPlayer from "../Artplayer";
+import ArtPlayer from "../LivePlayer";
 
 function useTimer(date, time) {
   const [timeElapsed, setTimeElapsed] = useState("");
@@ -447,11 +447,11 @@ export default function LivePage(props) {
                       selectedServer={selectedServer}
                       onn1={onn1}
                       onn2={onn2}
-                      onn3={onn3} 
+                      onn3={onn3}
                       getData={getData}
                       err={err}
                       subtitles={subtitles}
-                      date={props.data?.date} 
+                      date={props.data?.date}
                       time={props.data?.time}
                       introd={introd}
                       outrod={outrod}
@@ -464,7 +464,7 @@ export default function LivePage(props) {
                       quality={quality}
                       secon={secon}
                       live={"yes"}
-                      sub={props.data?.sub === true ? 'sub' : 'dub'}
+                      sub={props.data?.sub === true ? "sub" : "dub"}
                       IsLoading={IsLoading}
                     />
                   )}

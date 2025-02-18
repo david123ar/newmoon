@@ -802,7 +802,7 @@ export default function WatchAnime(props) {
                           dubEp={
                             props.datao?.results.data.animeInfo.tvInfo?.dub
                           }
-                          ratUra={
+                          ratUra={ 
                             props.datao?.results.data.animeInfo.tvInfo?.rating
                           }
                           imgUra={props.datao?.results.data.poster}
