@@ -74,7 +74,7 @@
   display: flex;
   position: relative;
   flex-wrap: wrap;
-  gap: 20px
+  gap: 20px;
 }
 .btn-primary {
   background: var(--theme);
@@ -85,8 +85,6 @@
   backdrop-filter: blur(10px);
   color: black;
 }
-
-
 
 .details-container-background {
   position: absolute;
@@ -132,7 +130,6 @@
   display: block; /* Removes inline spacing for images */
 }
 
-
 .anime-statistics-tiles-wrapper {
   gap: 2px;
 }
@@ -171,7 +168,6 @@
   color: white;
   font-weight: 500;
   font-size: 15px;
-
 }
 .title-large {
   font-size: 36px;
@@ -342,6 +338,33 @@
 }
 .details-header-genre {
   border-bottom: 1px solid grey;
+}
+.hero-button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  gap: 5px;
+  border-radius: 30px;
+  font-family: "Poppins", sans-serif;
+  text-decoration: none !important;
+}
+.button-wrapper {
+  display: flex;
+  gap: 10px;
+}
+.btn-primary {
+  background: var(--theme);
+  color: black !important;
+}
+
+.btn-secondary-list {
+  background: #fff;
+  backdrop-filter: blur(10px);
+  color: black;
 }
 @media screen and (max-width: 1200px) {
   .details-header-primary {

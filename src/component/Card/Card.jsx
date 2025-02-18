@@ -93,21 +93,24 @@ export default function Card({
               </span>
             ))}
           <div className="tick-item">
-            <span
-              className={`episode-count ${
-                data?.tvInfo?.dub || data?.episodes?.dub ? "extra-epi-co" : ""
-              }`}
-            >
-              <FaClosedCaptioning size={14} />{" "}
-              {data?.tvInfo?.sub || data?.episodes?.sub}
-            </span>
-            {data?.tvInfo?.dub > 0 ||
-              (data?.episodes?.dub > 0 && (
-                <span className="episode-count-dub d-flex a-center j-center">
-                  <AiFillAudio size={14} />{" "}
-                  {data?.tvInfo?.dub || data?.episodes?.dub}
-                </span>
-              ))}
+            {(data?.tvInfo?.sub || data?.episodes?.sub) && (
+              <span
+                className={`episode-count ${
+                  data?.tvInfo?.dub || data?.episodes?.dub ? "extra-epi-co" : ""
+                }`}
+              >
+                <FaClosedCaptioning size={14} />{" "}
+                {data?.tvInfo?.sub || data?.episodes?.sub}
+              </span>
+            )}
+
+            {(itsMe === "true" && data?.episodes?.dub > 0) ||
+            (itsMe !== "true" && data?.tvInfo?.dub > 0) ? (
+              <span className="episode-count-dub d-flex a-center j-center">
+                <AiFillAudio size={14} />{" "}
+                {itsMe === "true" ? data?.episodes?.dub : data?.tvInfo?.dub}
+              </span>
+            ) : null}
           </div>
           <img src={data.poster} alt="anime-card" className="anime-card-img" />
         </div>

@@ -6,11 +6,10 @@ import "./signmodal.css";
 
 // Function to get a random avatar
 const getRandomImage = () => {
-  const categories = Object.keys(imageData.hashtags); // Get all categories (e.g., "DragonBall", "OnePiece")
-  const randomCategory =
-    categories[Math.floor(Math.random() * categories.length)]; // Pick a random category
-  const images = imageData.hashtags[randomCategory].images; // Get images from the category
-  return images[Math.floor(Math.random() * images.length)]; // Pick a random image
+  const categories = Object.keys(imageData.hashtags);
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  const images = imageData.hashtags[randomCategory].images;
+  return images[Math.floor(Math.random() * images.length)];
 };
 
 const SignInSignUpModal = (props) => {
@@ -24,9 +23,20 @@ const SignInSignUpModal = (props) => {
   const [rememberMe, setRememberMe] = useState(false);
   const { data: session } = useSession();
 
+  // Load stored credentials
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("password");
+    const savedUsername = localStorage.getItem("username");
+
+    if (savedEmail) setEmail(savedEmail);
+    if (savedPassword) setPassword(savedPassword);
+    if (savedUsername) setUsername(savedUsername);
+  }, []);
+
   useEffect(() => {
     if (isSignUp) {
-      setAvatar(getRandomImage()); // Assign a random avatar on sign-up mode
+      setAvatar(getRandomImage());
     }
   }, [isSignUp]);
 
@@ -47,6 +57,11 @@ const SignInSignUpModal = (props) => {
     const data = await res.json();
     setLoading(false);
     if (!res.ok) return setError(data.message);
+
+    // Store credentials locally
+    localStorage.setItem("email", email);
+    localStorage.setItem("password", password);
+    localStorage.setItem("username", username);
 
     await signIn("credentials", { email, password, redirect: false });
   };
@@ -85,7 +100,6 @@ const SignInSignUpModal = (props) => {
   
     setMessage("Password reset email sent! Check your inbox.");
   };
-  
 
   return (
     <div
@@ -156,18 +170,6 @@ const SignInSignUpModal = (props) => {
               />
             </div>
 
-            {/* {isSignUp && (
-              <div className="midO">
-                <div className="midOT">AVATAR PREVIEW</div>
-                <img
-                  src={avatar}
-                  style={{ width: 50, height: 50 }}
-                  alt="Avatar"
-                  className="avatar-preview"
-                />
-              </div>
-            )} */}
-
             <div className="midI">
               <label className="kinto">
                 <input
@@ -183,7 +185,7 @@ const SignInSignUpModal = (props) => {
                   className="kinto forget-pass"
                 >
                   Forgot Password?
-                </button>
+              </button>
             </div>
 
             {error && <p style={{ color: "#ff9999" }}>{error}</p>}

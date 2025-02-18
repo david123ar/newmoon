@@ -779,7 +779,7 @@ export default function WatchAnime(props) {
                       {clickedId === props.epId && props.datajSub ? (
                         <ArtPlayer
                           data={props.data}
-                          epId={props.epId}
+                          epId={props.epId} 
                           anId={props.anId}
                           epNumb={epNumb}
                           bhaiLink={bhaiLink}

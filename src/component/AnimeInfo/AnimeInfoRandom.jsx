@@ -228,6 +228,7 @@ export default function Details(props) {
                   </div>
                 </div>
                 <div className="button-wrapper">
+                  {
                   <Link
                     href={`${
                       ls.getItem(`Rewo-${props?.id}`)
@@ -238,13 +239,13 @@ export default function Details(props) {
                     onClick={handleNavigation}
                   >
                     <div>
-                      <FaPlay size={12} />
+                      <FaPlay size={12} /> 
                     </div>
                     <div>Watch Now</div>
-                  </Link>
+                  </Link>}
                   <div className="dropdown-container" ref={dropdownRef}>
                     <button
-                      className="btn-secondary hero-button"
+                      className="btn-secondary-list hero-button"
                       onClick={() => {
                         toggleDropdown();
                       }}
@@ -276,8 +277,8 @@ export default function Details(props) {
                 </div>
                 <p>
                   {descIsCollapsed
-                    ? gnt?.description?.slice(0, 350) + "..."
-                    : gnt?.description}
+                    ? gnt?.animeInfo?.Overview?.slice(0, 350) + "..."
+                    : gnt?.animeInfo?.Overview}
                   <span
                     style={{ cursor: "pointer" }}
                     onClick={() => setDescIsCollapsed((prev) => !prev)}

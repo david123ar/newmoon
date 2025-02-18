@@ -1,0 +1,221 @@
+.container {
+  position: relative;
+  width: 300px; /* Fixed width */
+  height: 170px; /* Fixed height */
+  overflow: hidden;
+  /* border-radius: 10px; Optional rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; /* Default background image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(10px); /* Blur effect for the background image */
+  z-index: 0;
+}
+
+/* Dynamically apply background-image based on a class */
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Black overlay with transparency */
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  width: 100%; /* Ensures it spans the entire container width */
+  z-index: 2; /* Keeps content above the background and overlay */
+  text-align: center; /* Centers text content horizontally */
+  color: white; /* White text color for visibility */
+  display: flex; /* Aligns content vertically and horizontally */
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; /* Stacks content vertically */
+}
+
+.poster {
+  width: 70px; /* Fixed width for the poster */
+  height: 90px; /* Fixed height for the poster */
+  border-radius: 5px; /* Optional rounded corners for the poster */
+  object-fit: cover; /* Ensures the image fits properly without distortion */
+  display: block; /* Ensures the image behaves as a block element */
+  /* margin-bottom: 10px; Adds spacing below the poster */
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
+  padding: 0px 10px;
+  font-size: 0.8em;
+  margin-bottom: 10px;
+}
+
+.episode {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
+  padding: 0px 10px;
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.epol {
+  background: #fff;
+  color: black;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.epoy {
+  color: #9e9a9a;
+}
+
+.rando {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.sec-apt {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.an-name {
+  color: #e7b6b0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.rn-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.bott-G {
+  display: flex;
+  gap: 5px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ott-1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--theme);
+}
+
+.ott-2 {
+  font-size: 14px;
+  color: rgb(136, 129, 129);
+}
+
+.ott-3 {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.found-l {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.found-al {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 77%;
+  margin-left: 10px;
+  margin-top: 100px;
+}
+
+.fate-l {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+}
+
+.mid0 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.topi-l {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.topi-2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.emir {
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  background: #4d4c4c;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.opt-1 {
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.opt-2 {
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.opt-3 {
+  font-size: 15px;
+  font-weight: 300;
+  color: #9e9a9a;
+}
+
+.hed-1 {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--theme);
+}
+
+.kirt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: #fff;
+  color: black;
+  font-size: 14px;
+  font-weight: 300;
+  border-radius: 20px;
+}

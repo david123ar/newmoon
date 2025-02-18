@@ -8,6 +8,10 @@
   height: 30px;
 }
 
+.sync {
+  color: #fff;
+}
+
 .subtitle-text {
   position: relative; /* Allows absolute positioning of the background */
   color: #fff; /* Text color */
