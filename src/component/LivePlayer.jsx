@@ -133,21 +133,6 @@ function ArtPlayer(props) {
     ls.setItem("Recent-animes", props.anId);
   }
 
-  if (dltt) {
-    if (JSON.parse(dltt).times[props.bhaiLink]) {
-      if (ls.getItem(props.anId.toString())) {
-        console.log(ls.getItem(props.anId.toString()));
-        let vals = ls.getItem(props.anId.toString()).split(",");
-        ls.setItem(`Rewatch-${props.anId.toString()}`, props.epId);
-        if (!vals.includes(props.epId.toString())) {
-          vals.push(props.epId.toString());
-          ls.setItem(props.anId.toString(), vals.join(","));
-        }
-      } else {
-        ls.setItem(props.anId.toString(), props.epId.toString());
-      }
-    }
-  }
   let currentPrefixIndex = 0;
   const prefixes = [
     "fgh5",
@@ -191,6 +176,22 @@ function ArtPlayer(props) {
       end: parseInt(props.outrod.end),
       title: "Ending",
     });
+  }
+
+  if (dltt) {
+    if (JSON.parse(dltt).times[finalUrl]) {
+      if (ls.getItem(props.anId.toString())) {
+        console.log(ls.getItem(props.anId.toString()));
+        let vals = ls.getItem(props.anId.toString()).split(",");
+        ls.setItem(`Rewatch-${props.anId.toString()}`, props.epId);
+        if (!vals.includes(props.epId.toString())) {
+          vals.push(props.epId.toString());
+          ls.setItem(props.anId.toString(), vals.join(","));
+        }
+      } else {
+        ls.setItem(props.anId.toString(), props.epId.toString());
+      }
+    }
   }
 
   const [art, setArt] = useState(null); // Store Artplayer instance
