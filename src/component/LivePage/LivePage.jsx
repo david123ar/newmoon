@@ -75,7 +75,7 @@ function useTimer(date, time) {
 
     return () => clearInterval(timerId); // Cleanup interval on unmount
   }, [date, time]);
-
+  console.log(timeElapsed)
   return timeElapsed;
 }
 
