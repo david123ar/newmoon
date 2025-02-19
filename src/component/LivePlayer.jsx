@@ -197,7 +197,10 @@ function ArtPlayer(props) {
   const [art, setArt] = useState(null); // Store Artplayer instance
 
   const [gtr, setGtr] = useState(""); // State to track 'yes' or 'no'
-  const [timeDifference, setTimeDifference] = useState(null);
+  const startTime = new Date(`${props.date} ${props.time}`).getTime();
+  const now = Date.now();
+  const diff = Math.floor((now - startTime) / 1000);
+  const [timeDifference, setTimeDifference] = useState(diff);
 
   useEffect(() => {
     if (gtr === "yes") {
