@@ -4,6 +4,7 @@ import { FaComments, FaRandom } from "react-icons/fa";
 import { PiBroadcastFill } from "react-icons/pi";
 import { BsBroadcast } from "react-icons/bs";
 import "./NavCss/action.css";
+import Link from "next/link";
 
 const Action = (props) => {
   const [selectedLang, setSelectedLang] = useState("en");
@@ -20,12 +21,12 @@ const Action = (props) => {
   }
   return (
     <div className={`action-comb ${props.isInSidebar ? 'action-new-c' : ''}`}>
-      <div className={`action-bloc ${props.isInSidebar ? 'action-bS' : ''}`}>
+      <Link href={'/watch2gether'} className={`action-bloc ${props.isInSidebar ? 'action-bS' : ''}`}>
         <div className={`action-ico ${props.isInSidebar ? 'action-iS' : ''}`}>
           <PiBroadcastFill/>
         </div>
         <div>Watch2gether</div>
-      </div>
+      </Link>
 
       <div className={`action-bloc ${props.isInSidebar ? 'action-bS' : ''}`}>
         <div className={`action-ico ${props.isInSidebar ? 'action-iS' : ''}`}>

@@ -34,7 +34,22 @@ export async function generateMetadata({ params }) {
 
     const existingAnime = await animeCollection.findOne({ _id: idToCheck });
 
-    const title = existingAnime?.info?.results?.data?.title;
+    let datao = ''
+
+    if (!existingAnime) {
+      const res = await fetch(`https://vimal.animoon.me/api/info?id=${idToCheck}`);
+      const dat = await res.json();
+    
+      const rest = await fetch(`https://vimal.animoon.me/api/episodes/${idToCheck}`);
+      const epis = await rest.json();
+    
+      if (dat?.results?.data?.title && Array.isArray(epis?.results?.episodes) && epis.results.episodes.length > 0) {
+        await animeCollection.insertOne({ _id: idToCheck, info: dat, episodes: epis });
+        datao = dat
+      }
+    } 
+
+    const title = existingAnime ? existingAnime?.info?.results?.data?.title : datao?.results?.data?.title;
 
     return {
       title: `Watch ${title} English Sub/Dub online free on Animoon.me`,
@@ -68,6 +83,7 @@ export default async function page({ params, searchParams }) {
   const idToCheck = param.id;
 
   const existingAnime = await animeCollection.findOne({ _id: idToCheck });
+
   console.log("anime data from db", existingAnime);
 
   // Fetch anime info with force-cache and revalidation
@@ -84,6 +100,20 @@ export default async function page({ params, searchParams }) {
   //   3600 // Revalidate after 1 hour
   // );
   data = existingAnime.episodes;
+
+  if (!existingAnime) {
+    const res = await fetch(`https://vimal.animoon.me/api/info?id=${idToCheck}`);
+    const dat = await res.json();
+  
+    const rest = await fetch(`https://vimal.animoon.me/api/episodes/${idToCheck}`);
+    const epis = await rest.json();
+  
+    if (dat?.results?.data?.title && Array.isArray(epis?.results?.episodes) && epis.results.episodes.length > 0) {
+      await animeCollection.insertOne({ _id: idToCheck, info: dat, episodes: epis });
+      datao = dat
+      data = epis
+    }
+  } 
 
   // Determine the episode ID
   const epId = episodeIdParam || data?.results?.episodes[0]?.id;

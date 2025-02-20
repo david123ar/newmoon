@@ -99,6 +99,7 @@
   display: flex;
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 300px;
   gap: 10px;
 }
 
@@ -139,6 +140,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 .found-al {
@@ -165,6 +167,7 @@
 
 .topi-l {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 20px;
 }
@@ -173,6 +176,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 5px;
 }
 
@@ -218,4 +222,46 @@
   font-size: 14px;
   font-weight: 300;
   border-radius: 20px;
+}
+
+@media screen and (max-width: 1300px) {
+  .found-al {
+    width: 100%;
+    margin: 10px;
+    margin-top: 100px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .topi-44 {
+    display: none;
+  }
+  .container {
+    width: 100%;
+  }
+  .found-al {
+    margin: 0;
+    margin-top: 100px;
+  }
+  .sec-apt {
+    width: 100%;
+  }
+  .hed-1 {
+    font-size: 25px;
+  }
+  .topi-ll {
+    justify-content: center;
+  }
+  .topi-l {
+    margin: 10px;
+  }
+  .topi-2 {
+    margin: 10px;
+  }
+  .emir {
+    font-size: 13px;
+  }
+  .kirt {
+    font-size: 13px;
+  }
 }

@@ -3,7 +3,7 @@ import RecommendedTopTen from "../../layouts/RecommendedTopTen";
 import { MongoClient } from "mongodb";
 
 export async function generateMetadata({ params }) {
-  const param = await params
+  const param = await params;
   const idToCheck = param.anime;
 
   const mongoUri =
@@ -15,6 +15,8 @@ export async function generateMetadata({ params }) {
   const client = new MongoClient(mongoUri);
   let data;
   let existingAnime = [];
+
+  let datao = "";
 
   try {
     // Connect to MongoDB
@@ -42,6 +44,31 @@ export async function generateMetadata({ params }) {
     // Check if anime from spotlights exists in the animeInfo collection
     const animeCollection = db.collection(animeCollectionName.trim());
     existingAnime = await animeCollection.findOne({ _id: idToCheck });
+    
+    if (!existingAnime) {
+      const res = await fetch(
+        `https://vimal.animoon.me/api/info?id=${idToCheck}`
+      );
+      const dat = await res.json();
+
+      const rest = await fetch(
+        `https://vimal.animoon.me/api/episodes/${idToCheck}`
+      );
+      const epis = await rest.json();
+
+      if (
+        dat?.results?.data?.title &&
+        Array.isArray(epis?.results?.episodes) &&
+        epis.results.episodes.length > 0
+      ) {
+        await animeCollection.insertOne({
+          _id: idToCheck,
+          info: dat,
+          episodes: epis,
+        });
+        datao = dat;
+      }
+    }
   } catch (error) {
     console.error("Error fetching data from MongoDB or API:", error.message);
   } finally {
@@ -55,7 +82,7 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title = existingAnime?.info?.results?.data?.title;
+  const title = existingAnime ? existingAnime?.info?.results?.data?.title : datao?.results?.data?.title;
   return {
     title: `Watch ${title} English Sub/Dub online free on Animoon.me`,
     description: `Animoon is the best site to watch ${title} SUB online, or you can even watch ${title} DUB in HD quality. You can also watch underrated anime on Animoon.`,
@@ -63,7 +90,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const param = await params
+  const param = await params;
   const idToCheck = param.anime;
 
   const mongoUri =
@@ -102,6 +129,29 @@ export default async function Page({ params }) {
     // Check if anime from spotlights exists in the animeInfo collection
     const animeCollection = db.collection(animeCollectionName.trim());
     existingAnime = await animeCollection.findOne({ _id: idToCheck });
+    if (!existingAnime) {
+      const res = await fetch(
+        `https://vimal.animoon.me/api/info?id=${idToCheck}`
+      );
+      const dat = await res.json();
+
+      const rest = await fetch(
+        `https://vimal.animoon.me/api/episodes/${idToCheck}`
+      );
+      const epis = await rest.json();
+
+      if (
+        dat?.results?.data?.title &&
+        Array.isArray(epis?.results?.episodes) &&
+        epis.results.episodes.length > 0
+      ) {
+        await animeCollection.insertOne({
+          _id: idToCheck,
+          info: dat,
+          episodes: epis,
+        });
+      }
+    }
   } catch (error) {
     console.error("Error fetching data from MongoDB or API:", error.message);
   } finally {

@@ -5,8 +5,14 @@
   justify-content: center;
   margin: 0;
 }
+
+.kinj-Fa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .kinj {
-  margin-top: 200px;
+  margin-top: 65px;
   display: flex;
   flex-direction: column;
   gap: 50px;
@@ -21,7 +27,16 @@
   justify-content: center;
 }
 .specif {
+  margin: 20px;
   margin-bottom: -20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dtoP {
+  display: flex;
+  flex-wrap: wrap;
 }
 .namo {
   padding: 2px 4px;
@@ -29,8 +44,15 @@
   font-weight: 500;
   font-size: 15px;
   align-items: center;
-  color: rgb(164, 180, 175);
+  color: rgb(171, 180, 177) !important;
 }
+
+.crt-bt {
+  margin: 20px;
+  font-size: 25px;
+  font-weight: 700;
+}
+
 .homo {
   padding: 2px 4px;
   width: fit-content;
@@ -267,7 +289,9 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
-
+}
+.str-t:hover {
+  cursor: pointer;
 }
 .cr1 {
   padding: 10px 20%;
@@ -288,8 +312,16 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
-
 }
+
+.cr1:hover {
+  cursor: pointer;
+}
+
+.cr2:hover {
+  cursor: pointer;
+}
+
 .rb1 {
   display: flex;
   flex-direction: column;
@@ -303,7 +335,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;  
+  gap: 5px;
 }
 .tyi {
   font-size: 13px;
@@ -317,7 +349,6 @@
 .subi {
   color: #c7bebe;
 }
-
 
 .react-calendar {
   background-color: #000; /* Black background */
@@ -343,12 +374,12 @@
 
 /* .react-calendar__navigation button {
   background-color: #111; /* Navigation buttons */
-  /* color: #61dafb; Navigation text color */
-/* } */ 
+/* color: #61dafb; Navigation text color */
+/* } */
 
 /* .react-calendar__month-view__weekdays {
   /* background-color: #000; /* Weekday background */
-  /* color: #888; Dimmed weekday labels */ 
+/* color: #888; Dimmed weekday labels */
 /* } */
 /* Overlay to dim the background */
 .overlay {
@@ -387,16 +418,18 @@
   gap: 20px;
 }
 
-.cal-ut1{
+.cal-ut1 {
   /* background: red; */
   color: #000;
-} 
-
+}
+.cal-ut1:hover {
+  cursor: pointer;
+}
 /* select {
   width: 80px;
   overflow-y: auto;
   height: 300px; /* Ensures select element has fixed height */
-/* } */ 
+/* } */
 
 option {
   height: 50px; /* Set a fixed height for options */
@@ -427,4 +460,48 @@ option {
 
 .rn-is {
   font-size: 13px;
+}
+
+@media screen and (max-width: 1175px) {
+  .dtoP {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .anime-container {
+    width: 100%;
+  }
+  .rn1 {
+    width: 100%;
+    padding: 20px;
+  }
+  .rn-input {
+    width: 300px;
+  }
+  .rb1 {
+    width: 100%;
+    padding: 20px;
+  }
+  .rn-sug {
+    font-size: 13px;
+  }
+  .rn-all {
+    width: 100%;
+  }
+  .rb-all {
+    width: 100%;
+  }
+  .rn-sugg {
+    font-size: 13px;
+  }
+  .cr1 {
+    padding: 10px 15%;
+  }
+  .cr2 {
+    padding: 10px 8%;
+  }
+  .specif {
+    display: none;
+  }
 }
