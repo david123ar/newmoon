@@ -2,6 +2,7 @@ import FilterComp from "@/component/FilterComp/FilterComp";
 import React from "react";
 import "./filterpage.css";
 import { MongoClient } from "mongodb";
+import Advertize from "@/component/Advertize/Advertize";
 
 // MongoDB connection detail
 export async function generateMetadata({ params }) {
@@ -100,6 +101,7 @@ export default async function page({ searchParams }) {
         totalDocs={filteredAnimes.results.totalResults}
         collectionName={'Filter Results'}
       />
+      <Advertize/>
     </div>
   );
 }

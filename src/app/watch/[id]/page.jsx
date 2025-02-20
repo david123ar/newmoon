@@ -4,6 +4,7 @@ import React from "react";
 // import * as cheerio from "cheerio";
 import { MongoClient, ObjectId } from "mongodb";
 import Watchi from "@/component/Watchi/page";
+import Advertize from "@/component/Advertize/Advertize";
 // import { currentUser } from "@clerk/nextjs/server";
 
 async function fetchDataFromAPI(url, revalidate) {
@@ -750,6 +751,7 @@ export default async function page({ params, searchParams }) {
         arise={arise}
         raw={raw}
       />
+      <Advertize/>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import WatchLive from "@/component/WatchLive/WatchLive";
 import { MongoClient } from "mongodb";
+import Advertize from "@/component/Advertize/Advertize";
 
 export default async function page({ params, searchParams }) {
   const searchParam = await searchParams;
@@ -134,6 +135,7 @@ export default async function page({ params, searchParams }) {
         animeId={searchParam.animeId}
         episodes={episodes}
       />
+      <Advertize/>
     </div>
   );
 }

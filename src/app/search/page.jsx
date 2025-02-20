@@ -2,6 +2,7 @@ import FilterComp from "@/component/FilterComp/FilterComp";
 import React from "react";
 import "./filterpage.css";
 import { MongoClient } from "mongodb";
+import Advertize from "@/component/Advertize/Advertize";
 
 // MongoDB connection detail
 export async function generateMetadata({ params }) {
@@ -103,6 +104,7 @@ export default async function page({ searchParams }) {
         keyword={searchParam.keyword || ''}
         collectionName={`Search results for`}
       />
+      <Advertize/>
     </div>
   );
 }

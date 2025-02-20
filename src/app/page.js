@@ -1,3 +1,4 @@
+import Advertize from "@/component/Advertize/Advertize";
 import Home from "@/component/Home/Home";
 
 export default async function Page() {
@@ -14,6 +15,7 @@ export default async function Page() {
   return (
     <div>
       <Home data={data} existingAnime={existingAnime}/>
+      <Advertize/>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import RecommendedTopTen from "../../layouts/RecommendedTopTen";
 import { MongoClient } from "mongodb";
+import Advertize from "@/component/Advertize/Advertize";
 
 export async function generateMetadata({ params }) {
   const param = await params;
@@ -173,6 +174,7 @@ export default async function Page({ params }) {
         arise={arise}
         id={idToCheck}
       />
+      <Advertize/>
     </div>
   );
 }
