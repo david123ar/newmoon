@@ -42,7 +42,7 @@ const fetchAllUrls = async () => {
 
       // Process each item's data
       dataList.forEach((item) => {
-        allUrls.push(`${baseUrl}${item.data_id}`);
+        allUrls.push(`${baseUrl}/${item.id}`);
       });
 
       console.log(`Fetched and processed page ${page}`);
@@ -166,7 +166,7 @@ export async function GET(req) {
   try {
     const host = req.headers.get("host"); // Get the current domain
     const protocol = host.includes("localhost") ? "http" : "https"; // Use HTTPS unless running locally
-    const baseUrl = `${protocol}://${host}/`; // Construct the dynamic base URL
+    const baseUrl = `${protocol}://${host}`; // Construct the dynamic base URL
 
     const urls = await fetchAllUrls(); // Fetch all URLs from pages
     const genreUrlsList = genreUrls().map((url) => url.replace("https://animoon.me", baseUrl)); // Adjust genre URLs
