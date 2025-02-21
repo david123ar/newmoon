@@ -61,16 +61,16 @@ const CreateLive = (props) => {
       : null
   );
   const [roomName, setRoomName] = useState(
-    ls.getItem("roomName")
-      ? ls.getItem("roomName")
-      : `Watch ${props.data?.results?.data.title} together`
+    `Watch ${props.data?.results?.data.title} together`
   );
 
-  const [value, setValue] = useState(
-    ls.getItem("calendarValue")
-      ? new Date(ls.getItem("calendarValue"))
-      : new Date()
-  );
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours();
+  const currentMinute = currentDate.getMinutes();
+
+  const [selectedHourIndex, setSelectedHourIndex] = useState(currentHour);
+  const [selectedMinuteIndex, setSelectedMinuteIndex] = useState(currentMinute);
+  const [value, setValue] = useState(currentDate);
 
   const hours = Array.from({ length: 24 }, (_, i) =>
     String(i).padStart(2, "0")
@@ -79,24 +79,12 @@ const CreateLive = (props) => {
     String(i).padStart(2, "0")
   );
 
-  const [selectedHourIndex, setSelectedHourIndex] = useState(
-    ls.getItem("selectedHourIndex")
-      ? parseInt(ls.getItem("selectedHourIndex"))
-      : 0
-  );
-  const [selectedMinuteIndex, setSelectedMinuteIndex] = useState(
-    ls.getItem("selectedMinuteIndex")
-      ? parseInt(ls.getItem("selectedMinuteIndex"))
-      : 0
-  );
-
   const handleHourScroll = (direction) => {
     setSelectedHourIndex((prev) =>
       direction === "up"
         ? Math.max(prev - 1, 0)
         : Math.min(prev + 1, hours.length - 1)
     );
-    ls.setItem("selectedHourIndex", selectedHourIndex.toString());
   };
 
   const handleMinuteScroll = (direction) => {
@@ -105,7 +93,6 @@ const CreateLive = (props) => {
         ? Math.max(prev - 1, 0)
         : Math.min(prev + 1, minutes.length - 1)
     );
-    ls.setItem("selectedMinuteIndex", selectedMinuteIndex.toString());
   };
 
   const saveObject = async () => {
@@ -440,10 +427,16 @@ const CreateLive = (props) => {
                   <Link
                     href={session ? `/watch2gether/${session?.user.id}` : ""}
                     className="cr1"
-                    onClick={() => saveObject() & setClickedCreate(true)}
+                    onClick={() => {
+                      if (session) {
+                        saveObject();
+                        setClickedCreate(true);
+                      }
+                    }}
                   >
                     Create Room
                   </Link>
+
                   <div className="cr2">Cancel</div>
                 </div>
               </div>

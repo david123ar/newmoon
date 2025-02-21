@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { imageData } from "@/data/imageData"; // Import images
 import "./signmodal.css";
+import { useRouter } from "next/navigation";
 
 // Function to get a random avatar
 const getRandomImage = () => {
@@ -40,9 +41,12 @@ const SignInSignUpModal = (props) => {
     }
   }, [isSignUp]);
 
+  const router = useRouter();
+
   const toggleMode = () => {
     setIsSignUp(!isSignUp);
     setError("");
+    router.refresh(); // This will reload the current page
   };
 
   const handleSignUp = async () => {

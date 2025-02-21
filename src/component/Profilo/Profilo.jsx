@@ -12,12 +12,15 @@ import {
 // import useAnime from "@/hooks/useAnime";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Profilo(props) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // Loading state for sign-out
+    const router = useRouter();
   const handleSignOut = async () => {
     setLoading(true); // Start loading
+    router.refresh(); // This will reload the current page
     try {
       await signOut({ redirect: false }); // Sign out user using NextAuth
     } catch (err) {

@@ -1,3 +1,4 @@
+import Advertize from "@/component/Advertize/Advertize";
 import GenreSidebar from "@/component/Gridle/page";
 import { MongoClient } from "mongodb";
 import React from "react";
@@ -94,6 +95,7 @@ export default async function page({ searchParams }) {
         page={pageParam}
         arise={arise}
       />
+      <Advertize/>
     </div>
   );
 }

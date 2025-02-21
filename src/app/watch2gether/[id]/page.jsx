@@ -53,42 +53,6 @@ export default async function page({ params, searchParams }) {
     const strN = JSON.parse(str);
     datal = strN;
 
-    const dateString = datal?.date; // "Tue Feb 18 2025"
-    const timeString = datal?.time; // "22:00"
-
-    // Manually extract day, month, and year
-    const parts = dateString.split(" "); // ["Tue", "Feb", "18", "2025"]
-    const months = {
-      Jan: 0,
-      Feb: 1,
-      Mar: 2,
-      Apr: 3,
-      May: 4,
-      Jun: 5,
-      Jul: 6,
-      Aug: 7,
-      Sep: 8,
-      Oct: 9,
-      Nov: 10,
-      Dec: 11,
-    };
-
-    const year = parseInt(parts[3]); // 2025
-    const month = months[parts[1]]; // Convert "Feb" to 1
-    const day = parseInt(parts[2]); // 18
-
-    const [hours, minutes] = timeString.split(":").map(Number); // [22, 0]
-
-    // Create a UTC timestamp
-    const startTime = Date.UTC(year, month, day, hours, minutes, 0);
-    console.log("start", startTime);
-
-    const now = Date.now();
-    console.log("now", now);
-
-    const difference = Math.floor((now - startTime) / 1000); // Convert to seconds
-    console.log("difference", difference);
-
     let dubTruth = "";
 
     if (streamAnime.episodes.dub >= 1) {
