@@ -14,8 +14,8 @@ export default async function Page() {
   const { data, existingAnime } = await res.json();
   return (
     <div>
-      <Home data={data} existingAnime={existingAnime}/>
-      <Advertize/>
+      <Home data={data} existingAnime={existingAnime} />
+      <Advertize />
     </div>
   );
 }

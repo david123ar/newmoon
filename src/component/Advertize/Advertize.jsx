@@ -6,26 +6,26 @@ const Advertize = () => {
   const [time, setTime] = useState(new Date());
   const [adver, setAdver] = useState("false");
 
-    // Helper for localStorage wrapper
-    const localStorageWrapper = () => {
-      if (typeof window !== "undefined" && window.localStorage) {
-        return {
-          getItem: (key) => localStorage.getItem(key),
-          setItem: (key, value) => localStorage.setItem(key, value),
-          removeItem: (key) => localStorage.removeItem(key),
-          clear: () => localStorage.clear(),
-        };
-      } else {
-        return {
-          getItem: () => null,
-          setItem: () => {},
-          removeItem: () => {},
-          clear: () => {},
-        };
-      }
-    };
-  
-    const ls = localStorageWrapper();
+  // Helper for localStorage wrapper
+  const localStorageWrapper = () => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      return {
+        getItem: (key) => localStorage.getItem(key),
+        setItem: (key, value) => localStorage.setItem(key, value),
+        removeItem: (key) => localStorage.removeItem(key),
+        clear: () => localStorage.clear(),
+      };
+    } else {
+      return {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+        clear: () => {},
+      };
+    }
+  };
+
+  const ls = localStorageWrapper();
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -42,8 +42,9 @@ const Advertize = () => {
       (time - lastDisplayDate) / (1000 * 60)
     );
 
+    // Show ad every 1 minute instead of 5 minutes
     const shouldShowAd =
-      minutesSinceLastDisplay >= 5 ||
+      minutesSinceLastDisplay >= 1 ||
       currentDate !== parseInt(lastDate) ||
       currentHour !== parseInt(lastHour);
 
