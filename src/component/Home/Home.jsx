@@ -10,6 +10,7 @@ import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
 import { SessionProvider } from "next-auth/react";
 import Profilo from "../Profilo/Profilo";
 import Footer from "../Footer/Footer";
+import BannerAd from "../Banner/Banner";
 
 const Home = ({ data, existingAnime }) => {
   const [selectL, setSelectL] = useState("en");
@@ -52,6 +53,7 @@ const Home = ({ data, existingAnime }) => {
             existingAnime={existingAnime}
             selectL={selectL}
           />
+          <BannerAd/>
           <Trending data={data?.trending || []} selectL={selectL} />
           <Share ShareUrl="https://animoon.me/" />
           <Featured data={data || {}} selectL={selectL} />
