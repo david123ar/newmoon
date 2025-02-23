@@ -24,6 +24,14 @@ const BannerAd = () => {
               'width' : 468,
               'params' : {}
             };
+      
+            document.addEventListener("DOMContentLoaded", function() {
+              var adContainer = document.getElementById("adsterra-ad");
+              if (adContainer) {
+                adContainer.style.margin = "20px auto";
+                adContainer.style.textAlign = "center";
+              }
+            });
           `,
         }}
       />
