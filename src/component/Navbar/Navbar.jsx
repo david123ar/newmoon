@@ -80,7 +80,10 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
           </div>
           {session ? (
             <img
-              src={session.user.avatar || "userData?.randomImage"}
+              src={session.user.avatar.replace(
+                "https://cdn.noitatnemucod.net/avatar/100x100/",
+                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+              ) || "userData?.randomImage"}
               className="profile-ico"
               onClick={toggleProfile}
               alt={session.user.username || "userData?.username" || "user"}

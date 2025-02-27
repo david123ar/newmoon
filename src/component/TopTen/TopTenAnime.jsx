@@ -4,6 +4,22 @@ import "./top-ten.css";
 import { FaClosedCaptioning } from "react-icons/fa";
 import Link from "next/link";
 import { AiFillAudio } from "react-icons/ai";
+
+function transformURL(originalURL) {
+  if (!originalURL) return null; // Handle null/undefined cases
+
+  // Extract the 32-character hash from the original URL
+  const idMatch = originalURL.match(/\/([a-f0-9]{32})\.jpg$/);
+  if (!idMatch) return originalURL; // Return original URL if no match
+
+  const id = idMatch[1]; // Full hash ID
+  const part1 = id.substring(0, 2); // First 2 characters
+  const part2 = id.substring(2, 4); // Next 2 characters
+
+  // Construct the new URL
+  return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
+}
+
 export default function TopTenAnime(props) {
   const handleNavigation = () => {};
   const [period, setPeriod] = useState("today");
@@ -33,7 +49,7 @@ export default function TopTenAnime(props) {
           {el.number}
         </span>
         <div className="top-10-item d-flex a-center">
-          <img src={el.poster} alt="poster" />
+          <img src={transformURL(el.poster)} alt="poster" />
           <div className="anime-details d-flex-fd-column">
             <span className="title">
               <Link

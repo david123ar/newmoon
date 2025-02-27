@@ -30,6 +30,23 @@ import Navbar from "../Navbar/Navbar";
 import Profilo from "../Profilo/Profilo";
 import Footer from "../Footer/Footer";
 import ArtPlayer from "../LivePlayer";
+import { IoMdSettings } from "react-icons/io";
+import Eplist from "../Eplist/Eplist";
+
+function transformURL(originalURL) {
+  if (!originalURL) return null; // Handle null/undefined cases
+
+  // Extract the 32-character hash from the original URL
+  const idMatch = originalURL.match(/\/([a-f0-9]{32})\.jpg$/);
+  if (!idMatch) return originalURL; // Return original URL if no match
+
+  const id = idMatch[1]; // Full hash ID
+  const part1 = id.substring(0, 2); // First 2 characters
+  const part2 = id.substring(2, 4); // Next 2 characters
+
+  // Construct the new URL
+  return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
+}
 
 function useTimer(date, time) {
   const [timeElapsed, setTimeElapsed] = useState("");
@@ -75,7 +92,7 @@ function useTimer(date, time) {
 
     return () => clearInterval(timerId); // Cleanup interval on unmount
   }, [date, time]);
-  console.log(timeElapsed)
+  console.log(timeElapsed);
   return timeElapsed;
 }
 
@@ -191,8 +208,6 @@ export default function LivePage(props) {
 
   const message = useTimer(props.data?.date, props.data?.time);
 
-  console.log("Message", message);
-
   function ViewerCounter() {
     const [viewers, setViewers] = useState(0);
 
@@ -237,7 +252,7 @@ export default function LivePage(props) {
   }
 
   const [subIsSelected, setSubIsSelected] = useState(() => {
-    const isDubSelected = ls.getItem("subordub") === "false";
+    const isDubSelected = props.data?.sub === false;
     // Check if dub episodes exist in `props.datao`
     const hasDubEpisodes = props.datao?.anime?.info?.stats?.episodes?.dub > 0;
 
@@ -301,12 +316,12 @@ export default function LivePage(props) {
   });
 
   const [introd, setIntrod] = useState(
-    ls.getItem("subordub") === "false" && props.datajDub.results
+    props.data?.sub === false && props.datajDub.results
       ? props.datajDub.results?.streamingLink.intro
       : props.datajSub.results?.streamingLink.intro
   );
   const [outrod, setOutrod] = useState(
-    ls.getItem("subordub") === "false" && props.datajDub.results
+    props.data?.sub === false && props.datajDub.results
       ? props.datajDub.results?.streamingLink.outro
       : props.datajSub.results?.streamingLink.outro
   );
@@ -347,6 +362,8 @@ export default function LivePage(props) {
 
   const [quality, setQuality] = useState("");
 
+  const [show, setShow] = useState(false);
+
   const lang = (lang) => {
     setSelectL(lang);
   };
@@ -356,8 +373,104 @@ export default function LivePage(props) {
   const err = () => {};
   const secon = props.secon;
 
+  const [gtri, setGtri] = useState("");
+
+  const [pio, setPio] = useState(false);
+  const [lio, setLio] = useState(props?.data?.episodeNo);
+  const chang = async (epi, epId) => {
+    try {
+      const response = await fetch(
+        `/api/liveUpdate?id=${props.id}&epId=${epId}&episodeNo=${epi}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const data = await response.json();
+      console.log(data.message || data.error);
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
+
+    try {
+      const response = await fetch(`/api/liveRoom?id=${props.id}`);
+
+      if (response.status === 404) {
+        console.log("No cached data found.");
+        return null;
+      }
+
+      const data = await response.json();
+      setGtri(data);
+    } catch (error) {
+      console.error("Error fetching cached data:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    if (pio) {
+      chang();
+  
+      let datajDub = gtri?.streams?.dub || []; // Ensure it's an array
+      let datajSub = gtri?.streams?.sub || [];
+      let raw = "";
+  
+      // Check if the data exists before accessing properties
+      const subLink = datajSub?.results?.streamingLink?.link?.file || "";
+      const dubLink = datajDub?.results?.streamingLink?.link?.file || "";
+  
+      if (!subLink) {
+        datajSub = gtri?.streams?.raw || [];
+        raw = "yes";
+      }
+  
+      // Update `bhaiLink` safely
+      setBhaiLink(() => {
+        const isDubSelected = props.data?.sub === false;
+        const hasDubEpisodes = props.data?.episodes?.dub > 0;
+        const hasDubData = datajDub?.results;
+  
+        if (isDubSelected && hasDubEpisodes && hasDubData) {
+          return dubLink || ""; // Return dub link if available
+        }
+        return subLink || ""; // Return sub link if available
+      });
+  
+      // Update subtitles
+      setSubtitles(datajSub?.results?.streamingLink?.tracks || []);
+  
+      // Update intro and outro safely
+      setIntrod(
+        props.data?.sub === false && datajDub?.results
+          ? datajDub?.results?.streamingLink?.intro
+          : datajSub?.results?.streamingLink?.intro || ""
+      );
+  
+      setOutrod(
+        props.data?.sub === false && datajDub?.results
+          ? datajDub?.results?.streamingLink?.outro
+          : datajSub?.results?.streamingLink?.outro || ""
+      );
+    }
+  }, [pio, gtri]); // Ensure `gtri` is available
+  
+
   return (
     <>
+      {/* <div>{JSON.stringify(gtri)}</div> */}
+      {show && (
+        <Eplist
+          data={props.data.episodesList}
+          epiod={lio}
+          anId={props.data.animeId}
+          onClose={() => setShow(false)}
+          chang={chang}
+          setPio={setPio}
+          setLio={setLio}
+        />
+      )}
       <Navbar
         lang={lang}
         sign={sign}
@@ -400,7 +513,9 @@ export default function LivePage(props) {
                   </div>
                 </div>
                 <div className="opt-2">&#x2022;</div>
-                <div className="opt-33">{props.data?.episode}</div>
+                <div className="opt-33">
+                  {"Episode" + " " + lio?.toString()}
+                </div>
               </div>
             </div>
             <div>
@@ -409,7 +524,7 @@ export default function LivePage(props) {
                   {message === "Not started yet!" ? (
                     <div className="timl-P">
                       <img
-                        src={props.data?.poster}
+                        src={transformURL(props.data?.poster)}
                         alt="Background"
                         className="background-image"
                       />
@@ -455,12 +570,15 @@ export default function LivePage(props) {
                       time={props.data?.time}
                       introd={introd}
                       outrod={outrod}
+                      id={props.id}
                       durEp={props.data?.duration}
                       subEp={props.data?.episodes?.sub}
                       dubEp={props.data?.episodes?.dub}
                       ratUra={props.data?.rating}
                       imgUra={props.data?.poster}
                       nameUra={props.data?.name}
+                      episodes={props.data?.episodesList}
+                      episodeNo={props.data?.episodeNo}
                       quality={quality}
                       secon={secon}
                       live={"yes"}
@@ -476,7 +594,10 @@ export default function LivePage(props) {
                 <div>
                   <img
                     className="biit-img"
-                    src={props.data?.randomImage}
+                    src={props.data?.randomImage.replace(
+                      "https://cdn.noitatnemucod.net/avatar/100x100/",
+                      "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+                    )}
                     alt=""
                   />
                 </div>
@@ -500,6 +621,9 @@ export default function LivePage(props) {
                     {useTimer(props.data?.date, props.data?.time)}
                   </div>
                 </div>
+                <div className="biit-set" onClick={() => setShow(true)}>
+                  <IoMdSettings />
+                </div>
               </div>
             </div>
 
@@ -509,7 +633,7 @@ export default function LivePage(props) {
 
             <div className="kenpa-1">
               <div>
-                <img className="kenpa-img" src={props.data?.poster} alt="" />
+                <img className="kenpa-img" src={transformURL(props.data?.poster)} alt="" />
               </div>
               <div className="kenpa-soul">
                 <div className="kenpa-name">{props.data?.name}</div>

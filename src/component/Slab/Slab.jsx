@@ -10,7 +10,10 @@ export default function Slab(props) {
   const { data: session } = useSession();
   return (
     <div className="allpit">
-      <img className="allpit-background" src={session?.user.avatar} alt="pop" />
+      <img className="allpit-background" src={session?.user.avatar.replace(
+                "https://cdn.noitatnemucod.net/avatar/100x100/",
+                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+              )} alt="pop" />
       <div className="hiik">Hi, {session?.user.username}</div>
       <div className="linkok">
         <Link

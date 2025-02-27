@@ -39,7 +39,10 @@ export default function Profito(props) {
         <div className="cofs">
           <div className={`rofile-image`}>
             <img
-              src={session?.user.avatar}
+              src={session?.user.avatar.replace(
+                "https://cdn.noitatnemucod.net/avatar/100x100/",
+                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+              )}
               className="profile-img"
               alt="Profile"
             />
@@ -84,7 +87,10 @@ export default function Profito(props) {
         <div className="cofs">
           <div className={`profile-image`}>
             <img
-              src={session?.user.avatar}
+              src={session?.user.avatar.replace(
+                "https://cdn.noitatnemucod.net/avatar/100x100/",
+                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+              )}
               className="profile-img"
               alt="Profile"
             />

@@ -125,7 +125,10 @@ const SignInSignUpModal = (props) => {
           <>
             <p className="heddio">Welcome, {session.user.username}!</p>
             <img
-              src={session.user.avatar}
+              src={session.user.avatar.replace(
+                "https://cdn.noitatnemucod.net/avatar/100x100/",
+                "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+              )}
               alt="Profile"
               className="profile-avatar"
             />

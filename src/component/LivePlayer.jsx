@@ -10,7 +10,7 @@ import { IoSyncCircle } from "react-icons/io5";
 
 function ArtPlayer(props) {
   const artRef = useRef(null);
-  const [gtri, setGtri] = useState(props.gtri);
+  const [gtri, setGtri] = useState("");
   const filteredCaptions = props.subtitles
     ? props.subtitles.filter((sub) => sub.kind === "captions")
     : "";
@@ -219,11 +219,11 @@ function ArtPlayer(props) {
     }
   }, [gtr]); // ✅ `gtr` is the dependency
 
-  const getInstance = (art) => {
-    if (gtr === "yes") {
+  const getInstance = async (art) => {
+    if (typeof gtr !== "undefined" && gtr === "yes") {
       art.currentTime = timeDifference;
     }
-    art.currentTime = timeDifference;
+
     art.on("ready", () => {
       art.currentTime = timeDifference;
       ls.setItem(`duran-${props.anId}`, art.duration);
@@ -611,6 +611,7 @@ function ArtPlayer(props) {
 
   return (
     <>
+      {/* <div>{props.bhaiLink}</div> */}
       <div className="artplayer-app md:h-[800px] h-[250px] w-full absolute top-0 left-0"></div>
     </>
   );

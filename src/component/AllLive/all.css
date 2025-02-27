@@ -1,21 +1,22 @@
-.container {
+.container-koil {
   position: relative;
   width: 300px; /* Fixed width */
   height: 170px; /* Fixed height */
   overflow: hidden;
   /* border-radius: 10px; Optional rounded corners */
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.background {
+.background-koil {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0; /* Default background image */
+  width: 100%; /* Ensure it doesn't stretch */
+  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -25,7 +26,7 @@
 
 /* Dynamically apply background-image based on a class */
 
-.overlay {
+.overlay-koil {
   position: absolute;
   top: 0;
   left: 0;
@@ -35,7 +36,7 @@
   z-index: 1;
 }
 
-.content {
+.content-koil {
   position: relative;
   width: 100%; /* Ensures it spans the entire container width */
   z-index: 2; /* Keeps content above the background and overlay */
@@ -47,7 +48,7 @@
   flex-direction: column; /* Stacks content vertically */
 }
 
-.poster {
+.poster-koil {
   width: 70px; /* Fixed width for the poster */
   height: 90px; /* Fixed height for the poster */
   border-radius: 5px; /* Optional rounded corners for the poster */
@@ -56,7 +57,7 @@
   /* margin-bottom: 10px; Adds spacing below the poster */
 }
 
-.tag {
+.tag-koil {
   display: flex;
   align-items: center;
   justify-content: end;
@@ -66,7 +67,7 @@
   margin-bottom: 10px;
 }
 
-.episode {
+.episode-koil {
   display: flex;
   align-items: center;
   justify-content: end;
@@ -77,7 +78,7 @@
   margin-top: 10px;
 }
 
-.epol {
+.epol-koil {
   background: #fff;
   color: black;
   font-weight: 700;
@@ -138,7 +139,7 @@
 
 .found-l {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;

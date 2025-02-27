@@ -159,6 +159,16 @@
   align-items: center;
   gap: 10px;
 }
+.biit-set {
+  font-size: 13px;
+  padding: 4px;
+  border-radius: 4px;
+  background: #fff;
+  color: black;
+}
+.biit-set:hover {
+  cursor: pointer;
+}
 .kenpa-1 {
   display: flex;
   align-items: center;

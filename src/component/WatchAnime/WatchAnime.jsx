@@ -27,6 +27,22 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { FaCirclePlay } from "react-icons/fa6";
 import SignInSignUpModal from "@/component/SignSignup/SignInSignUpModal";
 import { Lily_Script_One } from "next/font/google";
+
+function transformURL(originalURL) {
+  if (!originalURL) return null; // Handle null/undefined cases
+
+  // Extract the 32-character hash from the original URL
+  const idMatch = originalURL.match(/\/([a-f0-9]{32})\.jpg$/);
+  if (!idMatch) return originalURL; // Return original URL if no match
+
+  const id = idMatch[1]; // Full hash ID
+  const part1 = id.substring(0, 2); // First 2 characters
+  const part2 = id.substring(2, 4); // Next 2 characters
+
+  // Construct the new URL
+  return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
+}
+
 export default function WatchAnime(props) {
   const router = useRouter();
   const dropdownRef = useRef(null); // Reference for the dropdown
@@ -656,7 +672,7 @@ export default function WatchAnime(props) {
               <div className="d-flex new-con">
                 <img
                   className="watch-container-background"
-                  src={props.datao?.results.data.poster}
+                  src={transformURL(props.datao.results.data.poster)}
                   alt="pop"
                 />
                 <div className="media-center d-flex">
@@ -667,7 +683,7 @@ export default function WatchAnime(props) {
                         : "episode-container-blocks"
                     }`}
                   >
-                    <div className="epTop">
+                    <div className="epTop"> 
                       <div className="lisT">
                         <div>List of Episodes:</div>
                         {episodeList.length > 100 ? (
@@ -1168,7 +1184,7 @@ export default function WatchAnime(props) {
                                     >
                                       <img
                                         className="seasonal-background"
-                                        src={sea.season_poster}
+                                        src={transformURL(sea.season_poster)}
                                         alt="pop"
                                       />
                                       {sea.season.length < 15
@@ -1190,13 +1206,13 @@ export default function WatchAnime(props) {
                 <div className="current-anime-details ">
                   <img
                     className="details-container-background"
-                    src={props.datao.results.data.poster || "NA"}
+                    src={ transformURL(props.datao.results.data.poster)}
                     alt="pop"
                   />
                   <div className="anime-details d-flex-fd-column">
                     <img
                       className="anime-details-poster"
-                      src={props.datao.results.data.poster || "NA"}
+                      src={ transformURL(props.datao.results.data.poster)}
                       alt="pop"
                     />
 

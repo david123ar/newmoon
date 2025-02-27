@@ -4,6 +4,21 @@ import { FaChevronRight, FaClosedCaptioning } from "react-icons/fa";
 import Link from "next/link";
 import { AiFillAudio } from "react-icons/ai";
 
+function transformURL(originalURL) {
+  if (!originalURL) return null; // Handle null/undefined cases
+
+  // Extract the 32-character hash from the original URL
+  const idMatch = originalURL.match(/\/([a-f0-9]{32})\.jpg$/);
+  if (!idMatch) return originalURL; // Return original URL if no match
+
+  const id = idMatch[1]; // Full hash ID
+  const part1 = id.substring(0, 2); // First 2 characters
+  const part2 = id.substring(2, 4); // Next 2 characters
+
+  // Construct the new URL
+  return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
+}
+
 export default function ContentList(props) {
   const list = props?.data?.map((el, idx) => {
     // Extracting title, falling back to romaji or English if not available
@@ -12,7 +27,7 @@ export default function ContentList(props) {
     return (
       <li key={el.id} className="d-flex a-center">
         <Link href={`/${el.id}`}>
-          <img src={el.poster || el.poster} alt={title} isAnimated={false} />
+          <img src={transformURL(el.poster)} alt={title} isAnimated={false} />
         </Link>
 
         <div className="anime-details d-flex-fd-column">

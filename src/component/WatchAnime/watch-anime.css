@@ -47,13 +47,30 @@
   width: 25%;
   padding: 5px;
 }
+.episode-containerN {
+  padding-top: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #2e2e2e;
+}
+.episode-container-blocksN {
+  padding: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #2e2e2e;
+}
 .episode-container p {
   font-size: 15px;
   font-weight: 600;
   padding-left: 10px;
 }
+.episode-containerN p {
+  font-size: 15px;
+  font-weight: 600;
+  padding-left: 10px;
+}
 .episode-tiles-wrapper-blocks {
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
   margin-top: 5px;
   justify-content: flex-start;
   text-align: center;
@@ -70,6 +87,26 @@
   align-items: center;
   gap: 0;
   max-height: 760px;
+  overflow-y: auto;
+}
+.episode-tiles-wrapper-blocksN {
+  flex-wrap: wrap; 
+  margin-top: 5px;
+  justify-content: flex-start;
+  text-align: center;
+  align-items: center;
+  gap: 5px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.episode-tiles-wrapperN {
+  flex-wrap: wrap;
+  margin-top: 5px;
+  justify-content: flex-start;
+  text-align: center;
+  align-items: center;
+  gap: 0;
+  max-height: 250px;
   overflow-y: auto;
 }
 .current-anime-details {
@@ -339,6 +376,16 @@
   overflow: hidden;
 }
 
+.epTopN {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  margin-top: -5px;
+  /* background: #464646; */
+  gap: 10px;
+}
+
 .inner-ep {
   display: flex;
   align-items: center;
@@ -363,7 +410,7 @@
   color: white;
   font-weight: 500;
   font-size: 13px;
-  align-items: center;
+  align-items: center; 
 }
 .doto {
   color: #ccbfbf;

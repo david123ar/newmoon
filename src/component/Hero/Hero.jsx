@@ -19,6 +19,22 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import Link from "next/link";
 import "./hero.css";
 
+function transformURL(originalURL) {
+  if (!originalURL) return null; // Handle null/undefined cases
+
+  // Extract the 32-character hash from the original URL
+  const idMatch = originalURL.match(/\/([a-f0-9]{32})\.jpg$/);
+  if (!idMatch) return originalURL; // Return original URL if no match
+
+  const id = idMatch[1]; // Full hash ID
+  const part1 = id.substring(0, 2); // First 2 characters
+  const part2 = id.substring(2, 4); // Next 2 characters
+
+  // Construct the new URL
+  return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
+}
+
+
 export default function Hero({ trendingAnime, existingAnime, selectL }) {
   const [localStorageData, setLocalStorageData] = useState({});
 
@@ -125,17 +141,29 @@ export default function Hero({ trendingAnime, existingAnime, selectL }) {
                 </div>
               </div>
               <div className="posterImg">
-                <img src={existingAnime[idx].poster} alt={anime.title} />
+                <img
+                  src={
+                    // existingAnime[idx].poster ||
+                    transformURL(existingAnime[idx].poster)
+                  }
+                  alt={anime.title}
+                />
               </div>
             </div>
             <img
               className="carousel-img previ"
-              src={anime.poster}
+              src={
+                // anime.poster ||
+                transformURL(anime.poster)
+              }
               alt={title}
             />
             <img
               className="carousel-img afteri"
-              src={existingAnime[idx].poster}
+              src={
+                // existingAnime[idx].poster ||
+                transformURL(existingAnime[idx].poster)
+              }
               alt={title}
             />
           </div>

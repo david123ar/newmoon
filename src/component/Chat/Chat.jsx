@@ -72,7 +72,11 @@ const Chat = (props) => {
           </div>
           <div className="gropE">
             <div className="inputE">
-              <InputEmoji value={text} placeholder="Send a message..." onChange={setText} />
+              <InputEmoji
+                value={text}
+                placeholder="Send a message..."
+                onChange={setText}
+              />
             </div>
             <button onClick={handleSend} className="chat-send-button">
               Send
@@ -92,7 +96,13 @@ const Message = ({ message }) => {
   return (
     <div className="chat-message">
       <div className="chat-avatar">
-        <img src={message.randomImage} alt="Avatar" />
+        <img
+          src={message.randomImage.replace(
+            "https://cdn.noitatnemucod.net/avatar/100x100/",
+            "https://img.flawlessfiles.com/_r/100x100/100/avatar/"
+          )}
+          alt="Avatar"
+        />
       </div>
       <div className="chat-content">
         <div className="chat-username">{message.username}</div>
