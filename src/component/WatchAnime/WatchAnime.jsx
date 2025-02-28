@@ -27,6 +27,7 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { FaCirclePlay } from "react-icons/fa6";
 import SignInSignUpModal from "@/component/SignSignup/SignInSignUpModal";
 import { Lily_Script_One } from "next/font/google";
+import { PiBroadcastFill } from "react-icons/pi";
 
 function transformURL(originalURL) {
   if (!originalURL) return null; // Handle null/undefined cases
@@ -649,6 +650,12 @@ export default function WatchAnime(props) {
     };
   }, []);
 
+  const watch2gether = () => {
+    if (!session) {
+      setLogIsOpen(true);
+    }
+  };
+
   return (
     <>
       <SessionProvider>
@@ -683,7 +690,7 @@ export default function WatchAnime(props) {
                         : "episode-container-blocks"
                     }`}
                   >
-                    <div className="epTop"> 
+                    <div className="epTop">
                       <div className="lisT">
                         <div>List of Episodes:</div>
                         {episodeList.length > 100 ? (
@@ -795,7 +802,7 @@ export default function WatchAnime(props) {
                       {clickedId === props.epId && props.datajSub ? (
                         <ArtPlayer
                           data={props.data}
-                          epId={props.epId} 
+                          epId={props.epId}
                           anId={props.anId}
                           epNumb={epNumb}
                           bhaiLink={bhaiLink}
@@ -818,7 +825,7 @@ export default function WatchAnime(props) {
                           dubEp={
                             props.datao?.results.data.animeInfo.tvInfo?.dub
                           }
-                          ratUra={ 
+                          ratUra={
                             props.datao?.results.data.animeInfo.tvInfo?.rating
                           }
                           imgUra={props.datao?.results.data.poster}
@@ -958,9 +965,17 @@ export default function WatchAnime(props) {
                                 </ul>
                               )}
                             </div>
-                            <div className="signo">
-                              <HiOutlineSignal />
-                            </div>
+                            <Link
+                              href={
+                                session
+                                  ? `/watch2gether/create?animeId=${props.datao.results.data?.id}`
+                                  : ""
+                              }
+                              onClick={watch2gether}
+                              className="signo"
+                            >
+                              <PiBroadcastFill />
+                            </Link>
                           </div>
                         </div>
                         <div className="allum rep-all">
@@ -1206,13 +1221,13 @@ export default function WatchAnime(props) {
                 <div className="current-anime-details ">
                   <img
                     className="details-container-background"
-                    src={ transformURL(props.datao.results.data.poster)}
+                    src={transformURL(props.datao.results.data.poster)}
                     alt="pop"
                   />
                   <div className="anime-details d-flex-fd-column">
                     <img
                       className="anime-details-poster"
-                      src={ transformURL(props.datao.results.data.poster)}
+                      src={transformURL(props.datao.results.data.poster)}
                       alt="pop"
                     />
 

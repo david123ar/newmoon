@@ -225,10 +225,22 @@ function ArtPlayer(props) {
     }
 
     art.on("ready", () => {
+      setGtr("yes");
       art.currentTime = timeDifference;
       ls.setItem(`duran-${props.anId}`, art.duration);
       art.play();
     });
+
+    // art.on("seek", (time) => {
+    //   if (art.currentTime < time) {
+    //     setGtr("yes");
+    //   }
+    //   if (timeDifference < art.duration) {
+    //     if (art.currentTime < time) {
+    //       art.currentTime = timeDifference;
+    //     }
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -441,6 +453,7 @@ function ArtPlayer(props) {
     }
 
     art.on("ready", () => {
+      setGtr("yes");
       art.currentTime = timeDifference;
       ls.setItem(`duran-${props.anId}`, art.duration);
       art.play();

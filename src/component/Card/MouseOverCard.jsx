@@ -122,9 +122,7 @@ export default function MouseOverCard(props) {
             </p>
             <p>
               <b>Status:</b>{" "}
-              <span className="ligt">
-                {hoverAnime?.results?.status || "?"}
-              </span>
+              <span className="ligt">{hoverAnime?.results?.status || "?"}</span>
             </p>
           </div>
           <div className="anime-st-genreo"></div>
@@ -136,9 +134,11 @@ export default function MouseOverCard(props) {
           </div>
           <div className="anime-st-genreo"></div>
           <div className="tits-btn">
-            <Link href={`/watch/${props?.data?.id}`} className="tit-bt-w">
-              <FaPlayCircle size={15} /> Watch Now
-            </Link>
+            {hoverAnime?.results?.status !== "Not yet aired" && (
+              <Link href={`/watch/${props?.data?.id}`} className="tit-bt-w">
+                <FaPlayCircle size={15} /> Watch Now
+              </Link>
+            )}
             <Link href={`/${props?.data?.id}`} className="tit-bt-d">
               Details <FaChevronRight size={12} />
             </Link>

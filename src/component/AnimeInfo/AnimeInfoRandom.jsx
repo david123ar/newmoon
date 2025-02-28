@@ -14,6 +14,7 @@ import { AiFillAudio } from "react-icons/ai";
 // import { useLogModal } from "@/context/LogModalContext";
 import { useSession } from "next-auth/react";
 import SignInSignUpModal from "../SignSignup/SignInSignUpModal";
+import { PiBroadcastFill } from "react-icons/pi";
 
 function transformURL(originalURL) {
   if (!originalURL) return null; // Handle null/undefined cases
@@ -29,7 +30,6 @@ function transformURL(originalURL) {
   // Construct the new URL
   return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
 }
-
 
 export default function Details(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -180,6 +180,12 @@ export default function Details(props) {
   const studios = gnt?.animeInfo?.Studios;
   const synonyms = gnt?.animeInfo.Synonyms;
 
+  const watch2gether = () => {
+    if (!session) {
+      setLogIsOpen(true)
+    }
+  }
+
   return (
     <>
       <SignInSignUpModal setLogIsOpen={setLogIsOpen} logIsOpen={logIsOpen} />
@@ -194,12 +200,29 @@ export default function Details(props) {
               isAnimated={false}
             />
             <div className="anime-details d-flex">
-              <img
-                className="anime-details-poster"
-                src={transformURL(gnt?.poster)}
-                alt="pop"
-                isAnimated={false}
-              />
+              <div className="anime-details-containN">
+                <div className="anime-image-wrapper">
+                  <img
+                    className="anime-details-poster"
+                    src={transformURL(gnt?.poster)}
+                    alt="pop"
+                  />
+                </div>
+                {gnt?.animeInfo?.Status !== "Not-yet-aired" && (
+                  <Link
+                    href={
+                      session ? `/watch2gether/create?animeId=${props?.id}` : ""
+                    }
+                    className="broad-fil"
+                    onClick={watch2gether}
+                  >
+                    <div className="broad-ico">
+                      <PiBroadcastFill />
+                    </div>
+                    <div>Watch2gether</div>
+                  </Link>
+                )}
+              </div>
 
               <div className="anime-details-content">
                 <div className="flex gap-1 items-center specif">
@@ -244,21 +267,22 @@ export default function Details(props) {
                   </div>
                 </div>
                 <div className="button-wrapper">
-                  {
-                  <Link
-                    href={`${
-                      ls.getItem(`Rewo-${props?.id}`)
-                        ? `/watch/${ls.getItem(`Rewo-${props?.id}`)}`
-                        : `/watch/${props?.id}`
-                    }`}
-                    className="btn-primary hero-button"
-                    onClick={handleNavigation}
-                  >
-                    <div>
-                      <FaPlay size={12} /> 
-                    </div>
-                    <div>Watch Now</div>
-                  </Link>}
+                  {gnt?.animeInfo?.Status !== "Not-yet-aired" && (
+                    <Link
+                      href={`${
+                        ls.getItem(`Rewo-${props?.id}`)
+                          ? `/watch/${ls.getItem(`Rewo-${props?.id}`)}`
+                          : `/watch/${props?.id}`
+                      }`}
+                      className="btn-primary hero-button"
+                      onClick={handleNavigation}
+                    >
+                      <div>
+                        <FaPlay size={12} />
+                      </div>
+                      <div>Watch Now</div>
+                    </Link>
+                  )}
                   <div className="dropdown-container" ref={dropdownRef}>
                     <button
                       className="btn-secondary-list hero-button"

@@ -481,6 +481,9 @@ select:enabled {
 .video-player {
   width: 75%;
 }
+.video-playerN {
+  width: 100%;
+}
 .hls-container {
   min-width: 100%;
   aspect-ratio: 16/9;

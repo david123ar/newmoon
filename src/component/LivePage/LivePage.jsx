@@ -412,42 +412,42 @@ export default function LivePage(props) {
   useEffect(() => {
     if (pio) {
       chang();
-  
+
       let datajDub = gtri?.streams?.dub || []; // Ensure it's an array
       let datajSub = gtri?.streams?.sub || [];
       let raw = "";
-  
+
       // Check if the data exists before accessing properties
       const subLink = datajSub?.results?.streamingLink?.link?.file || "";
       const dubLink = datajDub?.results?.streamingLink?.link?.file || "";
-  
+
       if (!subLink) {
         datajSub = gtri?.streams?.raw || [];
         raw = "yes";
       }
-  
+
       // Update `bhaiLink` safely
       setBhaiLink(() => {
         const isDubSelected = props.data?.sub === false;
         const hasDubEpisodes = props.data?.episodes?.dub > 0;
         const hasDubData = datajDub?.results;
-  
+
         if (isDubSelected && hasDubEpisodes && hasDubData) {
           return dubLink || ""; // Return dub link if available
         }
         return subLink || ""; // Return sub link if available
       });
-  
+
       // Update subtitles
       setSubtitles(datajSub?.results?.streamingLink?.tracks || []);
-  
+
       // Update intro and outro safely
       setIntrod(
         props.data?.sub === false && datajDub?.results
           ? datajDub?.results?.streamingLink?.intro
           : datajSub?.results?.streamingLink?.intro || ""
       );
-  
+
       setOutrod(
         props.data?.sub === false && datajDub?.results
           ? datajDub?.results?.streamingLink?.outro
@@ -455,7 +455,6 @@ export default function LivePage(props) {
       );
     }
   }, [pio, gtri]); // Ensure `gtri` is available
-  
 
   return (
     <>
@@ -519,7 +518,7 @@ export default function LivePage(props) {
               </div>
             </div>
             <div>
-              <div className="video-player">
+              <div className="video-playerN">
                 <div className="hls-container">
                   {message === "Not started yet!" ? (
                     <div className="timl-P">
@@ -633,7 +632,11 @@ export default function LivePage(props) {
 
             <div className="kenpa-1">
               <div>
-                <img className="kenpa-img" src={transformURL(props.data?.poster)} alt="" />
+                <img
+                  className="kenpa-img"
+                  src={transformURL(props.data?.poster)}
+                  alt=""
+                />
               </div>
               <div className="kenpa-soul">
                 <div className="kenpa-name">{props.data?.name}</div>
@@ -680,9 +683,6 @@ export default function LivePage(props) {
         <div className="chatB">
           <Chat liveId={props.id} session={session} isLog={isLog} />
         </div>
-      </div>
-      <div>
-        <Footer />
       </div>
     </>
   );
