@@ -646,7 +646,7 @@ export default function LivePage(props) {
                   <div className="kenpa-sts-1">{props.data?.rating}</div>
                   <div className="kenpa-sts-2">{props.data?.quality}</div>
                   <div className="kenpa-sts-3">
-                    <div>
+                    <div> 
                       <FaClosedCaptioning />
                     </div>
                     <div>{props.data?.episodes.sub}</div>

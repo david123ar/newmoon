@@ -24,8 +24,8 @@ function transformURL(originalURL) {
   return `https://img.flawlessfiles.com/_r/300x400/100/${part1}/${part2}/${id}/${id}.jpg`;
 }
 
-const Page = () => {
-  const [cachedData, setCachedData] = useState([]); // State to store fetched data
+const Page = (props) => {
+  const [cachedData, setCachedData] = useState(props.liveRoom); // State to store fetched data
 
   const fetchAllDocs = async () => {
     try {
