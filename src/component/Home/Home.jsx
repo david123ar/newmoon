@@ -53,16 +53,17 @@ const Home = ({ data, existingAnime }) => {
             existingAnime={existingAnime}
             selectL={selectL}
           />
-          <BannerAd/>
           <Trending data={data?.trending || []} selectL={selectL} />
           <Share ShareUrl="https://animoon.me/" />
           <Featured data={data || {}} selectL={selectL} />
           <MainContainer data={data || {}} selectL={selectL} />
         </div>
-        <div><Footer/></div>
+        <div>
+          <Footer />
+        </div>
       </SessionProvider>
     </div>
   );
 };
- 
+
 export default Home;
