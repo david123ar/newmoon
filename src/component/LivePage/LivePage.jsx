@@ -620,9 +620,11 @@ export default function LivePage(props) {
                     {useTimer(props.data?.date, props.data?.time)}
                   </div>
                 </div>
-                <div className="biit-set" onClick={() => setShow(true)}>
-                  <IoMdSettings />
-                </div>
+                {session?.user?.id === props.id?.split("_")[0] && (
+                  <div className="biit-set" onClick={() => setShow(true)}>
+                    <IoMdSettings />
+                  </div>
+                )}
               </div>
             </div>
 

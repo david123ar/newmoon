@@ -118,7 +118,7 @@ const CreateLive = (props) => {
             `_${props.data?.results?.data?.id?.match(/\d+$/)?.[0]}`
           }`
         : `guest-${Date.now()}`,
-      poster: "defaultPoster.jpg",
+      poster: props.data?.results?.data.poster || "defaultPoster.jpg",
       episode: "Episode 1",
       name: props.data?.results?.data.title,
       animeId: props?.id || "unknownAnimeId",
