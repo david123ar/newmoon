@@ -1,11 +1,11 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import "./footer.css";
 import SocialLinks from "../Navbar/Social";
 import Link from "next/link";
 import Image from "next/image";
 export default function Footer(props) {
-  const handleNavigation = () => {
-  };
+  const handleNavigation = () => {};
   function getAlphabets() {
     const alphabets = [];
     const startChar = "A".charCodeAt(0);
@@ -29,6 +29,18 @@ export default function Footer(props) {
   }
   const links = getAlphabets();
 
+  const [siteName, setSiteName] = useState("Animoon");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname; // Get the full domain
+      const subdomain = hostname.split(".")[0]; // Extract subdomain
+
+      // Change text based on subdomain
+      setSiteName(subdomain);
+    }
+  }, []);
+
   return (
     <div className="footer-container d-flex-fd-column j-center">
       <div className="logo-social-links d-flex">
@@ -36,7 +48,7 @@ export default function Footer(props) {
           <Link href="/">
             <div className="logo-container">
               <div className="logo-icon"></div>
-              <div className="logo-text">Animoon</div>
+              <div className="logo-text">{siteName}</div>
             </div>
           </Link>
         </div>

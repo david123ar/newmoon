@@ -44,6 +44,18 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
 
   const toggleProfile = () => setProfiIsOpen(true);
 
+  const [siteName, setSiteName] = useState("Animoon");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname; // Get the full domain
+      const subdomain = hostname.split(".")[0]; // Extract subdomain
+
+      // Change text based on subdomain
+      setSiteName(subdomain)
+    }
+  }, []);
+
   return (
     <div>
       <NavSidebar
@@ -60,7 +72,7 @@ const Navbar = ({ lang, sign, setProfiIsOpen }) => {
             <Link href="/">
               <div className="logo-container">
                 <div className="logo-icon"></div>
-                <div className="logo-text">Animoon</div>
+                <div className="logo-text">{siteName}</div>
               </div>
             </Link>
           </div>

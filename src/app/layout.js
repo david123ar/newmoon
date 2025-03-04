@@ -1,8 +1,12 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// const hostname = headers().get("host") || "";  
+// const siteName = hostname.split('.')[0].toCapitalLize();
 
 export const metadata = {
   title: "Animoon - Watch free Anime Online English Sub/Dub",

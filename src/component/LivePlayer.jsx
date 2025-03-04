@@ -624,7 +624,6 @@ function ArtPlayer(props) {
 
   return (
     <>
-      {/* <div>{props.bhaiLink}</div> */}
       <div className="artplayer-app md:h-[800px] h-[250px] w-full absolute top-0 left-0"></div>
     </>
   );
