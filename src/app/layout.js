@@ -12,7 +12,7 @@ export const metadata = {
   title: "Animoon - Watch free Anime Online English Sub/Dub",
   description: `Animoon is the best site to watch Anime SUB online, or you can even watch Anime DUB in HD quality. You can also find UnderRated anime on Animoon website.`,
   verification: {
-    google: "x0aiWAODNGU-1UA2FXyORfyme9uWJir7mIMu8AMmLm4",
+    google: "qwnQljuFScz5pMwy3mHv8BC3aZh5E9J8SYfpKwpgw1E",
     "google-adsense-account": "ca-pub-9295326902131480",
   },
 };
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta
           name="google-site-verification"
-          content="x0aiWAODNGU-1UA2FXyORfyme9uWJir7mIMu8AMmLm4"
+          content="qwnQljuFScz5pMwy3mHv8BC3aZh5E9J8SYfpKwpgw1E"
         />
       </head>
       <body className={inter.className}>
