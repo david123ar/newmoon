@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://animoon.netlify.app/
-
-# Sitemaps
-Sitemap: https://animoon.netlify.app/sitemap.xml
