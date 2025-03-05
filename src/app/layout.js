@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// const hostname = headers().get("host") || "";  
+// const hostname = headers().get("host") || "";
 // const siteName = hostname.split('.')[0].toCapitalLize();
 
 export const metadata = {
@@ -49,6 +49,10 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
           crossOrigin="anonymous"
           async
+        />
+        <Script
+          strategy="lazyOnload"
+          src="//disgustingmad.com/a5/d2/60/a5d260a809e0ec23b08c279ab693d778.js"
         />
         {children}
       </body>
