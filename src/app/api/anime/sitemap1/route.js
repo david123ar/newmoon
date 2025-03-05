@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"; 
 
 const apiUrl = "https://vimal.animoon.me/api/az-list?page=";
-const baseUrl = "https://animoon.netlify.app";
+const baseUrl = "https://animoon.me";
 
 // Helper function for retrying fetch in case of error
 const retryFetch = async (url, retries = 3, delay = 1000) => {
@@ -36,7 +36,7 @@ const fetchPage = async (page) => {
   const dataList = data.results.data;
 
   dataList.forEach((item) => {
-    urls.push(`${baseUrl}${item.data_id}`);
+    urls.push(`${baseUrl}/${item.id}`);
   });
 
   return urls; // Return the collected URLs for this page
@@ -93,14 +93,17 @@ const generateSitemap = (urls) => {
 };
 
 // API Route handler for sitemap export
-export async function GET() {
+export async function GET(req) {
   try {
+    const host = req.headers.get("host"); // Get the current domain
+    const protocol = host.includes("localhost") ? "http" : "https"; // Use HTTPS unless running locally
+    const baseUrl = `${protocol}://${host}`; // Construct the dynamic base URL
+
     const urls = await fetchAllUrls(); // Fetch all URLs from pages
-    const allUrls = [...urls]; // Include baseUrl and merge all URLs
+    const allUrls = urls.map((url) => url.replace("https://animoon.me", baseUrl)); // Adjust URLs dynamically
 
     const sitemap = generateSitemap(allUrls); // Generate the sitemap with all URLs
 
-    // Return sitemap with appropriate headers
     return new NextResponse(sitemap, {
       headers: {
         "Content-Type": "application/xml",
@@ -111,3 +114,5 @@ export async function GET() {
     return new NextResponse("Error generating sitemap", { status: 500 });
   }
 }
+
+
