@@ -6,7 +6,7 @@ const Advertize = () => {
   const [time, setTime] = useState(new Date());
   const [adver, setAdver] = useState("false");
 
-  // Helper for localStorage wrapper
+  // LocalStorage wrapper
   const localStorageWrapper = () => {
     if (typeof window !== "undefined" && window.localStorage) {
       return {
@@ -38,13 +38,13 @@ const Advertize = () => {
     const currentHour = time.getHours();
 
     const lastDisplayDate = new Date(lastDisplay);
-    const minutesSinceLastDisplay = Math.floor(
-      (time - lastDisplayDate) / (1000 * 60)
+    const secondsSinceLastDisplay = Math.floor(
+      (time - lastDisplayDate) / 1000
     );
 
-    // Show ad every 1 minute instead of 5 minutes
+    // Show ad every 30 seconds instead of 1 minute
     const shouldShowAd =
-      minutesSinceLastDisplay >= 1 ||
+      secondsSinceLastDisplay >= 30 ||
       currentDate !== parseInt(lastDate) ||
       currentHour !== parseInt(lastHour);
 
