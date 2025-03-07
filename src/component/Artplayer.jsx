@@ -161,14 +161,11 @@ function ArtPlayer(props) {
     "mistyvalley31.live",
   ];
 
-  let currentSubdomainIndex = 0; // Start with the first subdomain
+  let currentPrefixIndex = 0; // Start with the first subdomain
 
   // Function to update the URL by replacing any existing subdomain and domain with a new one
   const updateUrl = (url) => {
-    return url.replace(
-      /:\/\/[^/]+/,
-      `://${newSubdomains[currentSubdomainIndex]}`
-    );
+    return url.replace(/:\/\/[^/]+/, `://${newSubdomains[currentPrefixIndex]}`);
   };
 
   // Example usage
@@ -177,10 +174,10 @@ function ArtPlayer(props) {
 
   // Function to cycle through different subdomains dynamically
   const getUpdatedUrl = (originalUrl) => {
-    currentSubdomainIndex = (currentSubdomainIndex + 1) % newSubdomains.length; // Move to next subdomain
+    currentPrefixIndex = (currentPrefixIndex + 1) % newSubdomains.length; // Move to next subdomain
     return originalUrl.replace(
       /:\/\/[^/]+/,
-      `://${newSubdomains[currentSubdomainIndex]}`
+      `://${newSubdomains[currentPrefixIndex]}`
     );
   };
 
