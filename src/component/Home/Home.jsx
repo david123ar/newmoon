@@ -11,6 +11,7 @@ import { SessionProvider } from "next-auth/react";
 import Profilo from "../Profilo/Profilo";
 import Footer from "../Footer/Footer";
 import BannerAd from "../Banner/Banner";
+import Script from "next/script";
 
 const Home = ({ data, existingAnime }) => {
   const [selectL, setSelectL] = useState("en");
@@ -53,6 +54,15 @@ const Home = ({ data, existingAnime }) => {
             existingAnime={existingAnime}
             selectL={selectL}
           />
+          {/* Adsterra script will load only on the client side */}
+          <Script
+            src="//disgustingmad.com/b29918b4e5fbf3e4c13e32f24c7c143c/invoke.js"
+            strategy="afterInteractive"
+            data-cfasync="false"
+          />
+          {/* Ad container where the ad will be displayed */}
+          <div id="container-b29918b4e5fbf3e4c13e32f24c7c143c"></div>
+
           <Trending data={data?.trending || []} selectL={selectL} />
           <Share ShareUrl="https://animoon.me/" />
           <Featured data={data || {}} selectL={selectL} />
