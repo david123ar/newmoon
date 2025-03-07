@@ -172,8 +172,10 @@ function ArtPlayer(props) {
 
   finalUrl = updateUrl(finalUrl); // First replacement
 
+  const originalUrl = finalUrl;
+
   // Function to cycle through different subdomains dynamically
-  const getUpdatedUrl = (originalUrl) => {
+  const getUpdatedUrl = () => {
     currentPrefixIndex = (currentPrefixIndex + 1) % newSubdomains.length; // Move to next subdomain
     return originalUrl.replace(
       /:\/\/[^/]+/,
