@@ -14,7 +14,7 @@ export default function Social() {
         className="d-flex a-center j-center"
       >
         <a
-          href="https://t.me/+FGUOP60pSGphZWNl"
+          href="https://discord.com/invite/X696ThuZp9"
           target="_blank"
           rel="noreferrer"
         >

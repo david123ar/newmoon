@@ -149,30 +149,40 @@ function ArtPlayer(props) {
       }
     }
   }
-  let currentPrefixIndex = 0;
-  const prefixes = [
-    "fgh5",
-    "w2r",
-    "wf1",
-    "vd2",
-    "gg3",
-    "tt57",
-    "g4fv",
-    "mmd",
-    "fds",
+  // List of possible subdomains to cycle through
+  // List of new full subdomains (including domain extensions)
+  const newSubdomains = [
+    "lightningflash39.live",
+    "sunshinerays93.live",
+    "stormywind74.xyz",
+    "sunburst66.pro",
+    "frostbite27.pro",
+    "rainstorm92.xyz",
+    "mistyvalley31.live",
   ];
 
-  // Ensure `finalUrl` never contains "bianaset"
-  finalUrl = finalUrl.replace("biananset", "jonextugundu");
+  let currentSubdomainIndex = 0; // Start with the first subdomain
+
+  // Function to update the URL with a new subdomain from the list
+  const updateUrl = (url) => {
+    return url.replace(
+      /:\/\/([^.]+)\.[a-z]+/,
+      `://${newSubdomains[currentSubdomainIndex]}`
+    );
+  };
+
+  // Example usage
+  finalUrl = updateUrl(finalUrl);
 
   // Store the corrected finalUrl
   const originalUrl = finalUrl;
 
-  // Function to replace prefix in URL
+  // Function to dynamically switch between different subdomains
   const getUpdatedUrl = () => {
+    currentSubdomainIndex = (currentSubdomainIndex + 1) % newSubdomains.length; // Cycle through the list
     return originalUrl.replace(
-      /https:\/\/[^.]+\.jonextugundu/,
-      `https://${prefixes[currentPrefixIndex]}.jonextugundu`
+      /:\/\/([^.]+)\.[a-z]+/,
+      `://${newSubdomains[currentSubdomainIndex]}`
     );
   };
 
@@ -226,7 +236,7 @@ function ArtPlayer(props) {
             auto: "Auto",
           },
         }),
-        artplayerPluginChapter({ chapters })
+        artplayerPluginChapter({ chapters }),
       ],
       customType: {
         m3u8: function playM3u8(video, url, art) {
@@ -544,7 +554,7 @@ function ArtPlayer(props) {
         }
       });
     }
- 
+
     return () => {
       if (art && art.destroy) {
         art.destroy(false);
