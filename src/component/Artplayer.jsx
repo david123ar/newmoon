@@ -163,25 +163,23 @@ function ArtPlayer(props) {
 
   let currentSubdomainIndex = 0; // Start with the first subdomain
 
-  // Function to update the URL with a new subdomain from the list
+  // Function to update the URL by replacing any existing subdomain and domain with a new one
   const updateUrl = (url) => {
     return url.replace(
-      /:\/\/([^.]+)\.[a-z]+/,
+      /:\/\/[^/]+/,
       `://${newSubdomains[currentSubdomainIndex]}`
     );
   };
 
   // Example usage
-  finalUrl = updateUrl(finalUrl);
 
-  // Store the corrected finalUrl
-  const originalUrl = finalUrl;
+  finalUrl = updateUrl(finalUrl); // First replacement
 
-  // Function to dynamically switch between different subdomains
-  const getUpdatedUrl = () => {
-    currentSubdomainIndex = (currentSubdomainIndex + 1) % newSubdomains.length; // Cycle through the list
+  // Function to cycle through different subdomains dynamically
+  const getUpdatedUrl = (originalUrl) => {
+    currentSubdomainIndex = (currentSubdomainIndex + 1) % newSubdomains.length; // Move to next subdomain
     return originalUrl.replace(
-      /:\/\/([^.]+)\.[a-z]+/,
+      /:\/\/[^/]+/,
       `://${newSubdomains[currentSubdomainIndex]}`
     );
   };
